@@ -2,18 +2,18 @@ version: "3"
 
 services:
 
-  # nginx:
-  #   image: nginx
-  #   container_name: bio2kg-prefixes-nginx
-  #   volumes: 
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   ports:
-  #     - 8080:8080
-  #   environment:   
-  #     - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-  #     - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-  #     - VIRTUAL_PORT=8080
-  #     - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+  nginx:
+    image: nginx
+    container_name: bio2kg-prefixes-nginx
+    volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:8080
+    environment:   
+      - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      - VIRTUAL_PORT=8080
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
 
   elasticsearch:
     container_name: bio2kg-prefixes-elasticsearch
@@ -25,11 +25,11 @@ services:
       - http.cors.allow-origin="*"
       - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
       # - "ES_JAVA_OPTS=-Xms8g -Xmx8g"
-      - xpack.security.enabled=true
+      # - xpack.security.enabled=true
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-      - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-      - VIRTUAL_PORT=9200
+      # - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      # - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      # - VIRTUAL_PORT=9200
       # Also 9300
     # ports: 
     #   - 9200:9200
