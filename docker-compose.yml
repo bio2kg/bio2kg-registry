@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  nginx:
+  nginx-elastic-auth:
     image: nginx
     container_name: bio2kg-prefixes-elastic-nginx
     volumes: 
@@ -14,7 +14,6 @@ services:
       - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
       - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
       - VIRTUAL_PORT=8080
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
 
   elasticsearch:
     container_name: bio2kg-prefixes-elasticsearch
@@ -27,7 +26,7 @@ services:
       - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
       # - "ES_JAVA_OPTS=-Xms8g -Xmx8g"
       # - xpack.security.enabled=true
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      # - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
       # - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
       # - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
       # - VIRTUAL_PORT=9200
@@ -37,7 +36,7 @@ services:
     volumes:
       - /data/bio2kg/prefixes/elasticsearch:/usr/share/elasticsearch/data
 
-  nodejs:
+  nodejs-prefixes-website:
     build: ./website
     container_name: bio2kg-prefixes-website
     environment:   
