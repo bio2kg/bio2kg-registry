@@ -27,6 +27,7 @@ import {
   EuiButtonGroup,
   EuiFieldSearch,
   EuiButtonEmpty,
+  EuiButton,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiFlexGroup,
@@ -235,6 +236,19 @@ const Page = () => {
             </EuiPageContentHeaderSection>
             <EuiPageContentHeaderSection>
               <EuiFlexGroup>
+                <EuiFlexItem grow={1}>
+                  {/* https://elastic.github.io/eui/#/display/icons */}
+                  <EuiButton href="/api/graphql" size="s" iconType="graphApp" target="_blank">
+                    GraphQL API
+                  </EuiButton>
+                </EuiFlexItem>
+                <EuiFlexItem grow={1}>
+                  {/* https://elastic.github.io/eui/#/display/icons */}
+                  <EuiButton href="https://elastic.prefixes.bio2kg.137.120.31.102.nip.io/_search"
+                      size="s" iconType="searchProfilerApp" target="_blank">
+                    ElasticSearch API
+                  </EuiButton>
+                </EuiFlexItem>
                 {/* Page size */}
                 <EuiFlexItem grow={1}>
                   <EuiPopover

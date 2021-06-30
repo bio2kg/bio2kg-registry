@@ -38,7 +38,7 @@ pip install -r etl/requirements.txt
 2. Define the ElasticSearch password as environment variable, for example with Bash:
 
 ```bash
-export ELASTIC_PASSWORD=mypassword
+export ELASTIC_PASSWORD=yourpassword
 ```
 
 3. Run the python script:
@@ -54,10 +54,16 @@ Make sure you use the same password in the GitHub Actions secrets and for the do
 1. Add the ElasticSearch password to a `.env` file alongside the `docker-compose.yml`, for example with Bash:
 
 ```bash
-echo "ELASTIC_PASSWORD=mypassword" > .env
+echo "ELASTIC_PASSWORD=yourpassword" > .env
 ```
 
-2. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
+2. Generate the `.htpasswd` file with user/password for the nginx authentication over ElasticSearch defined in `elasticsearch/nginx.conf`:
+
+```bash
+htpasswd -Bbn elastic yourpassword > elasticsearch/.htpasswd
+```
+
+3. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
 
 ```bash
 mkdir -p /data/bio2kg/prefixes/elasticsearch
@@ -66,7 +72,7 @@ sudo chgrp 1000 -R /data/bio2kg/prefixes/elasticsearch
 sudo chown 1000 -R /data/bio2kg/prefixes/elasticsearch
 ```
 
-3. Start the docker-compose:
+4. Start the docker-compose:
 
 ```bash
 docker-compose up
@@ -100,15 +106,3 @@ Try the GraphQL API with this query:
   }
 }
 ```
-
-### Add authentication
-
-With a Nginx container using `nginx.conf`
-
-1. Generate the `.htpasswd` file with users/password
-
-```bash
-htpasswd -Bbn elastic testpassword > elasticsearch/.htpasswd
-```
-
-2. 
