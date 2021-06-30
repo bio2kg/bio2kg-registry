@@ -10,7 +10,8 @@ googledocs_id = '1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg'
 sheet = 'resource'
 
 es = Elasticsearch(
-    ['https://elastic.prefixes.bio2kg.137.120.31.102.nip.io'],
+    # ['https://elastic.prefixes.bio2kg.137.120.31.102.nip.io'],
+    # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.prefixes.bio2kg.137.120.31.102.nip.io'],
     # ['https://elastic.prefixcommons.org'],
     # ['http://localhost:9200'],
     http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')),

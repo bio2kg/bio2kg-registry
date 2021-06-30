@@ -112,12 +112,11 @@ const Page = () => {
   const { previousData, data = previousData, loading } = useQuery(graphqlQuery, {
     variables: variables
   })
-  console.log('routingOptions')
-  routingOptions.routeToState = (routeState) => {
-    console.logs(routeState)
-  }
-
-  console.log(routingOptions.routeToState)
+  // console.log('routingOptions')
+  // routingOptions.routeToState = (routeState) => {
+  //   console.logs(routeState)
+  // }
+  // console.log(routingOptions.routeToState)
   // routingOptions.routeToState?: (routeState: any) => {
   //   page: {
   //       size: number;
@@ -126,13 +125,18 @@ const Page = () => {
   const Facets = FacetsList([])
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [rowSize, setRowSize] = useState(50);
   const onButtonClick = () =>
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
   const getIconType = (size) => {
     return size === rowSize ? 'check' : 'empty';
+  };
+  const [rowSize, setRowSize] = useState(10);
+  const changePageSize = (size) => {
+    api.setPage({ size: size , from: 0})
+    setRowSize(size)
+    api.search()
   };
 
   const button = (
@@ -152,7 +156,8 @@ const Page = () => {
       icon={getIconType(10)}
       onClick={() => {
         closePopover();
-        setRowSize(10);
+        changePageSize(10)
+        // setRowSize(10);
       }}>
       10 rows
     </EuiContextMenuItem>,
@@ -161,7 +166,7 @@ const Page = () => {
       icon={getIconType(20)}
       onClick={() => {
         closePopover();
-        setRowSize(20);
+        changePageSize(20)
       }}>
       20 rows
     </EuiContextMenuItem>,
@@ -170,7 +175,7 @@ const Page = () => {
       icon={getIconType(50)}
       onClick={() => {
         closePopover();
-        setRowSize(50);
+        changePageSize(50)
       }}>
       50 rows
     </EuiContextMenuItem>,
@@ -179,7 +184,7 @@ const Page = () => {
       icon={getIconType(100)}
       onClick={() => {
         closePopover();
-        setRowSize(100);
+        changePageSize(100)
       }}>
       100 rows
     </EuiContextMenuItem>,

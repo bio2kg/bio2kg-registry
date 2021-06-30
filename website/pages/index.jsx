@@ -36,7 +36,8 @@ export default withApollo(withSearchkit(withSearchkitRouting(Search, {
       addQueryPrefix: true
     })
 
-    return `/type/${typeCategoryURL}${queryString}`
+    return `/${queryString}`
+    // return `/type/${typeCategoryURL}${queryString}`
   },
   parseURL: ({ qsModule, location }) => {
     const matches = location.pathname.match(/type\/(\w+)/)
