@@ -130,12 +130,10 @@ const Page = () => {
   const closePopover = () => setIsPopoverOpen(false);
 
   const getIconType = (size) => {
-    return size === rowSize ? 'check' : 'empty';
+    return size === api.searchState.page.size ? 'check' : 'empty';
   };
-  const [rowSize, setRowSize] = useState(10);
   const changePageSize = (size) => {
     api.setPage({ size: size , from: 0})
-    setRowSize(size)
     api.search()
   };
 
@@ -146,7 +144,7 @@ const Page = () => {
       iconType="arrowDown"
       iconSide="right"
       onClick={onButtonClick}>
-      Rows per page: {rowSize}
+      Rows per page: {api.searchState.page.size}
     </EuiButtonEmpty>
   );
 
