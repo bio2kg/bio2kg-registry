@@ -105,6 +105,10 @@ Try the GraphQL API with this query:
 
 With a Nginx container using `nginx.conf`
 
+1. Generate the `.htpasswd` file with users/password
+
 ```bash
-docker run --rm --entrypoint htpasswd registry:2 -Bbn testuser testpassword > auth/nginx.htpasswd
+htpasswd -Bbn elastic testpassword > elasticsearch/nginx.htpasswd
 ```
+
+2. 

@@ -1,4 +1,5 @@
 
+elasticsearch/.htpasswd
 data/
 
 # For python
