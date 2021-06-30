@@ -219,9 +219,18 @@ const Page = () => {
       <EuiPageBody component="div">
         <EuiPageHeader>
           <EuiPageHeaderSection>
-            <EuiTitle size="l">
-              <SelectedFilters data={data?.results} loading={loading} />
-            </EuiTitle>
+            <EuiFlexGroup>
+              <EuiFlexItem>
+                <EuiTitle size="s" style={{whiteSpace: "nowrap"}}>
+                  <h2>Bio2KG Prefixes</h2>
+                </EuiTitle>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiTitle size="s">
+                  <SelectedFilters data={data?.results} loading={loading} />
+                </EuiTitle>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <ResetSearchButton loading={loading} />

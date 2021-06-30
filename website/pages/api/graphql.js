@@ -13,6 +13,7 @@ import {
 
 const searchkitConfig = {
   host: 'https://elastic.prefixes.bio2kg.137.120.31.102.nip.io',
+  // If enable ElasticSearch built-in security:
   // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elastic.prefixes.bio2kg.137.120.31.102.nip.io',
   // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elasticsearch:9200',
   // host: 'https://elasticsearch:9200',
