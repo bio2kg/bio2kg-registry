@@ -5,7 +5,13 @@ An API to resolve prefixes and identifiers for biomedical concepts based on the 
 1. Extract data from the [Life Science Registry spreadsheet on Google docs](https://docs.google.com/spreadsheets/d/1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg/edit#gid=0)
 2. Load to ElasticSearch (deployed with the `docker-compose.yml` file)
 
-ElasticSearch API available at https://bio2kg-prefixes.137.120.31.102.nip.io/_search
+Access the Bio2KG prefix resolver:
+
+* Search website: https://prefixes.bio2kg.137.120.31.102.nip.io
+
+* GraphQL API: https://prefixes.bio2kg.137.120.31.102.nip.io/api/graphql
+
+* ElasticSearch API (authentication): https://elastic.prefixes.bio2kg.137.120.31.102.nip.io/_search
 
 Search with cURL:
 
@@ -17,9 +23,9 @@ curl -XGET --header 'Content-Type: application/json' https://bio2kg-prefixes.137
 }'
 ```
 
-##  Load the Life Science Registry in ElasticSearch
+##  Update the Life Science Registry 🐍
 
-The process to prepare the ElasticSearch index runs as a GitHub Actions workflow, check it in the `.github/workflows` folder.
+The process to prepare the ElasticSearch index for the Life Science Registry runs as a GitHub Actions workflow, check it in the `.github/workflows` folder.
 
 To run locally:
 
@@ -41,7 +47,7 @@ export ELASTIC_PASSWORD=mypassword
 python3 etl/lsr_csv_to_elastic.py
 ```
 
-## Deploy ElasticSearch
+## Deploy with docker 🐳
 
 Make sure you use the same password in the GitHub Actions secrets and for the docker compose deployment.
 
@@ -63,27 +69,19 @@ sudo chown 1000 -R /data/bio2kg/prefixes/elasticsearch
 3. Start the docker-compose:
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
-## Search website
+It deploys:
 
-Interesting options:
+* An ElasticSearch instance
+* A NodeJS website using Searchkit and NextJS
+  * Web interface to search for prefixes
+  * GraphQL API to query the ElasticSearch with Apollo on http://localhost:3000/api/graphql
 
-* https://www.searchkit.co/
-  * Demo: https://demo.searchkit.co
-  * GraphQL API: https://searchkit.co/docs/quick-start/api-setup
-  * Which example best fits out case? https://github.com/searchkit/searchkit/tree/next/examples
-  * Deploy Next with Docker: https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
-* https://github.com/betagouv/react-elasticsearch
-  * Demo: https://react-elasticsearch.raph.site/
-* https://opensource.appbase.io/reactivesearch/
+Try the GraphQL API with this query:
 
-### GraphQL API
-
-Deployed with SearchKit and Apollo on http://localhost:3000/api/graphql
-
-```javascript
+```gql
 {
   results {
     hits {
@@ -102,4 +100,3 @@ Deployed with SearchKit and Apollo on http://localhost:3000/api/graphql
   }
 }
 ```
-

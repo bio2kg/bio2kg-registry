@@ -19,4 +19,3 @@ venv/
 # For the website
 node_modules/
 .next/
-yarn.lock
