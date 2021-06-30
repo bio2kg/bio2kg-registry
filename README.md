@@ -108,7 +108,7 @@ With a Nginx container using `nginx.conf`
 1. Generate the `.htpasswd` file with users/password
 
 ```bash
-htpasswd -Bbn elastic testpassword > elasticsearch/nginx.htpasswd
+htpasswd -Bbn elastic testpassword > elasticsearch/.htpasswd
 ```
 
 2. 
