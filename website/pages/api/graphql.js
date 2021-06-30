@@ -11,12 +11,9 @@ import {
   SearchkitResolver
 } from '@searchkit/schema'
 
-const elasticUrl = 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elasticsearch:9200'
-// const elasticUrl = 'https://bio2kg-prefixes.137.120.31.102.nip.io',
-
 const searchkitConfig = {
-  host: elasticUrl,
-  // elastic.prefixes.bio2kg.137.120.31.102.nip.io
+  host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elastic.prefixes.bio2kg.137.120.31.102.nip.io',
+  // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elasticsearch:9200',
   index: 'prefixes',
   hits: {
     fields: ['preferredprefix','alt-prefix','providerbaseuri','alternativebaseuri','miriam','biodbcoreid','bioportalontologyid','thedatahub','abbreviation','title','description','pubmedid','organization','type','keywords','homepage','homepagestillavailable','sub-namespaceindataset','partofcollection','licenseurl','licensetext','rights','idregex','exampleid','providerhtmlurl','miriamchecked','miriamcuratornotes','miriamcoverage','updates']

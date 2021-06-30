@@ -100,3 +100,11 @@ Try the GraphQL API with this query:
   }
 }
 ```
+
+### Add authentication
+
+With a Nginx container using `nginx.conf`
+
+```bash
+docker run --rm --entrypoint htpasswd registry:2 -Bbn testuser testpassword > auth/nginx.htpasswd
+```
