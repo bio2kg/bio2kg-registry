@@ -1,0 +1,33 @@
+name: Load LSR CSV to ElasticSearch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "etl/*"
+      - ".github/workflows/lsr-csv-to-elastic.yml"
+  # schedule:
+  #   - cron: '0 2 * * *'
+  ## Everyday at 2am
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r etl/requirements.txt
+
+      - name: Run python etl scripts
+        env:
+          ELASTIC_PASSWORD: ${{ secrets.ELASTIC_PASSWORD }}
+        run: |
+          python etl/lsr_csv_to_elastic.py
