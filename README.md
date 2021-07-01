@@ -78,6 +78,12 @@ sudo chown 1000 -R /data/bio2kg/prefixes/elasticsearch
 docker-compose up
 ```
 
+5. Run the script to update ElasticSearch data:
+
+```bash
+docker-compose run update-pipeline
+```
+
 It deploys:
 
 * An ElasticSearch instance

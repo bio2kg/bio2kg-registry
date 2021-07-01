@@ -10,10 +10,10 @@ googledocs_id = '1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg'
 sheet = 'resource'
 
 es = Elasticsearch(
+    ['http://elasticsearch:9200'],
     # ['https://elastic.registry.bio2kg.org'],
     # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'],
     # ['https://elastic.prefixcommons.org'],
-    ['http://elasticsearch:9200'],
     # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')),
     # port=443,
 )
@@ -23,9 +23,9 @@ googledocs_url = 'https://docs.google.com/spreadsheets/d/' + googledocs_id + '/g
 print('Downloading ' + googledocs_url)
 
 ## Load csv to a pandas dataframe from the URL
-# df = pd.read_csv(googledocs_url)
+df = pd.read_csv(googledocs_url)
 ## Read from local to dev faster:
-df = pd.read_csv('data/data.csv')
+# df = pd.read_csv('data/data.csv')
 
 ## Optional: check for duplicate values in 1st col, use .any() for boolean
 # print(df['Preferred Prefix'].duplicated().sort_values())
@@ -69,6 +69,8 @@ for key, value in col_mapping.items():
         key: value
     }, axis=1, inplace=True)
 
+## Check the list of columns:
+# print('" , "'.join(list(col_mapping.values())))
 
 # for column in df:
 #     # Clean up col labels, then camelcase
@@ -86,6 +88,7 @@ for key, value in col_mapping.items():
 lsr_json = df.apply(lambda x: [x.dropna()], axis=1).to_json()
 lsr_dict = json.loads(lsr_json)
 
+# Prepare JSON for ElasticSearch ingestion
 elastic_json = []
 for key, entry in lsr_dict.items():
     entry = entry[0]

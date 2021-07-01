@@ -19,12 +19,10 @@ const searchkitConfig = {
   // host: 'https://elasticsearch:9200',
   index: 'prefixes',
   hits: {
-    fields: ['preferredprefix','alt-prefix','providerbaseuri','alternativebaseuri','miriam','biodbcoreid','bioportalontologyid','thedatahub','abbreviation','title','description','pubmedid','organization','type','keywords','homepage','homepagestillavailable','sub-namespaceindataset','partofcollection','licenseurl','licensetext','rights','idregex','exampleid','providerhtmlurl','miriamchecked','miriamcuratornotes','miriamcoverage','updates']
-    // fields: ['Preferred Prefix','Alt-prefix','Provider Base URI','Alternative Base URI','MIRIAM','BiodbcoreID','BioPortal Ontology ID','thedatahub','Abbreviation','Title','Description','PubMed ID','Organization','Type (warehouse, dataset or terminology)','Keywords','Homepage','homepage still available?','sub-namespace in dataset','part of collection','License URL','License Text','Rights','ID regex','ExampleID','Provider HTML URL','MIRIAM checked','MIRIAM curator notes','MIRIAM coverage','updates']
-    // fields: ['type','title','year','rated','released','genres','directors','writers','actors','countries','plot','poster','id']
+    fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates"]
   },
   sortOptions: [
-    // { id: 'preferredprefix', label: "Preferred Prefix", field: [{"preferredprefix": "desc"}], defaultOption: true},
+    // { id: 'preferredPrefix', label: "Preferred Prefix", field: [{"preferredPrefix": "desc"}], defaultOption: true},
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
     // { id: 'released', label: "Released", field: [{"released": "desc"}]},
   ],
@@ -38,7 +36,7 @@ const searchkitConfig = {
         // query: {
             query_string: {
                 query: '*' + query + '*',
-                fields: ["title", "description","preferredprefix", "providerbaseuri", "organization"]
+                fields: ["title", "description","preferredPrefix", "providerBaseUri", "organization"]
             }
           }]
         }
@@ -47,7 +45,7 @@ const searchkitConfig = {
   }),
 
   // query: new MultiMatchQuery({ 
-  //   fields: ['preferredprefix^3','alt-prefix','providerbaseuri','alternativebaseuri','abbreviation','title^2','description','pubmedid','organization','homepage', 'keywords'],
+  //   fields: ['preferredPrefix^3','alt-prefix','providerbaseuri','alternativebaseuri','abbreviation','title^2','description','pubmedid','organization','homepage', 'keywords'],
   //   // 'preferredPrefix^4', 'alternatePrefix^3', 'title^2', '_all^1'
   // }),
   facets: [
@@ -124,7 +122,7 @@ const server = new ApolloServer({
     }
 
     type HitFields {
-      preferredprefix: String
+      preferredPrefix: String
       title: String
       description: String
       type: String

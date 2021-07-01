@@ -39,7 +39,7 @@ services:
     build: ./website
     container_name: bio2kg-registry-website
     restart: unless-stopped
-    environment:   
+    environment:
       - VIRTUAL_HOST=registry.bio2kg.org
       - LETSENCRYPT_HOST=registry.bio2kg.org
       - VIRTUAL_PORT=3000
@@ -48,8 +48,9 @@ services:
     #   - 3000:3000
 
   update-pipeline:
-    image: python3.8
+    image: python:3.8
     container_name: bio2kg-registry-website
-    command: "pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py"
+    entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
     volumes:
       - ./etl:/etl
+      
