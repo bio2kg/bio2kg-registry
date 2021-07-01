@@ -1,21 +1,86 @@
 import React from 'react'
-import { EuiFlexGrid, EuiFlexItem, EuiCard, EuiFlexGroup, EuiTitle, EuiText } from '@elastic/eui'
+import { useState } from 'react'
+import { 
+  EuiFlexGrid, 
+  EuiFlexItem, 
+  EuiCard, 
+  EuiFlexGroup, 
+  EuiTitle, 
+  EuiText,
+  EuiButtonIcon,
+  EuiButton,
+  EuiButtonEmpty,
+  EuiBadge
+} from '@elastic/eui'
 
-export const HitsGrid = ({ data }) => (
-  <EuiFlexGrid gutterSize="l">
+export const HitsGrid = ({ data }) => {
+  const [showDetails, setShowDetails] = useState({})
+
+  const clickDetails = (hit_id) => {
+    if (showDetails[hit_id]) {
+      setShowDetails({...showDetails, [hit_id] : false})
+    } else {
+      setShowDetails({...showDetails, [hit_id] : true})
+    }
+  }
+
+  return (
+  <EuiFlexGrid gutterSize="s">
     {data?.results.hits.items.map((hit) => (
-      <EuiFlexItem key={hit.id} grow={2}>
+      <EuiFlexItem key={hit.id} grow={1}>
         <EuiCard
           grow={true}
           textAlign="left"
-          // image={<img src={hit.fields.poster} style={{ maxWidth: 200 }} alt="Nature" />}
-          title={hit.fields.title}
+          title={<EuiFlexGroup>
+            <EuiFlexItem grow={false} >
+              <EuiTitle size="xs">
+                <h2>{hit.fields.title}</h2>
+              </EuiTitle>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiBadge color="hollow">{hit.fields.preferredprefix}</EuiBadge>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty
+                // iconType="iInCircle"
+                iconType="arrowDown"
+                iconSide="right"
+                size="xs"
+                onClick={() => clickDetails(hit.id)}
+                aria-label="See more details">
+                details
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+          </EuiFlexGroup>}
           description={hit.fields.description}
-        />
+          // footer={
+          //   <EuiFlexGroup justifyContent="flexStart">
+          //     <EuiFlexItem grow={false}>
+          //       <EuiButton
+          //         iconType="iInCircle"
+          //         size="s"
+          //         onClick={() => clickDetails(hit.id)}
+          //         aria-label="See more details">
+          //         More details
+          //       </EuiButton>
+          //     </EuiFlexItem>
+          //   </EuiFlexGroup>
+          // }
+        >
+          {showDetails[hit.id] && 
+            <EuiText size="s">
+              {/* <p></p> */}
+              <i>Organization:</i> {hit.fields.organization}
+              {hit.fields.keywords && 
+                <p><i>Keywords:</i> {hit.fields.keywords.join(', ')} </p>
+              }
+            </EuiText>
+          }
+        </EuiCard>
       </EuiFlexItem>
     ))}
   </EuiFlexGrid>
-)
+)}
 
 export const HitsList = ({ data }) => (
   <>

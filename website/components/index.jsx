@@ -28,6 +28,7 @@ import {
   EuiFieldSearch,
   EuiButtonEmpty,
   EuiButton,
+  EuiButtonIcon,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiFlexGroup,
@@ -122,7 +123,7 @@ const Page = () => {
   //   page: {
   //       size: number;
   
-  const [viewType, setViewType] = useState('list')
+  const [viewType, setViewType] = useState('grid')
   const Facets = FacetsList([])
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -134,7 +135,8 @@ const Page = () => {
     return size === api.searchState.page.size ? 'check' : 'empty';
   };
   const changePageSize = (size) => {
-    api.setPage({ size: size , from: 0})
+    closePopover();
+    api.setPage({ size: size })
     api.search()
   };
 
@@ -154,9 +156,7 @@ const Page = () => {
       key="10 rows"
       icon={getIconType(10)}
       onClick={() => {
-        closePopover();
         changePageSize(10)
-        // setRowSize(10);
       }}>
       10 rows
     </EuiContextMenuItem>,
@@ -164,7 +164,6 @@ const Page = () => {
       key="20 rows"
       icon={getIconType(20)}
       onClick={() => {
-        closePopover();
         changePageSize(20)
       }}>
       20 rows
@@ -173,7 +172,6 @@ const Page = () => {
       key="50 rows"
       icon={getIconType(50)}
       onClick={() => {
-        closePopover();
         changePageSize(50)
       }}>
       50 rows
@@ -182,7 +180,6 @@ const Page = () => {
       key="100 rows"
       icon={getIconType(100)}
       onClick={() => {
-        closePopover();
         changePageSize(100)
       }}>
       100 rows
@@ -192,7 +189,7 @@ const Page = () => {
   return (
     <EuiPage>
       <EuiPageSideBar>
-        {/* Reload serach bar onChange 
+        {/* Reload search bar onChange 
         https://github.com/searchkit/searchkit/blob/next/packages/searchkit-elastic-ui/src/SearchBar/index.tsx */}
         {/* <SearchBar loading={loading} /> */}
         <EuiFieldSearch
@@ -226,7 +223,7 @@ const Page = () => {
                 </EuiTitle>
               </EuiFlexItem>
               <EuiFlexItem>
-                <EuiTitle size="s">
+                <EuiTitle size="xxxs">
                   <SelectedFilters data={data?.results} loading={loading} />
                 </EuiTitle>
               </EuiFlexItem>
@@ -236,15 +233,25 @@ const Page = () => {
             <ResetSearchButton loading={loading} />
           </EuiPageHeaderSection>
         </EuiPageHeader>
+
         <EuiPageContent>
           <EuiPageContentHeader>
             <EuiPageContentHeaderSection>
-              <EuiTitle size="s">
+              <EuiTitle size="xs">
                 <h2>{data?.results.summary.total} Results</h2>
               </EuiTitle>
             </EuiPageContentHeaderSection>
             <EuiPageContentHeaderSection>
               <EuiFlexGroup>
+                {/* Page size */}
+                <EuiFlexItem grow={1}>
+                  <EuiPopover
+                    button={button}
+                    isOpen={isPopoverOpen}
+                    closePopover={closePopover}>
+                    <EuiContextMenuPanel items={items} />
+                  </EuiPopover>
+                </EuiFlexItem>
                 <EuiFlexItem grow={1}>
                   {/* https://elastic.github.io/eui/#/display/icons */}
                   <EuiButton href="/api/graphql" size="s" iconType="graphApp" target="_blank">
@@ -258,19 +265,16 @@ const Page = () => {
                     ElasticSearch API
                   </EuiButton>
                 </EuiFlexItem>
-                {/* Page size */}
                 <EuiFlexItem grow={1}>
-                  <EuiPopover
-                    button={button}
-                    isOpen={isPopoverOpen}
-                    closePopover={closePopover}>
-                    <EuiContextMenuPanel items={items} />
-                  </EuiPopover>
+                  <EuiButton href="https://github.com/bio2kg/bio2kg-prefixes"
+                      size="s" iconType="editorCodeBlock" target="_blank">
+                    Source
+                  </EuiButton>
                 </EuiFlexItem>
-                <EuiFlexItem grow={1}>
+                {/* <EuiFlexItem grow={1}>
                   <SortingSelector data={data?.results} loading={loading} />
-                </EuiFlexItem>
-                <EuiFlexItem grow={2}>
+                </EuiFlexItem> */}
+                {/* <EuiFlexItem grow={2}>
                 <EuiButtonGroup
                   legend=""
                   options={[
@@ -286,7 +290,7 @@ const Page = () => {
                   idSelected={viewType}
                   onChange={(id) => setViewType(id)}
                 />
-                </EuiFlexItem>
+                </EuiFlexItem> */}
               </EuiFlexGroup>
             </EuiPageContentHeaderSection>
           </EuiPageContentHeader>
