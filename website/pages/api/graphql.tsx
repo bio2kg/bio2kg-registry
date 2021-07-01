@@ -129,6 +129,7 @@ const server = new ApolloServer({
       description: String
       type: String
       organization: String
+      homepage: String
       keywords: [String]
       # updates: String
     }

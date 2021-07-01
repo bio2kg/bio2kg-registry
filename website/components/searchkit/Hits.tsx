@@ -70,6 +70,9 @@ export const HitsGrid = ({ data }: any) => {
             <EuiText size="s">
               {/* <p></p> */}
               <i>Organization:</i> {hit.fields.organization}
+              {hit.fields.homepage && 
+                <p><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a></p>
+              }
               {hit.fields.keywords && 
                 <p><i>Keywords:</i> {hit.fields.keywords.join(', ')} </p>
               }

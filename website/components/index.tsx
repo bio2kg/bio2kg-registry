@@ -87,6 +87,7 @@ const graphqlQuery = gql`
               type
               keywords
               organization
+              homepage
             }
           }
         }
