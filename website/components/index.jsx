@@ -260,7 +260,7 @@ const Page = () => {
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
                   {/* https://elastic.github.io/eui/#/display/icons */}
-                  <EuiButton href="https://elastic.prefixes.bio2kg.137.120.31.102.nip.io/_search"
+                  <EuiButton href="https://elastic.prefixes.bio2kg.org/_search"
                       size="s" iconType="searchProfilerApp" target="_blank">
                     ElasticSearch API
                   </EuiButton>

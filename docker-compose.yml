@@ -11,8 +11,8 @@ services:
     ports:
       - 8080:8080
     environment:   
-      - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-      - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      - VIRTUAL_HOST=elastic.prefixes.bio2kg.org
+      - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.org
       - VIRTUAL_PORT=8080
 
   elasticsearch:
@@ -27,8 +27,8 @@ services:
       # - "ES_JAVA_OPTS=-Xms8g -Xmx8g"
       # - xpack.security.enabled=true
       # - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      # - VIRTUAL_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
-      # - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.137.120.31.102.nip.io
+      # - VIRTUAL_HOST=elastic.prefixes.bio2kg.org
+      # - LETSENCRYPT_HOST=elastic.prefixes.bio2kg.org
       # - VIRTUAL_PORT=9200
     # ports: 
     #   - 9200:9200
@@ -39,8 +39,8 @@ services:
     build: ./website
     container_name: bio2kg-prefixes-website
     environment:   
-      - VIRTUAL_HOST=prefixes.bio2kg.137.120.31.102.nip.io
-      - LETSENCRYPT_HOST=prefixes.bio2kg.137.120.31.102.nip.io
+      - VIRTUAL_HOST=prefixes.bio2kg.org
+      - LETSENCRYPT_HOST=prefixes.bio2kg.org
       - VIRTUAL_PORT=3000
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     # ports:

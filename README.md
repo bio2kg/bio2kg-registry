@@ -7,11 +7,11 @@ An API to resolve prefixes and identifiers for biomedical concepts based on the 
 
 Access the Bio2KG prefix resolver:
 
-* Search website: https://prefixes.bio2kg.137.120.31.102.nip.io
+* Search website: https://prefixes.bio2kg.org
 
-* GraphQL API: https://prefixes.bio2kg.137.120.31.102.nip.io/api/graphql
+* GraphQL API: https://prefixes.bio2kg.org/api/graphql
 
-* ElasticSearch API (authentication): https://elastic.prefixes.bio2kg.137.120.31.102.nip.io/_search
+* ElasticSearch API (authentication): https://elastic.prefixes.bio2kg.org/_search
 
 Search with cURL:
 
