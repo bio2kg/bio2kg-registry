@@ -75,7 +75,10 @@ export const HitsGrid = ({ data }: any) => {
               }
               {hit.fields.keywords && 
                 <p><i>Keywords:</i> {hit.fields.keywords.join(', ')} </p>
-              }           
+              }
+              {hit.fields.altPrefix &&
+                 <p><i>Alternative Prefixes:</i>{hit.fields.altPrefix}</p>
+              }
             </EuiText>
           }
         </EuiCard>

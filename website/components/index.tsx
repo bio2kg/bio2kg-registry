@@ -82,6 +82,7 @@ const graphqlQuery = gql`
             id
             fields {
               preferredPrefix
+              altPrefix
               title
               description
               type
