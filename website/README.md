@@ -10,7 +10,7 @@ yarn
 3. Run the app
 
 ```bash
-yarn start
+yarn dev
 ```
 
 ## Run in production

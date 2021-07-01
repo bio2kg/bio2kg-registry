@@ -219,7 +219,7 @@ const Page = () => {
             <EuiFlexGroup>
               <EuiFlexItem>
                 <EuiTitle size="s">
-                  <h2 style={{whiteSpace: "nowrap"}}>Bio2KG Prefixes</h2>
+                  <h2 style={{whiteSpace: "nowrap"}}>Bio2KG Registry</h2>
                 </EuiTitle>
               </EuiFlexItem>
               <EuiFlexItem>

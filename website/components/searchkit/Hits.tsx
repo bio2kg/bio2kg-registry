@@ -13,10 +13,10 @@ import {
   EuiBadge
 } from '@elastic/eui'
 
-export const HitsGrid = ({ data }) => {
+export const HitsGrid = ({ data }: any) => {
   const [showDetails, setShowDetails] = useState({})
 
-  const clickDetails = (hit_id) => {
+  const clickDetails = (hit_id: any) => {
     if (showDetails[hit_id]) {
       setShowDetails({...showDetails, [hit_id] : false})
     } else {
@@ -26,7 +26,7 @@ export const HitsGrid = ({ data }) => {
 
   return (
   <EuiFlexGrid gutterSize="s">
-    {data?.results.hits.items.map((hit) => (
+    {data?.results.hits.items.map((hit: any) => (
       <EuiFlexItem key={hit.id} grow={1}>
         <EuiCard
           textAlign="left"
@@ -81,9 +81,9 @@ export const HitsGrid = ({ data }) => {
   </EuiFlexGrid>
 )}
 
-export const HitsList = ({ data }) => (
+export const HitsList = ({ data }: any) => (
   <>
-    {data?.results.hits.items.map((hit) => (
+    {data?.results.hits.items.map((hit: any) => (
       <EuiFlexGroup gutterSize="xl" key={hit.id}>
         <EuiFlexItem>
           <EuiFlexGroup>
