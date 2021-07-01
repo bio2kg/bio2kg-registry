@@ -108,7 +108,9 @@ const server = new ApolloServer({
 
     type HitFields {
       preferredPrefix: String
-      altPrefix: String
+      altPrefix: [String]
+      providerBaseUri: String
+      alternativeBaseUri: [String]
       title: String
       description: String
       type: String

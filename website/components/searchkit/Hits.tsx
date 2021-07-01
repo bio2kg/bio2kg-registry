@@ -68,16 +68,21 @@ export const HitsGrid = ({ data }: any) => {
         >
           {showDetails[hit.id] && 
             <EuiText size="s">
-              {/* <p></p> */}
-              <i>Organization:</i> {hit.fields.organization}
+              {hit.fields.organization && <p><i>Organization:</i> {hit.fields.organization}</p>}
               {hit.fields.homepage && 
                 <p><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a></p>
               }
               {hit.fields.keywords && 
-                <p><i>Keywords:</i> {hit.fields.keywords.join(', ')} </p>
+                <p><i>Keywords:</i> {hit.fields.keywords.join(', ')}</p>
               }
               {hit.fields.altPrefix &&
-                 <p><i>Alternative Prefixes:</i>{hit.fields.altPrefix}</p>
+                <p><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}</p>
+              }
+              {hit.fields.providerBaseUri && 
+                <p><i>Provider Base URI:</i> {hit.fields.providerBaseUri} </p>
+              }
+              {hit.fields.alternativeBaseUri &&
+                <p><i>Alternative base URIs:</i> {hit.fields.alternativeBaseUri.join(', ')}</p>
               }
             </EuiText>
           }

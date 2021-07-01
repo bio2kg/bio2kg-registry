@@ -83,6 +83,8 @@ const graphqlQuery = gql`
             fields {
               preferredPrefix
               altPrefix
+              providerBaseUri
+              alternativeBaseUri
               title
               description
               type
