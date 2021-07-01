@@ -31,6 +31,7 @@ const searchkitConfig = {
   query: new MultiMatchQuery({
     fields: ['preferredPrefix^5', 'altPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 'description','keywords']
   }),
+  // For a CustomQuery check: https://github.com/bio2kg/bio2kg-registry/blob/265c44806ad45b0d202fdd505a7c9cba8f2a8437/website/pages/api/graphql.tsx#L30
 
   facets: [
     new RefinementSelectFacet({
@@ -71,16 +72,6 @@ const searchkitConfig = {
     //   field: 'released',
     //   identifier: 'released',
     //   label: 'Released'
-    // }),
-    // new RangeFacet({
-    //   field: 'imdbrating',
-    //   identifier: 'imdbrating',
-    //   label: 'IMDB Rating',
-    //   range: {
-    //     interval: 1,
-    //     max: 10,
-    //     min: 1
-    //   }
     // })
   ]
 }
@@ -103,7 +94,7 @@ const server = new ApolloServer({
     gql`
     type Query {
       root: String
-      # getPrefPrefix: String
+      getPrefPrefix: String
     }
 
     type HitFields {
@@ -116,6 +107,8 @@ const server = new ApolloServer({
       type: String
       organization: String
       homepage: String
+      providerHtmlUrl: String
+      exampleId: String
       keywords: [String]
       exampleId: String
       providerHtmlUrl: String
@@ -125,19 +118,23 @@ const server = new ApolloServer({
     type ResultHit implements SKHit {
       id: ID!
       fields: HitFields
-      customField: String
+      exampleUrl: String
     }
   `, ...typeDefs
   ],
   resolvers: withSearchkitResolvers({
     ResultHit: {
-      customField: (parent) => `parent id ${parent.id}`
+      exampleUrl: (parent) => {
+        if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
+          return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
+        }
+      }
     },
-    // Query: {
-    //   getPrefPrefix() {
-    //     return 'pref prefix!';
-    //   }
-    // }
+    Query: {
+      getPrefPrefix() {
+        return 'pref prefix!';
+      }
+    }
   }),
   introspection: true,
   playground: true,

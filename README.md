@@ -100,6 +100,7 @@ Try the GraphQL API with this query:
       items {
         ... on ResultHit {
           id
+          exampleUrl
           fields {
             preferredprefix
             title
