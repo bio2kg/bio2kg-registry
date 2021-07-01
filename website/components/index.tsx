@@ -131,12 +131,12 @@ const Page = () => {
     setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
-  const getIconType = (size) => {
+  const getIconType = (size: number) => {
     return size === api.searchState.page.size ? 'check' : 'empty';
   };
-  const changePageSize = (size) => {
+  const changePageSize = (size: number) => {
     closePopover();
-    api.setPage({ size: size })
+    api.setPage({ size: size, from: 0 })
     api.search()
   };
 
@@ -218,8 +218,8 @@ const Page = () => {
           <EuiPageHeaderSection>
             <EuiFlexGroup>
               <EuiFlexItem>
-                <EuiTitle size="s" style={{whiteSpace: "nowrap"}}>
-                  <h2>Bio2KG Prefixes</h2>
+                <EuiTitle size="s">
+                  <h2 style={{whiteSpace: "nowrap"}}>Bio2KG Prefixes</h2>
                 </EuiTitle>
               </EuiFlexItem>
               <EuiFlexItem>

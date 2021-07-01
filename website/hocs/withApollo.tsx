@@ -6,6 +6,7 @@ export default withApollo(
   ({ initialState, headers }) => {
     const cache = new InMemoryCache({}).restore(initialState || {})
 
+    // @ts-ignore
     if (typeof window !== 'undefined') window.cache = cache
 
     return new ApolloClient({

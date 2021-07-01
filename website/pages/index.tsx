@@ -43,11 +43,11 @@ export default withApollo(withSearchkit(withSearchkitRouting(Search, {
     const matches = location.pathname.match(/type\/(\w+)/)
     const routeState = qsModule.parse(location.search.slice(1), { arrayLimit: 99 })
 
-    if (matches && matches[1] && matches[1] !== "all") {
-      const typeFilters = matches[1].split("_").map((value) => ({ identifier: 'type', value }))
-      if (!routeState.filters) routeState.filters = []
-      routeState.filters = [...routeState.filters, ...typeFilters]
-    }
+    // if (matches && matches[1] && matches[1] !== "all") {
+    //   const typeFilters = matches[1].split("_").map((value) => ({ identifier: 'type', value }))
+    //   if (!routeState.filters) routeState.filters = []
+    //   routeState.filters = [...routeState.filters, ...typeFilters]
+    // }
     return routeState
 
   }
