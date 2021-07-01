@@ -84,6 +84,15 @@ export const HitsGrid = ({ data }: any) => {
               {hit.fields.alternativeBaseUri &&
                 <p><i>Alternative base URIs:</i> {hit.fields.alternativeBaseUri.join(', ')}</p>
               }
+              {hit.fields.exampleId && 
+                <p><i>Example Id:</i> {hit.fields.exampleId}</p>
+              }
+              {hit.fields.regex && 
+                <p><i>Identifier Regex:</i> {hit.fields.regex}</p>
+              }
+              {hit.fields.providerHtmlUrl && 
+                <p><i>Example Url:</i> {hit.fields.providerHtmlUrl}</p>
+              }              
             </EuiText>
           }
         </EuiCard>

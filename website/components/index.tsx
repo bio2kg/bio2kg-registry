@@ -91,6 +91,9 @@ const graphqlQuery = gql`
               keywords
               organization
               homepage
+              exampleId
+              providerHtmlUrl
+              regex
             }
           }
         }

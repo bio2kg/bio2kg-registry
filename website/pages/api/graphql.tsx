@@ -117,7 +117,9 @@ const server = new ApolloServer({
       organization: String
       homepage: String
       keywords: [String]
-      # updates: String
+      exampleId: String
+      providerHtmlUrl: String
+      regex: String
     }
 
     type ResultHit implements SKHit {
