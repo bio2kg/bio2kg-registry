@@ -37,7 +37,7 @@ export const HitsGrid = ({ data }: any) => {
               </EuiTitle>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiBadge color="hollow">{hit.fields.preferredprefix}</EuiBadge>
+              <EuiBadge color="hollow">{hit.fields.preferredPrefix}</EuiBadge>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButtonEmpty
@@ -75,7 +75,7 @@ export const HitsGrid = ({ data }: any) => {
               }
               {hit.fields.keywords && 
                 <p><i>Keywords:</i> {hit.fields.keywords.join(', ')} </p>
-              }
+              }           
             </EuiText>
           }
         </EuiCard>
