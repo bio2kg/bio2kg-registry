@@ -92,6 +92,14 @@ lsr_dict = json.loads(lsr_json)
 elastic_json = []
 for key, entry in lsr_dict.items():
     entry = entry[0]
+    if 'altPrefix' in entry.keys(): 
+        entry['altPrefix'] = str(entry['altPrefix']).split(',')
+        for i in range(len(entry['altPrefix'])):
+            entry['altPrefix'][i] = entry['altPrefix'][i].strip()    
+    if 'alternativeBaseUri' in entry.keys(): 
+        entry['alternativeBaseUri'] = str(entry['alternativeBaseUri']).split(',')
+        for i in range(len(entry['alternativeBaseUri'])):
+            entry['alternativeBaseUri'][i] = entry['alternativeBaseUri'][i].strip()                
     if 'pubmedId' in entry.keys(): 
         entry['pubmedId'] = str(entry['pubmedId']).split(',')
         for i in range(len(entry['pubmedId'])):
