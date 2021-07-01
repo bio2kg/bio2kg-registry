@@ -266,7 +266,7 @@ const Page = () => {
                   </EuiButton>
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
-                  <EuiButton href="https://github.com/bio2kg/bio2kg-prefixes"
+                  <EuiButton href="https://github.com/bio2kg/bio2kg-registry"
                       size="s" iconType="editorCodeBlock" target="_blank">
                     Source
                   </EuiButton>

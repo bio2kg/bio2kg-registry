@@ -16,7 +16,7 @@ Access the Bio2KG prefix resolver:
 Search with cURL:
 
 ```bash
-curl -XGET --header 'Content-Type: application/json' https://bio2kg-prefixes.137.120.31.102.nip.io/prefixes/_search -d '{
+curl -XGET --header 'Content-Type: application/json' https://elastic.registry.bio2kg.org/prefixes/_search -d '{
       "query" : {
         "match" : { "Preferred Prefix": "bio" }
     }
