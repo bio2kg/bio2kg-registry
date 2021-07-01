@@ -81,7 +81,7 @@ const graphqlQuery = gql`
           ... on ResultHit {
             id
             fields {
-              preferredprefix
+              preferredPrefix
               title
               description
               type

@@ -37,7 +37,7 @@ export const HitsGrid = ({ data }: any) => {
               </EuiTitle>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiBadge color="hollow">{hit.fields.preferredprefix}</EuiBadge>
+              <EuiBadge color="hollow">{hit.fields.preferredPrefix}</EuiBadge>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButtonEmpty
@@ -98,7 +98,7 @@ export const HitsList = ({ data }: any) => (
                 <h6>{hit.fields.title}</h6>
               </EuiTitle>
               <EuiText grow={false}>
-                <p>{hit.fields.preferredprefix}</p>
+                <p>{hit.fields.preferredPrefix}</p>
               </EuiText>
               <EuiText grow={false}>
                 <p>{hit.fields.description}</p>
