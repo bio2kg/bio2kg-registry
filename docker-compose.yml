@@ -33,9 +33,9 @@ services:
     # ports: 
     #   - 9200:9200
     volumes:
-      - /data/bio2kg/prefixes/elasticsearch:/usr/share/elasticsearch/data
+      - /data/bio2kg/registry/elasticsearch:/usr/share/elasticsearch/data
 
-  nodejs-prefixes-website:
+  nodejs-website:
     build: ./website
     container_name: bio2kg-registry-website
     environment:   
