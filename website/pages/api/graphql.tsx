@@ -22,9 +22,8 @@ const searchkitConfig = {
     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates"]
   },
   sortOptions: [
-    // { id: 'preferredPrefix', label: "Preferred Prefix", field: [{"preferredPrefix": "desc"}], defaultOption: true},
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
-    // { id: 'released', label: "Released", field: [{"released": "desc"}]},
+    // { id: 'preferredPrefix', label: "Preferred Prefix", field: [{"preferredPrefix": "desc"}]},
   ],
   // Check example: https://github.com/searchkit/searchkit/issues/788
   // cf. https://searchkit.co/docs/reference/schema search for wildcard
@@ -104,6 +103,7 @@ const server = new ApolloServer({
     gql`
     type Query {
       root: String
+      # getPrefPrefix: String
     }
 
     type HitFields {
@@ -127,7 +127,12 @@ const server = new ApolloServer({
   resolvers: withSearchkitResolvers({
     ResultHit: {
       customField: (parent) => `parent id ${parent.id}`
-    }
+    },
+    // Query: {
+    //   getPrefPrefix() {
+    //     return 'pref prefix!';
+    //   }
+    // }
   }),
   introspection: true,
   playground: true,
