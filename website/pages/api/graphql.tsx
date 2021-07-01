@@ -28,26 +28,11 @@ const searchkitConfig = {
   ],
   // Check example: https://github.com/searchkit/searchkit/issues/788
   // cf. https://searchkit.co/docs/reference/schema search for wildcard
-  query: new CustomQuery({ 
-    queryFn: (query, qm) => {
-      return {
-        bool: {
-          must: [{
-        // query: {
-            query_string: {
-                query: '*' + query + '*',
-                fields: ["title", "description","preferredPrefix", "providerBaseUri", "organization"]
-            }
-          }]
-        }
-      }
-    }
+
+  query: new MultiMatchQuery({
+    fields: ['preferredPrefix^5', 'altPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 'description','keywords']
   }),
 
-  // query: new MultiMatchQuery({ 
-  //   fields: ['preferredPrefix^3','alt-prefix','providerbaseuri','alternativebaseuri','abbreviation','title^2','description','pubmedid','organization','homepage', 'keywords'],
-  //   // 'preferredPrefix^4', 'alternatePrefix^3', 'title^2', '_all^1'
-  // }),
   facets: [
     new RefinementSelectFacet({
       field: 'type.keyword',
