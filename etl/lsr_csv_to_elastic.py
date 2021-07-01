@@ -13,9 +13,9 @@ es = Elasticsearch(
     # ['https://elastic.registry.bio2kg.org'],
     # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'],
     # ['https://elastic.prefixcommons.org'],
-    # ['http://localhost:9200'],
-    http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')),
-    port=443,
+    ['http://elasticsearch:9200'],
+    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')),
+    # port=443,
 )
 
 # Build URL to download CSV from google docs
@@ -30,15 +30,57 @@ df = pd.read_csv('data/data.csv')
 ## Optional: check for duplicate values in 1st col, use .any() for boolean
 # print(df['Preferred Prefix'].duplicated().sort_values())
 
-# Remove space and lowercase the columns names
-for column in df:
+col_mapping = {
+    'Preferred Prefix': 'preferredPrefix',
+    'Alt-prefix': 'altPrefix',
+    'Provider Base URI': 'providerBaseUri',
+    'Alternative Base URI': 'alternativeBaseUri',
+    'MIRIAM': 'miriam',
+    'BiodbcoreID': 'biodbCoreId',
+    'BioPortal Ontology ID': 'bioportalOntologyId',
+    'thedatahub': 'thedatahub',
+    'Abbreviation': 'abbreviation',
+    'Title': 'title',
+    'Description': 'description',
+    'PubMed ID': 'pubmedId',
+    'Organization': 'organization',
+    'Type (warehouse, dataset or terminology)': 'type',
+    'Keywords': 'keywords',
+    'Homepage': 'homepage',
+    'homepage still available?': 'homepageStillAvailable',
+    'sub-namespace in dataset': 'subNamespaceInDataset',
+    'part of collection': 'partOfCollection',
+    'License URL': 'licenseUrl',
+    'License Text': 'licenseText',
+    'Rights': 'rights',
+    'ID regex': 'regex',
+    'ExampleID': 'exampleId',
+    'Provider HTML URL': 'providerHtmlUrl',
+    'MIRIAM checked': 'miriamChecked',
+    'MIRIAM curator notes': 'miriamCuratorNotes',
+    'MIRIAM coverage': 'miriamCoverage',
+    'updates': 'updates',
+}
+# Preferred Prefix
+# Alt-prefix	Provider Base URI	Alternative Base URI	MIRIAM	BiodbcoreID	BioPortal Ontology ID	thedatahub	Abbreviation	Title	Description	PubMed ID	Organization	Type (warehouse, dataset or terminology)	Keywords	Homepage	homepage still available?	sub-namespace in dataset	part of collection	License URL	License Text	Rights	ID regex	ExampleID	Provider HTML URL		MIRIAM checked	MIRIAM curator notes	MIRIAM coverage	updates
+
+for key, value in col_mapping.items():
     df.rename({
-        column: column.lower()
-            .replace(' ', '')
-            .replace('type(warehouse,datasetorterminology)', 'type')
-            .replace('?', '')
-            .replace('-', '')
+        key: value
     }, axis=1, inplace=True)
+
+
+# for column in df:
+#     # Clean up col labels, then camelcase
+#     clean_column = column.replace(' (warehouse, dataset or terminology)', '').replace('?', '').replace('-', ' ')
+#     split_col = clean_column.split(' ')
+#     camelcase_col = "".join(word[0].upper() + word[1:].lower() for word in split_col)
+#     camelcase_col = camelcase_col[0].lower() + camelcase_col[1:]
+#     print(camelcase_col)
+
+#     df.rename({
+#         column: camelcase_col
+#     }, axis=1, inplace=True)
 
 # Convert to JSON and drop null values
 lsr_json = df.apply(lambda x: [x.dropna()], axis=1).to_json()
@@ -47,10 +89,10 @@ lsr_dict = json.loads(lsr_json)
 elastic_json = []
 for key, entry in lsr_dict.items():
     entry = entry[0]
-    if 'pubmedid' in entry.keys(): 
-        entry['pubmedid'] = str(entry['pubmedid']).split(',')
-        for i in range(len(entry['pubmedid'])):
-            entry['pubmedid'][i] = entry['pubmedid'][i].strip()
+    if 'pubmedId' in entry.keys(): 
+        entry['pubmedId'] = str(entry['pubmedId']).split(',')
+        for i in range(len(entry['pubmedId'])):
+            entry['pubmedId'][i] = entry['pubmedId'][i].strip()
     if 'keywords' in entry.keys(): 
         entry['keywords'] = str(entry['keywords']).split(',')
         for i in range(len(entry['keywords'])):
@@ -59,7 +101,7 @@ for key, entry in lsr_dict.items():
     elastic_json.append({
         "_index": "prefixes",
         "_type": "item",
-        "_id": entry['preferredprefix'],
+        "_id": entry['preferredPrefix'],
         "_source": entry
     })
 

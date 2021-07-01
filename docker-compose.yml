@@ -36,12 +36,16 @@ services:
       - /data/bio2kg/registry/elasticsearch:/usr/share/elasticsearch/data
 
   nodejs-website:
-    build: ./website
+    image: python3.8
     container_name: bio2kg-registry-website
-    environment:   
-      - VIRTUAL_HOST=registry.bio2kg.org
-      - LETSENCRYPT_HOST=registry.bio2kg.org
-      - VIRTUAL_PORT=3000
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    restart: unless-stopped
+    command: "pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py"
+    volumes:
+      - ./etl:/etl
+    # environment:   
+    #   - VIRTUAL_HOST=registry.bio2kg.org
+    #   - LETSENCRYPT_HOST=registry.bio2kg.org
+    #   - VIRTUAL_PORT=3000
+    #   - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     # ports:
     #   - 3000:3000

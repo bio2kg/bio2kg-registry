@@ -138,7 +138,6 @@ const server = new ApolloServer({
       fields: HitFields
       customField: String
     }
-
   `, ...typeDefs
   ],
   resolvers: withSearchkitResolvers({
