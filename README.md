@@ -106,3 +106,6 @@ Try the GraphQL API with this query:
   }
 }
 ```
+
+> Checkout the readme in the `website` folder to run the website in development.
+

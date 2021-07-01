@@ -29,7 +29,6 @@ export const HitsGrid = ({ data }) => {
     {data?.results.hits.items.map((hit) => (
       <EuiFlexItem key={hit.id} grow={1}>
         <EuiCard
-          grow={true}
           textAlign="left"
           title={<EuiFlexGroup>
             <EuiFlexItem grow={false} >

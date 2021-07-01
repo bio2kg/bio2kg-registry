@@ -20,3 +20,4 @@ venv/
 # For the website
 node_modules/
 .next/
+next-env.d.ts
