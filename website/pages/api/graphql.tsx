@@ -12,9 +12,9 @@ import {
 } from '@searchkit/schema'
 
 const searchkitConfig = {
-  host: 'https://elastic.prefixes.bio2kg.org',
+  host: 'https://elastic.registry.bio2kg.org',
   // If enable ElasticSearch built-in security:
-  // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elastic.prefixes.bio2kg.org',
+  // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elastic.registry.bio2kg.org',
   // host: 'https://elastic:' + process.env.ELASTIC_PASSWORD + '@elasticsearch:9200',
   // host: 'https://elasticsearch:9200',
   index: 'prefixes',
