@@ -103,7 +103,7 @@ for key, entry in lsr_dict.items():
     if 'pubmedId' in entry.keys(): 
         entry['pubmedId'] = str(entry['pubmedId']).split(',')
         for i in range(len(entry['pubmedId'])):
-            entry['pubmedId'][i] = entry['pubmedId'][i].strip()
+            entry['pubmedId'][i] = str(entry['pubmedId'][i].strip())
     if 'keywords' in entry.keys(): 
         entry['keywords'] = str(entry['keywords']).split(',')
         for i in range(len(entry['keywords'])):

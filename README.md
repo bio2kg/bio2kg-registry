@@ -95,14 +95,14 @@ Try the GraphQL API with this query:
 
 ```gql
 {
-  results {
+  results (query: "drugbank") {
     hits {
       items {
         ... on ResultHit {
           id
           exampleUrl
           fields {
-            preferredprefix
+            preferredPrefix
             title
             type
             keywords
@@ -115,4 +115,29 @@ Try the GraphQL API with this query:
 ```
 
 > Checkout the readme in the `website` folder to run the website in development.
+
+Try query options:
+
+```gql
+{
+  results ( 
+  		filters:[{identifier:"preferredPrefix",value:"3did"}, {identifier:"altPrefix",value:"3did"}]
+  		queryOptions: { fields: ["title^2", "description^1"]}) {
+    hits {
+      items {
+        ... on ResultHit {
+          id
+          exampleUrl
+          fields {
+            preferredPrefix
+            title
+            type
+            keywords
+          }
+        }
+      }
+    }
+  }
+}
+```
 
