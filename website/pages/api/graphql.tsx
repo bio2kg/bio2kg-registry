@@ -110,8 +110,6 @@ const server = new ApolloServer({
       providerHtmlUrl: String
       exampleId: String
       keywords: [String]
-      exampleId: String
-      providerHtmlUrl: String
       regex: String
     }
 
