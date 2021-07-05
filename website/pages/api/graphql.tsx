@@ -38,7 +38,7 @@ const searchkitConfig = {
       field: 'type.keyword',
       identifier: 'type',
       label: 'Type',
-      size: 5,
+      size: 10,
       multipleSelect: true
     }),
 
@@ -46,15 +46,14 @@ const searchkitConfig = {
       field: 'keywords.keyword',
       identifier: 'keywords',
       label: 'Keywords',
-      size: 8,
-      multipleSelect: true
+      size: 10
     }),
 
     new RefinementSelectFacet({
       field: 'organization.keyword',
       identifier: 'organization',
       label: 'Organization',
-      size: 8,
+      size: 10,
       multipleSelect: true
     }),
 
@@ -144,3 +143,4 @@ const server = new ApolloServer({
 const handler = server.createHandler({ path: '/api/graphql' })
 
 export default cors()((req, res) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
+
