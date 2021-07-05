@@ -80,6 +80,7 @@ const graphqlQuery = gql`
         items {
           ... on ResultHit {
             id
+            exampleUrl
             fields {
               preferredPrefix
               altPrefix

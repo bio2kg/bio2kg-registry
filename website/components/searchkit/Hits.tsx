@@ -67,32 +67,38 @@ export const HitsGrid = ({ data }: any) => {
           // }
         >
           {showDetails[hit.id] && 
-            <EuiText size="s">
-              {hit.fields.organization && <p><i>Organization:</i> {hit.fields.organization}</p>}
-              {hit.fields.homepage && 
-                <p><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a></p>
-              }
-              {hit.fields.keywords && 
-                <p><i>Keywords:</i> {hit.fields.keywords.join(', ')}</p>
-              }
-              {hit.fields.altPrefix &&
-                <p><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}</p>
-              }
-              {hit.fields.providerBaseUri && 
-                <p><i>Provider Base URI:</i> {hit.fields.providerBaseUri} </p>
-              }
-              {hit.fields.alternativeBaseUri &&
-                <p><i>Alternative base URIs:</i> {hit.fields.alternativeBaseUri.join(', ')}</p>
-              }
-              {hit.fields.exampleId && 
-                <p><i>Example Id:</i> {hit.fields.exampleId}</p>
-              }
-              {hit.fields.regex && 
-                <p><i>Identifier Regex:</i> {hit.fields.regex}</p>
-              }
-              {hit.fields.providerHtmlUrl && 
-                <p><i>Example Url:</i> {hit.fields.providerHtmlUrl}</p>
-              }              
+            <EuiText size="s"> 
+                {hit.fields.organization && 
+                  <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
+                }
+                {hit.fields.homepage && 
+                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
+                }
+                {hit.fields.keywords && 
+                  <div className="eui-displayInline"><i>Keywords:</i> {hit.fields.keywords.join(', ')}<br/></div>
+                }
+                {hit.fields.preferredPrefix &&
+                  <div className="eui-displayInline"><i>Preferred prefix:</i> {hit.fields.preferredPrefix}<br/></div>
+                }                
+                {hit.fields.altPrefix &&
+                  <div className="eui-displayInline"><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}<br/></div>
+                }
+                {hit.fields.providerBaseUri && 
+                  <div className="eui-displayInline"><i>Provider Base URI:</i> {hit.fields.providerBaseUri}<br/></div>
+                }
+                {hit.fields.alternativeBaseUri &&
+                  <div className="eui-displayInline"><i>Alternative base URIs:</i> {hit.fields.alternativeBaseUri.join(', ')}<br/></div>
+                }
+                {hit.fields.regex && 
+                  <div className="eui-displayInline"><i>Identifier Regex:</i> {hit.fields.regex}<br/></div>
+                }
+                {hit.fields.exampleId && hit.exampleUrl &&
+                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
+                }
+                {hit.fields.providerHtmlUrl && 
+                  <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
+                }
+
             </EuiText>
           }
         </EuiCard>
