@@ -70,11 +70,6 @@ export const HitsGrid = ({ data }: any) => {
           // }
         >
           {showDetails[hit.id] && 
-            //<>
-            //{hit.highlight && 
-            //  <div dangerouslySetInnerHTML={{ __html: hit.highlight.description[0]}}></div>
-            //}
-            
             <EuiText size="s">
                 {hit.fields.organization && 
                   <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
@@ -108,7 +103,6 @@ export const HitsGrid = ({ data }: any) => {
                 }
 
             </EuiText>
-            //</>
           }
         </EuiCard>
       </EuiFlexItem>
