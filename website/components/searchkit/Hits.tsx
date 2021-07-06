@@ -12,6 +12,7 @@ import {
   EuiButtonEmpty,
   EuiBadge
 } from '@elastic/eui'
+import { EuiHighlightProps } from '@elastic/eui/src/components/highlight/highlight'
 
 export const HitsGrid = ({ data }: any) => {
   const [showDetails, setShowDetails] = useState({})
@@ -67,7 +68,12 @@ export const HitsGrid = ({ data }: any) => {
           // }
         >
           {showDetails[hit.id] && 
-            <EuiText size="s"> 
+            //<>
+            //{hit.highlight && 
+            //  <div dangerouslySetInnerHTML={{ __html: hit.highlight.description[0]}}></div>
+            //}
+            
+            <EuiText size="s">
                 {hit.fields.organization && 
                   <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
                 }
@@ -100,6 +106,7 @@ export const HitsGrid = ({ data }: any) => {
                 }
 
             </EuiText>
+            //</>
           }
         </EuiCard>
       </EuiFlexItem>

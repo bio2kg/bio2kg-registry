@@ -19,11 +19,21 @@ const searchkitConfig = {
   // host: 'https://elasticsearch:9200',
   index: 'prefixes',
   hits: {
-    fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates"]
+    fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates"],
+    highlightedFields: [
+      'title',
+      {
+        field: 'description',
+        config: { 
+          number_of_fragments: 0,
+          pre_tags: ['<b>'], 
+          post_tags: ['</b>'] 
+        }
+      }
+    ]
   },
   sortOptions: [
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
-    // { id: 'preferredPrefix', label: "Preferred Prefix", field: [{"preferredPrefix": "desc"}]},
   ],
   // Check example: https://github.com/searchkit/searchkit/issues/788
   // cf. https://searchkit.co/docs/reference/schema search for wildcard
@@ -116,11 +126,21 @@ const server = new ApolloServer({
       id: ID!
       fields: HitFields
       exampleUrl: String
+      highlight: Highlight
+    }
+
+    type Highlight {
+      title: [String]
+      description: [String] 
     }
   `, ...typeDefs
   ],
   resolvers: withSearchkitResolvers({
     ResultHit: {
+      highlight: (hit: any) => {
+        //var t = hit.highlight.description.join('')
+        return hit.highlight
+      },
       exampleUrl: (parent) => {
         if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
           return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
