@@ -52,7 +52,9 @@ export const HitsGrid = ({ data }: any) => {
               </EuiButtonEmpty>
             </EuiFlexItem>
           </EuiFlexGroup>}
-          description={hit.fields.description}
+          description={
+            (hit.highlight && hit.highlight.description) ? <div dangerouslySetInnerHTML={{ __html: hit.highlight.description[0]}}></div> : hit.fields.description
+          }
           // footer={
           //   <EuiFlexGroup justifyContent="flexStart">
           //     <EuiFlexItem grow={false}>
