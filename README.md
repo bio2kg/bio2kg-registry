@@ -1,11 +1,13 @@
-# Bio2KG prefixes resolver API
+# Bio2KG Registry and APIs
 
-An API to resolve prefixes and identifiers for biomedical concepts based on the Life Science Registry.
+The Bio2KG Registry is a repository of dataset descriptions, including preferred CURIE prefixes, base URIs, identifier regex patterns and HTML resolvers.
+
+The registry is constructed from a manually curated spreadsheet.
 
 1. Extract data from the [Life Science Registry spreadsheet on Google docs](https://docs.google.com/spreadsheets/d/1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg/edit#gid=0)
 2. Load to ElasticSearch (deployed with the `docker-compose.yml` file)
 
-Access the Bio2KG prefix resolver:
+Access the Bio2KG registry web:
 
 * Search website: https://registry.bio2kg.org
 
@@ -101,9 +103,14 @@ Try the GraphQL API with this query:
         ... on ResultHit {
           id
           exampleUrl
+          highlight {
+            title
+            description
+          }
           fields {
             preferredPrefix
             title
+            description
             type
             keywords
           }
@@ -121,8 +128,8 @@ Try query options:
 ```gql
 {
   results ( 
-  		filters:[{identifier:"preferredPrefix",value:"3did"}, {identifier:"altPrefix",value:"3did"}]
-  		queryOptions: { fields: ["title^2", "description^1"]}) {
+  		filters:[{identifier:"preferredPrefix",value:"3did"}, {identifier:"altPrefix",value:"3did"}]) 
+  {
     hits {
       items {
         ... on ResultHit {
