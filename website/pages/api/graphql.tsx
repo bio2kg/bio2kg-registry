@@ -19,7 +19,12 @@ const searchkitConfig = {
   // host: 'https://elasticsearch:9200',
   index: 'prefixes',
   hits: {
-    fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates"],
+    fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
+      "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
+      "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , 
+      "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , 
+      "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , 
+      "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "@type", "@context"],
     highlightedFields: [
       'title',
       {
@@ -126,6 +131,8 @@ const server = new ApolloServer({
       id: ID!
       fields: HitFields
       exampleUrl: String
+      rdfType: String
+      context: String
       highlight: Highlight
     }
 
@@ -144,6 +151,16 @@ const server = new ApolloServer({
       exampleUrl: (parent) => {
         if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
           return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
+        }
+      },
+      rdfType: (parent) => {
+        if (parent.fields['@type']) {
+          return parent.fields['@type']
+        }
+      },
+      context: (parent) => {
+        if (parent.fields['@context']) {
+          return JSON.stringify(parent.fields['@context'])
         }
       }
     },
