@@ -11,24 +11,27 @@ googledocs_id = '1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg'
 sheet = 'resource'
 
 es = Elasticsearch(
-    ['http://elasticsearch:9200'],
+    ['elasticsearch:9200'],
     # ['https://elastic.registry.bio2kg.org'],
     # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'],
     # ['https://elastic.prefixcommons.org'],
-    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')), port=443,
+    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')), 
+    # port=9200,
+    timeout=30, max_retries=100, retry_on_timeout=True
 )
 
 # TODO: add check for ElasticSearch up?
-for i in range(100):
-    try:
-        es.cluster.health(wait_for_status='green')
-        print('Connected to ElasticSearch ⚡️')
-        break
-    except ConnectionError:
-        print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
-        time.sleep(5)
-else:
-    raise("Elasticsearch failed to start.")
+# for i in range(100):
+#     try:
+#         es.cluster.health(wait_for_status='yellow')
+#         print('Connected to ElasticSearch ⚡️')
+#         break
+#     # except ConnectionError:
+#     except:
+#         print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
+#         time.sleep(5)
+# else:
+#     raise("Elasticsearch failed to start.")
 
 
 # Build URL to download CSV from google docs
