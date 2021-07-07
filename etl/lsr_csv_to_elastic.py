@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 import json
+import time
 
 # PHP script: https://github.com/prefixcommons/data-ingest/blob/master/code/LSR2json.php
 
@@ -14,9 +15,21 @@ es = Elasticsearch(
     # ['https://elastic.registry.bio2kg.org'],
     # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'],
     # ['https://elastic.prefixcommons.org'],
-    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')),
-    # port=443,
+    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')), port=443,
 )
+
+# TODO: add check for ElasticSearch up?
+for i in range(100):
+    try:
+        es.cluster.health(wait_for_status='green')
+        print('Connected to ElasticSearch ⚡️')
+        break
+    except ConnectionError:
+        print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
+        time.sleep(5)
+else:
+    raise("Elasticsearch failed to start.")
+
 
 # Build URL to download CSV from google docs
 googledocs_url = 'https://docs.google.com/spreadsheets/d/' + googledocs_id + '/gviz/tq?tqx=out:csv&sheet=' + sheet
@@ -31,58 +44,136 @@ df = pd.read_csv(googledocs_url)
 # print(df['Preferred Prefix'].duplicated().sort_values())
 
 col_mapping = {
-    'Preferred Prefix': 'preferredPrefix',
-    'Alt-prefix': 'altPrefix',
-    'Provider Base URI': 'providerBaseUri',
-    'Alternative Base URI': 'alternativeBaseUri',
-    'MIRIAM': 'miriam',
-    'BiodbcoreID': 'biodbCoreId',
-    'BioPortal Ontology ID': 'bioportalOntologyId',
-    'thedatahub': 'thedatahub',
-    'Abbreviation': 'abbreviation',
-    'Title': 'title',
-    'Description': 'description',
-    'PubMed ID': 'pubmedId',
-    'Organization': 'organization',
-    'Type (warehouse, dataset or terminology)': 'type',
-    'Keywords': 'keywords',
-    'Homepage': 'homepage',
-    'homepage still available?': 'homepageStillAvailable',
-    'sub-namespace in dataset': 'subNamespaceInDataset',
-    'part of collection': 'partOfCollection',
-    'License URL': 'licenseUrl',
-    'License Text': 'licenseText',
-    'Rights': 'rights',
-    'ID regex': 'regex',
-    'ExampleID': 'exampleId',
-    'Provider HTML URL': 'providerHtmlUrl',
-    'MIRIAM checked': 'miriamChecked',
-    'MIRIAM curator notes': 'miriamCuratorNotes',
-    'MIRIAM coverage': 'miriamCoverage',
-    'updates': 'updates',
+    'Preferred Prefix': { 
+        'label': 'preferredPrefix',
+        'uri': 'http://purl.org/vocab/vann/preferredNamespacePrefix'
+    },
+    'Alt-prefix': { 
+        'label': 'altPrefix',
+        'uri': ''
+    },
+    'Provider Base URI': { 
+        'label': 'providerBaseUri',
+        'uri': ''
+    },
+    'Alternative Base URI': { 
+        'label': 'alternativeBaseUri',
+        'uri': ''
+    },
+    'MIRIAM': { 
+        'label': 'miriam',
+        'uri': ''
+    },
+    'BiodbcoreID': { 
+        'label': 'biodbCoreId',
+        'uri': ''
+    },
+    'BioPortal Ontology ID': { 
+        'label': 'bioportalOntologyId',
+        'uri': ''
+    },
+    'thedatahub': { 
+        'label': 'thedatahub',
+        'uri': ''
+    },
+    'Abbreviation': { 
+        'label': 'abbreviation',
+        'uri': 'http://purl.org/linguistics/gold/abbreviation'
+    },
+    'Title': { 
+        'label': 'title',
+        'uri': 'http://purl.org/dc/elements/1.1/title'
+    },
+    'Description': { 
+        'label': 'description',
+        'uri': 'http://purl.org/dc/terms/description'
+    },
+    'PubMed ID': { 
+        'label': 'pubmedId',
+        'uri': ''
+    },
+    'Organization': { 
+        'label': 'organization',
+        'uri': 'http://purl.org/dc/terms/publisher'
+    },
+    'Type (warehouse, dataset or terminology)': { 
+        'label': 'type',
+        'uri': ''
+    },
+    'Keywords': { 
+        'label': 'keywords',
+        'uri': ''
+    },
+    'Homepage': { 
+        'label': 'homepage',
+        'uri': 'http://xmlns.com/foaf/0.1/homepage'
+    },
+    'homepage still available?': { 
+        'label': 'homepageStillAvailable',
+        'uri': ''
+    },
+    'sub-namespace in dataset': { 
+        'label': 'subNamespaceInDataset',
+        'uri': ''
+    },
+    'part of collection': { 
+        'label': 'partOfCollection',
+        'uri': ''
+    },
+    'License URL': { 
+        'label': 'licenseUrl',
+        'uri': 'http://purl.org/dc/terms/license'
+    },
+    'License Text': { 
+        'label': 'licenseText',
+        'uri': ''
+    },
+    'Rights': { 
+        'label': 'rights',
+        'uri': ''
+    },
+    'ID regex': { 
+        'label': 'regex',
+        'uri': ''
+    },
+    'ExampleID': { 
+        'label': 'exampleId',
+        'uri': ''
+    },
+    'Provider HTML URL': { 
+        'label': 'providerHtmlUrl',
+        'uri': ''
+    },
+    'MIRIAM checked': { 
+        'label': 'miriamChecked',
+        'uri': ''
+    },
+    'MIRIAM curator notes': { 
+        'label': 'miriamCuratorNotes',
+        'uri': ''
+    },
+    'MIRIAM coverage': { 
+        'label': 'miriamCoverage',
+        'uri': ''
+    },
+    'updates': { 
+        'label': 'updates',
+        'uri': ''
+    },
 }
 # Preferred Prefix
 # Alt-prefix	Provider Base URI	Alternative Base URI	MIRIAM	BiodbcoreID	BioPortal Ontology ID	thedatahub	Abbreviation	Title	Description	PubMed ID	Organization	Type (warehouse, dataset or terminology)	Keywords	Homepage	homepage still available?	sub-namespace in dataset	part of collection	License URL	License Text	Rights	ID regex	ExampleID	Provider HTML URL		MIRIAM checked	MIRIAM curator notes	MIRIAM coverage	updates
-
+context = {}
 for key, value in col_mapping.items():
     df.rename({
-        key: value
+        key: value['label']
     }, axis=1, inplace=True)
+    if value['uri']:
+        context[value['label']] = value['uri']
+
 
 ## Check the list of columns:
 # print('" , "'.join(list(col_mapping.values())))
-
-# for column in df:
-#     # Clean up col labels, then camelcase
-#     clean_column = column.replace(' (warehouse, dataset or terminology)', '').replace('?', '').replace('-', ' ')
-#     split_col = clean_column.split(' ')
-#     camelcase_col = "".join(word[0].upper() + word[1:].lower() for word in split_col)
-#     camelcase_col = camelcase_col[0].lower() + camelcase_col[1:]
-#     print(camelcase_col)
-
-#     df.rename({
-#         column: camelcase_col
-#     }, axis=1, inplace=True)
 
 # Convert to JSON and drop null values
 lsr_json = df.apply(lambda x: [x.dropna()], axis=1).to_json()
@@ -109,6 +200,10 @@ for key, entry in lsr_dict.items():
         for i in range(len(entry['keywords'])):
             entry['keywords'][i] = entry['keywords'][i].strip()
 
+    # TODO: add relevant fields to make it JSON-LD
+    entry['@type'] = 'http://semanticscience.org/resource/namespace'
+    entry['@context'] = context
+
     elastic_json.append({
         "_index": "prefixes",
         "_type": "item",
@@ -123,4 +218,12 @@ print('Loading ' + str(len(elastic_json)) + ' prefixes in ElasticSearch')
 load_results = helpers.bulk(es, elastic_json)
 print(load_results)
 
+
+# g = Graph()
+
+# for key, entry in lsr_dict.items():
+#     g.add()
+
+
+# app = SparqlEndpoint(g)
 
