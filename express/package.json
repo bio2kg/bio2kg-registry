@@ -1,0 +1,27 @@
+{
+  "name": "with-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "homepage": ".",
+  "scripts": {
+    "dev": "concurrently \"NODE_ENV=development node server\" \" cd searchkit-react && PORT=3000 yarn start\"",
+    "build": "cd searchkit-react && yarn build && cd .. && cp -R searchkit-react/build/* public/",
+    "serve": "node server"
+  },
+  "dependencies": {
+    "@searchkit/schema": "^3.0.0-canary.39",
+    "apollo-server-express": "^2.19.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "graphql": "^15.5.1",
+    "helmet": "^4.6.0",
+    "lodash": "^4.17.21",
+    "sofa-api": "^0.10.2",
+    "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "serve": "^12.0.0"
+  }
+}

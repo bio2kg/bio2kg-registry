@@ -6,7 +6,7 @@ const Search = dynamic(() => import('../components/index'), { ssr: false })
 
 export default withApollo(withSearchkit(withSearchkitRouting(Search, {
   createURL: ({ qsModule, location, routeState }) => {
-    let filters
+    let filters: any
     let typeCategoryURL = "all"
     if (routeState.filters) {
       filters = (routeState.filters).reduce((sum, filter) => {

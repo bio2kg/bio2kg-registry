@@ -1,6 +1,7 @@
 
 elasticsearch/.htpasswd
 data/
+build/
 
 # For python
 __pycache__/

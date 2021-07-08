@@ -1,0 +1,466 @@
+openapi: 3.0.0
+info:
+  title: Bio2KG Registry API
+  version: 3.0.0
+paths:
+  /api/root:
+    get:
+      operationId: rootQuery
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/get-pref-prefix:
+    get:
+      operationId: getPrefPrefixQuery
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/results:
+    get:
+      operationId: resultsQuery
+      parameters:
+        - in: query
+          name: query
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: queryOptions
+          required: false
+          schema:
+            $ref: '#/components/schemas/SKQueryOptions'
+        - in: query
+          name: filters
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/SKFiltersSet'
+        - in: query
+          name: page
+          required: false
+          schema:
+            $ref: '#/components/schemas/SKPageInput'
+        - in: query
+          name: resultsHitsPage
+          required: false
+          schema:
+            $ref: '#/components/schemas/SKPageInput'
+        - in: query
+          name: resultsHitsSortBy
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: resultsFacetIdentifier
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: resultsFacetQuery
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: resultsFacetSize
+          required: false
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultSet'
+components:
+  schemas:
+    Query:
+      type: object
+      properties:
+        root:
+          type: string
+        getPrefPrefix:
+          type: string
+        results:
+          $ref: '#/components/schemas/ResultSet'
+    HitFields:
+      type: object
+      properties:
+        preferredPrefix:
+          type: string
+        altPrefix:
+          type: array
+          items:
+            type: string
+        providerBaseUri:
+          type: string
+        alternativeBaseUri:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        organization:
+          type: string
+        homepage:
+          type: string
+        providerHtmlUrl:
+          type: string
+        exampleId:
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+        regex:
+          type: string
+    ResultHit:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        fields:
+          $ref: '#/components/schemas/HitFields'
+        exampleUrl:
+          type: string
+        rdfType:
+          type: string
+        context:
+          type: string
+        highlight:
+          $ref: '#/components/schemas/Highlight'
+    Highlight:
+      type: object
+      properties:
+        title:
+          type: array
+          items:
+            type: string
+        description:
+          type: array
+          items:
+            type: string
+    SKSortOption:
+      type: object
+      required:
+        - id
+        - label
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+    SKSummary:
+      type: object
+      required:
+        - total
+      properties:
+        total:
+          type: number
+          format: float
+        appliedFilters:
+          type: array
+          items:
+            type: object
+        disabledFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKDisabledFilter'
+        query:
+          type: string
+        sortOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKSortOption'
+    SKDisabledFilter:
+      type: object
+      required:
+        - identifier
+      properties:
+        identifier:
+          type: string
+    ValueSelectedFilter:
+      type: object
+      required:
+        - id
+        - identifier
+        - display
+        - label
+        - value
+      properties:
+        id:
+          type: string
+        identifier:
+          type: string
+        display:
+          type: string
+        label:
+          type: string
+        value:
+          type: string
+    NumericRangeSelectedFilter:
+      type: object
+      required:
+        - id
+        - identifier
+        - label
+        - display
+        - min
+        - max
+      properties:
+        id:
+          type: string
+        identifier:
+          type: string
+        label:
+          type: string
+        display:
+          type: string
+        min:
+          type: number
+          format: float
+        max:
+          type: number
+          format: float
+    DateRangeSelectedFilter:
+      type: object
+      required:
+        - id
+        - identifier
+        - label
+        - display
+        - dateMin
+        - dateMax
+      properties:
+        id:
+          type: string
+        identifier:
+          type: string
+        label:
+          type: string
+        display:
+          type: string
+        dateMin:
+          type: string
+        dateMax:
+          type: string
+    GeoBoundingBoxSelectedFilter:
+      type: object
+      required:
+        - id
+        - identifier
+        - label
+        - display
+      properties:
+        id:
+          type: string
+        identifier:
+          type: string
+        label:
+          type: string
+        display:
+          type: string
+        topLeft:
+          $ref: '#/components/schemas/SKGeoPoint'
+        bottomRight:
+          $ref: '#/components/schemas/SKGeoPoint'
+        bottomLeft:
+          $ref: '#/components/schemas/SKGeoPoint'
+        topRight:
+          $ref: '#/components/schemas/SKGeoPoint'
+    SKGeoPoint:
+      type: object
+      required:
+        - lat
+        - lon
+      properties:
+        lat:
+          type: number
+          format: float
+        lon:
+          type: number
+          format: float
+    SKPageInfo:
+      type: object
+      properties:
+        total:
+          type: number
+          format: float
+        totalPages:
+          type: number
+          format: float
+        pageNumber:
+          type: number
+          format: float
+        from:
+          type: number
+          format: float
+        size:
+          type: number
+          format: float
+    SKHitResults:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+        page:
+          $ref: '#/components/schemas/SKPageInfo'
+        sortedBy:
+          type: string
+    SKPageInput:
+      type: object
+      properties:
+        from:
+          type: number
+          format: float
+        size:
+          type: number
+          format: float
+    SKQueryOptions:
+      type: object
+      properties:
+        fields:
+          type: array
+          items:
+            type: string
+    SKFiltersSet:
+      type: object
+      required:
+        - identifier
+      properties:
+        identifier:
+          type: string
+        value:
+          type: string
+        min:
+          type: number
+          format: float
+        max:
+          type: number
+          format: float
+        dateMin:
+          type: string
+        dateMax:
+          type: string
+        geoBoundingBox:
+          type: object
+    SKGeoBoundingBoxInput:
+      type: object
+      properties:
+        topLeft:
+          type: object
+        bottomRight:
+          type: object
+        topRight:
+          type: object
+        bottomLeft:
+          type: object
+    SKGeoPointInput:
+      type: object
+      required:
+        - lat
+        - lon
+      properties:
+        lat:
+          type: number
+          format: float
+        lon:
+          type: number
+          format: float
+    SKFacetSetEntry:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        count:
+          type: number
+          format: float
+        isSelected:
+          type: boolean
+    RefinementSelectFacet:
+      type: object
+      properties:
+        identifier:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+        display:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKFacetSetEntry'
+    RangeFacet:
+      type: object
+      properties:
+        identifier:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+        display:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKFacetSetEntry'
+    DateRangeFacet:
+      type: object
+      properties:
+        identifier:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+        display:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKFacetSetEntry'
+    ResultSet:
+      type: object
+      properties:
+        summary:
+          $ref: '#/components/schemas/SKSummary'
+        hits:
+          $ref: '#/components/schemas/SKHitResults'
+        facets:
+          type: array
+          items:
+            type: object
+        facet:
+          type: object

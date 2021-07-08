@@ -8,6 +8,14 @@ import { schema } from './api/graphql'
 // TODO: use SOFA for OpenAPI https://github.com/Urigo/SOFA/blob/master/example/index.ts
 // Add CORS support: https://github.com/Urigo/SOFA/issues/141
 
+// A solution for sofa would be to use express + React app
+// SearchKit with Express: https://github.com/searchkit/searchkit/blob/next/examples/with-express/index.js
+// Apollo Express with Sofa: https://github.com/maapteh/graphql-modules-app/blob/master/packages/server/src/server.ts
+// Sofa official example: https://github.com/Urigo/SOFA/blob/master/example/index.ts
+// React with express: https://levelup.gitconnected.com/how-to-render-react-app-using-express-server-in-node-js-a428ec4dfe2b
+// SearchKit with React: https://github.com/searchkit/searchkit/tree/next/examples/create-react-app
+// Example to serve React with Express: https://github.com/myogeshchavan97/express-static-serve/
+// Article to serve React with Express: https://medium.com/@lowewenzel/serving-express-with-a-react-single-page-app-within-the-same-application-c168f1c44201
 
 const invokeSofa = createSofaRouter({
   basePath: '/rest',
