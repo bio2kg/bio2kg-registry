@@ -1,5 +1,6 @@
-import { ApolloServer, gql } from 'apollo-server-micro'
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
 import cors from 'micro-cors'
+// import { makeExecutableSchema } from '@graphql-tools/schema';
 
 import {
   MultiMatchQuery,
@@ -90,11 +91,40 @@ const searchkitConfig = {
   ]
 }
 
-const { typeDefs, withSearchkitResolvers, context } = SearchkitSchema({
+export let { typeDefs, withSearchkitResolvers, context } = SearchkitSchema({
   config: searchkitConfig,
   typeName: 'ResultSet',
   hitTypeName: 'ResultHit',
   addToQueryType: true
+})
+
+export const resolvers = withSearchkitResolvers({
+  ResultHit: {
+    highlight: (hit: any) => {
+      //var t = hit.highlight.description.join('')
+      return hit.highlight
+    },
+    exampleUrl: (parent) => {
+      if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
+        return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
+      }
+    },
+    rdfType: (parent) => {
+      if (parent.fields['@type']) {
+        return parent.fields['@type']
+      }
+    },
+    context: (parent) => {
+      if (parent.fields['@context']) {
+        return JSON.stringify(parent.fields['@context'])
+      }
+    }
+  },
+  Query: {
+    getPrefPrefix(uri: string) {
+      return 'pref prefix for ' + uri;
+    }
+  }
 })
 
 export const config = {
@@ -103,73 +133,54 @@ export const config = {
   }
 }
 
+typeDefs = [
+  gql`
+  type Query {
+    root: String
+    getPrefPrefix(id: String!): String
+  }
+
+  type HitFields {
+    preferredPrefix: String
+    altPrefix: [String]
+    providerBaseUri: String
+    alternativeBaseUri: [String]
+    title: String
+    description: String
+    type: String
+    organization: String
+    homepage: String
+    providerHtmlUrl: String
+    exampleId: String
+    keywords: [String]
+    regex: String
+  }
+
+  type ResultHit implements SKHit {
+    id: ID!
+    fields: HitFields
+    exampleUrl: String
+    rdfType: String
+    context: String
+    highlight: Highlight
+  }
+
+  type Highlight {
+    title: [String]
+    description: [String] 
+  }
+`, ...typeDefs
+]
+
+console.log(typeDefs)
+
+export const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
 const server = new ApolloServer({
-  typeDefs: [
-    gql`
-    type Query {
-      root: String
-      getPrefPrefix: String
-    }
-
-    type HitFields {
-      preferredPrefix: String
-      altPrefix: [String]
-      providerBaseUri: String
-      alternativeBaseUri: [String]
-      title: String
-      description: String
-      type: String
-      organization: String
-      homepage: String
-      providerHtmlUrl: String
-      exampleId: String
-      keywords: [String]
-      regex: String
-    }
-
-    type ResultHit implements SKHit {
-      id: ID!
-      fields: HitFields
-      exampleUrl: String
-      rdfType: String
-      context: String
-      highlight: Highlight
-    }
-
-    type Highlight {
-      title: [String]
-      description: [String] 
-    }
-  `, ...typeDefs
-  ],
-  resolvers: withSearchkitResolvers({
-    ResultHit: {
-      highlight: (hit: any) => {
-        //var t = hit.highlight.description.join('')
-        return hit.highlight
-      },
-      exampleUrl: (parent) => {
-        if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
-          return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
-        }
-      },
-      rdfType: (parent) => {
-        if (parent.fields['@type']) {
-          return parent.fields['@type']
-        }
-      },
-      context: (parent) => {
-        if (parent.fields['@context']) {
-          return JSON.stringify(parent.fields['@context'])
-        }
-      }
-    },
-    Query: {
-      getPrefPrefix() {
-        return 'pref prefix!';
-      }
-    }
-  }),
+  schema, 
   introspection: true,
   playground: true,
   context: {
@@ -178,6 +189,8 @@ const server = new ApolloServer({
 })
 
 const handler = server.createHandler({ path: '/api/graphql' })
+
+// TODO: use SOFA for OpenAPI https://github.com/Urigo/SOFA/blob/master/example/index.ts
 
 export default cors()((req, res) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
 

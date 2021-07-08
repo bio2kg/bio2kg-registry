@@ -1,10 +1,30 @@
 import React from 'react'
 import withApollo from 'next-with-apollo'
-import { InMemoryCache, ApolloProvider, ApolloClient, createHttpLink } from '@apollo/client'
+import { InMemoryCache, ApolloProvider, ApolloClient, createHttpLink, gql } from '@apollo/client'
 
 export default withApollo(
   ({ initialState, headers }) => {
     const cache = new InMemoryCache({}).restore(initialState || {})
+
+    const defaultQuery = gql`
+    {
+      results {
+        hits {
+          items {
+            ... on ResultHit {
+              id
+              fields {
+                preferredPrefix
+                title
+                type
+                keywords
+              }
+            }
+          }
+        }
+      }
+    }
+    `
 
     // @ts-ignore
     if (typeof window !== 'undefined') window.cache = cache
@@ -19,7 +39,8 @@ export default withApollo(
           cookie: headers?.cookie
         }
       }),
-      cache
+      cache,
+      // defaultOptions: {query: defaultQuery}
     })
   },
   {
