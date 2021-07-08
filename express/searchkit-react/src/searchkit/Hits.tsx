@@ -12,10 +12,10 @@ import {
 } from '@elastic/eui'
 // import { EuiHighlightProps } from '@elastic/eui/src/components/highlight/highlight'
 
-export const HitsGrid = ({ data }) => {
-  const [showDetails, setShowDetails] = useState({})
+export const HitsGrid = ({ data }: any) => {
+  const [showDetails, setShowDetails]: any = useState({})
 
-  const clickDetails = (hit_id) => {
+  const clickDetails = (hit_id: string) => {
     if (showDetails[hit_id]) {
       setShowDetails({...showDetails, [hit_id] : false})
     } else {
@@ -25,7 +25,7 @@ export const HitsGrid = ({ data }) => {
 
   return (
   <EuiFlexGrid gutterSize="s">
-    {data?.results.hits.items.map((hit) => (
+    {data?.results.hits.items.map((hit: any) => (
       <EuiFlexItem key={hit.id} grow={1}>
         <EuiCard
           textAlign="left"
@@ -73,7 +73,7 @@ export const HitsGrid = ({ data }) => {
                   <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
                 }
                 {hit.fields.homepage && 
-                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
+                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" rel="noreferrer" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
                 }
                 {hit.fields.keywords && 
                   <div className="eui-displayInline"><i>Keywords:</i> {hit.fields.keywords.join(', ')}<br/></div>
@@ -94,7 +94,7 @@ export const HitsGrid = ({ data }) => {
                   <div className="eui-displayInline"><i>Identifier Regex:</i> {hit.fields.regex}<br/></div>
                 }
                 {hit.fields.exampleId && hit.exampleUrl &&
-                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
+                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" rel="noreferrer" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
                 }
                 {hit.fields.providerHtmlUrl && 
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
@@ -108,9 +108,9 @@ export const HitsGrid = ({ data }) => {
   </EuiFlexGrid>
 )}
 
-export const HitsList = ({ data }) => (
+export const HitsList = ({ data }: any) => (
   <>
-    {data?.results.hits.items.map((hit) => (
+    {data?.results.hits.items.map((hit: any) => (
       <EuiFlexGroup gutterSize="xl" key={hit.id}>
         <EuiFlexItem>
           <EuiFlexGroup>
@@ -128,21 +128,6 @@ export const HitsList = ({ data }) => (
                 <p>{hit.fields.description}</p>
               </EuiText>
             </EuiFlexItem>
-            {/* <EuiFlexItem grow={2}>
-              <EuiText grow={false}>
-                <ul>
-                  <li>
-                    <b>ACTORS: </b>
-                    {hit.fields.actors.join(', ')}
-                  </li>
-
-                  <li>
-                    <b>WRITERS: </b>
-                    {hit.fields.writers.join(', ')}
-                  </li>
-                </ul>
-              </EuiText>
-            </EuiFlexItem> */}
           </EuiFlexGroup>
         </EuiFlexItem>
       </EuiFlexGroup>

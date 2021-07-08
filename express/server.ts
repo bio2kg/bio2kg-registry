@@ -1,19 +1,16 @@
-const express = require('express');
-var cors = require('cors');
-var compression = require('compression');
-var helmet = require('helmet');
-const { ApolloServer, gql, makeExecutableSchema } = require('apollo-server-express');
-const {
+import express from 'express';
+import cors from 'cors';
+import compression from 'compression';
+import helmet from 'helmet';
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-express';
+import {
   MultiMatchQuery,
-  SearchkitResolvers,
   SearchkitSchema,
   RefinementSelectFacet
-} = require('@searchkit/schema')
-const { useSofa, OpenAPI } = require('sofa-api');
-const swaggerUi = require('swagger-ui-express');
-const path = require("path");
-// import * as swaggerUi from 'swagger-ui-express';
-// import { useSofa, OpenAPI } from 'sofa-api';
+} from '@searchkit/schema';
+import path from "path";
+import * as swaggerUi from 'swagger-ui-express';
+import { useSofa, OpenAPI } from 'sofa-api';
 
 const searchkitConfig = {
   host: 'https://elastic.registry.bio2kg.org',
@@ -117,28 +114,28 @@ typeDefs = [
 
 const resolvers = withSearchkitResolvers({
   ResultHit: {
-    highlight: (hit) => {
+    highlight: (hit: any) => {
       //var t = hit.highlight.description.join('')
       return hit.highlight
     },
-    exampleUrl: (parent) => {
+    exampleUrl: (parent: any) => {
       if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
         return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
       }
     },
-    rdfType: (parent) => {
+    rdfType: (parent: any) => {
       if (parent.fields['@type']) {
         return parent.fields['@type']
       }
     },
-    context: (parent) => {
+    context: (parent: any) => {
       if (parent.fields['@context']) {
         return JSON.stringify(parent.fields['@context'])
       }
     }
   },
   Query: {
-    getPrefPrefix(uri) {
+    getPrefPrefix(uri: string) {
       return 'pref prefix for ' + uri;
     }
   }
@@ -158,7 +155,7 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-const app = express();
+export const app = express();
 // For production (cf. https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
 app.use(compression());
 app.use(helmet());
@@ -191,7 +188,7 @@ app.use(
 );
 // Add OpenAPI docs at /apidocs
 openApi.save('./swagger.yml');
-app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(openApi.get('./swagger.yml')));
+app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(openApi.get()));
 
 // Serve searchkit-react at /app
 app.use(express.static(path.join(__dirname, ".", "public")));

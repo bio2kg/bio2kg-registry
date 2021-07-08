@@ -12,11 +12,14 @@ import {
   Route
 } from "react-router-dom";
 
+let ELASTIC_URL = 'https://registry.bio2kg.org/api/graphql'
+if (process.env.ELASTIC_URL) {
+  // Get URL provided via environment variable
+  ELASTIC_URL = process.env.ELASTIC_URL
+}
+
 const client = new ApolloClient({
-  // uri: 'https://demo.searchkit.co/api/graphql',
-  // uri: '/graphql',
-  uri: 'http://localhost:4000/graphql',
-  // uri: 'https://registry.bio2kg.org/api/graphql',
+  uri: ELASTIC_URL,
   cache: new InMemoryCache()
 });
 

@@ -1,17 +1,13 @@
 import { gql, useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { HitsList, HitsGrid } from './searchkit/Hits'
-// import { PageSizeAccessor } from 'searchkit'
-import { useSearchkitVariables, useSearchkit, useSearchkitQueryValue, useSearchkitRoutingOptions } from '@searchkit/client'
+import { useSearchkitVariables, useSearchkit, useSearchkitQueryValue } from '@searchkit/client'
 import {
   FacetsList,
-  SearchBar,
   Pagination,
   ResetSearchButton,
   SelectedFilters,
-  SortingSelector
 } from '@searchkit/elastic-ui'
-
 import {
   EuiPage,
   EuiPageBody,
@@ -24,19 +20,16 @@ import {
   EuiPageSideBar,
   EuiTitle,
   EuiHorizontalRule,
-  EuiButtonGroup,
   EuiFieldSearch,
   EuiButtonEmpty,
   EuiButton,
-  EuiButtonIcon,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiPagination,
   EuiPopover,
 } from '@elastic/eui'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 
 const graphqlQuery = gql`
   query resultSet($query: String, $filters: [SKFiltersSet], $page: SKPageInput, $sortBy: String) {
@@ -121,19 +114,10 @@ const graphqlQuery = gql`
 const Page = () => {
   const variables = useSearchkitVariables()
   const [query, setQuery] = useSearchkitQueryValue()
-  const routingOptions = useSearchkitRoutingOptions()
   const api = useSearchkit()
   const { previousData, data = previousData, loading } = useQuery(graphqlQuery, {
     variables: variables
   })
-  // console.log('routingOptions')
-  // routingOptions.routeToState = (routeState) => {
-  //   console.logs(routeState)
-  // }
-  // console.log(routingOptions.routeToState)
-  // routingOptions.routeToState?: (routeState: any) => {
-  //   page: {
-  //       size: number;
   
   const [viewType, setViewType] = useState('grid')
   const Facets = FacetsList([])
@@ -309,9 +293,6 @@ const Page = () => {
           <EuiPageContentBody>
             {viewType === 'grid' ? <HitsGrid data={data} /> : <HitsList data={data} />}
             <EuiFlexGroup justifyContent="spaceAround">
-              {/* https://elastic.github.io/eui/#/navigation/pagination */}
-              {/* Checkout page size: https://searchkit.co/docs/reference/searchkit-client */}
-              {/* To change the size in searchState: https://searchkit.co/docs/guides/url-synchronization */}
               <Pagination data={data?.results} />
             </EuiFlexGroup>
           </EuiPageContentBody>
