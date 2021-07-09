@@ -35,18 +35,6 @@ services:
     volumes:
       - /data/bio2kg/registry/elasticsearch:/usr/share/elasticsearch/data
 
-  nodejs-website:
-    build: ./website
-    container_name: bio2kg-registry-website
-    restart: unless-stopped
-    environment:
-      - VIRTUAL_HOST=registry.bio2kg.org
-      - LETSENCRYPT_HOST=registry.bio2kg.org
-      - VIRTUAL_PORT=3000
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-    # ports:
-    #   - 3000:3000
-
   update-pipeline:
     image: python:3.8
     container_name: bio2kg-registry-update-pipeline
@@ -56,3 +44,33 @@ services:
     volumes:
       - ./etl:/etl
       
+  # nextjs-website:
+  #   build: ./website
+  #   container_name: bio2kg-registry-website
+  #   restart: unless-stopped
+  #   environment:
+  #     - VIRTUAL_HOST=registry.bio2kg.org
+  #     - LETSENCRYPT_HOST=registry.bio2kg.org
+  #     - VIRTUAL_PORT=3000
+  #     - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    # ports:
+    #   - 3000:3000
+
+  express-server:
+    build: ./express
+    container_name: bio2kg-registry-server
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=api.registry.bio2kg.org
+      - LETSENCRYPT_HOST=api.registry.bio2kg.org
+      - VIRTUAL_PORT=4000
+
+  react-website:
+    build: ./express/searchkit-react
+    container_name: bio2kg-registry-website-react
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=registry.bio2kg.org
+      - LETSENCRYPT_HOST=registry.bio2kg.org
+      - VIRTUAL_PORT=3000
+      - ELASTIC_URL=https://api.registry.bio2kg.org/graphql

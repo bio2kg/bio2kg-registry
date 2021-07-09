@@ -1,4 +1,5 @@
-import express from 'express';
+const express = require('express');
+// import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -100,13 +101,23 @@ typeDefs = [
       fields: HitFields
       exampleUrl: String
       rdfType: String
-      context: String
+      context: Context
       highlight: Highlight
     }
 
     type Highlight {
       title: [String]
       description: [String] 
+    }
+
+    type Context {
+      preferredPrefix: String
+      title: String
+      description: String
+      organization: String
+      homepage: String
+      licenseUrl: String
+      abbreviation: String
     }
   `,
   ...typeDefs
@@ -130,7 +141,8 @@ const resolvers = withSearchkitResolvers({
     },
     context: (parent: any) => {
       if (parent.fields['@context']) {
-        return JSON.stringify(parent.fields['@context'])
+        // return JSON.stringify(parent.fields['@context'])
+        return parent.fields['@context']
       }
     }
   },
@@ -158,8 +170,11 @@ const server = new ApolloServer({
 export const app = express();
 // For production (cf. https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
 app.use(compression());
-app.use(helmet());
 app.use(cors());
+// Security: https://github.com/helmetjs/helmet
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 
 // if (process.env.NODE_ENV === 'development') {
 //  }
@@ -193,8 +208,8 @@ app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(openApi.get()));
 // Serve searchkit-react at /app
 app.use(express.static(path.join(__dirname, ".", "public")));
 app.use(express.static("public"));
-app.get('/app', function(req, res, next) {
-  res.setHeader("Content-Security-Policy", "script-src 'self'");
+app.get('/app', function(req: any, res: any, next: any) {
+  res.setHeader("Content-Security-Policy", "script-src 'none'");
   // res.sendFile(path.join(__dirname, '../public', 'index.html'));
   res.sendFile(path.join(__dirname, ".", "public", "index.html"));
 });

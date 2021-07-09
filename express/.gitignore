@@ -1,2 +1,4 @@
 /public/
 react-app-env.d.ts
+yarn-error.log
+*.js

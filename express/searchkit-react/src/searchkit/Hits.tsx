@@ -73,7 +73,7 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
                 }
                 {hit.fields.homepage && 
-                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" rel="noreferrer" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
+                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" rel="noopener noreferrer" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
                 }
                 {hit.fields.keywords && 
                   <div className="eui-displayInline"><i>Keywords:</i> {hit.fields.keywords.join(', ')}<br/></div>
@@ -94,7 +94,7 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Identifier Regex:</i> {hit.fields.regex}<br/></div>
                 }
                 {hit.fields.exampleId && hit.exampleUrl &&
-                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" rel="noreferrer" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
+                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" rel="noopener noreferrer" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
                 }
                 {hit.fields.providerHtmlUrl && 
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>

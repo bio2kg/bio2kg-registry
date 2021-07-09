@@ -149,7 +149,7 @@ components:
         rdfType:
           type: string
         context:
-          type: string
+          $ref: '#/components/schemas/Context'
         highlight:
           $ref: '#/components/schemas/Highlight'
     Highlight:
@@ -163,6 +163,23 @@ components:
           type: array
           items:
             type: string
+    Context:
+      type: object
+      properties:
+        preferredPrefix:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        organization:
+          type: string
+        homepage:
+          type: string
+        licenseUrl:
+          type: string
+        abbreviation:
+          type: string
     SKSortOption:
       type: object
       required:
