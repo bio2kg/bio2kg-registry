@@ -11,14 +11,15 @@ import { SearchkitProvider, SearchkitClient } from '@searchkit/client'
 import App from './App';
 // import './index.css';
 
-let ELASTIC_URL = 'https://registry.bio2kg.org/api/graphql'
-if (process.env.ELASTIC_URL) {
+let GRAPHQL_URL = 'https://registry.bio2kg.org/api/graphql'
+if (process.env.GRAPHQL_URL) {
   // Get URL provided via environment variable
-  ELASTIC_URL = process.env.ELASTIC_URL
+  GRAPHQL_URL = process.env.GRAPHQL_URL
+  console.log("Using GraphQL endpoint: " + GRAPHQL_URL)
 }
 
 const client = new ApolloClient({
-  uri: ELASTIC_URL,
+  uri: GRAPHQL_URL,
   cache: new InMemoryCache()
 });
 

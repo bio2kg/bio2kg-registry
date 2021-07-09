@@ -1,18 +1,39 @@
-# Express serving GraphQL with OpenAPI from ElasticSearch
+# Server for GraphQL with OpenAPI from ElasticSearch
 
-* SearchKit Apollo GraphQL server getting data from an existing ElasticSearch of the BioKG Registry
-* Sofa API to publish an OpenAPI based on GraphQL
+This ExpressJS server serves:
+
+* SearchKit Apollo GraphQL endpoint serving data from an existing ElasticSearch on `/graphql`
+* Sofa API to publish an OpenAPI based on the GraphQL endpoint
+  * API on `/api`
+  * Swagger UI on `/apidocs`
+* A React website to search the data on the root path (`/`) defined in the folder `searchkit-react`
 
 ## Development
 
+Install
+
 ```bash
 yarn
+cd searchkit-react
+yarn
+cd ..
+```
+
+Start only the express server on http://localhost:4000
+
+```bash
 yarn dev
+```
+
+Start the express server on http://localhost:4000 and the React app on http://localhost:3000 (in development mode)
+
+```bash
+yarn start
 ```
 
 ## Production
 
-On http://localhost:4000
+The react website is built first, the bundle is placed in the server `public` folder, and the React app is served from this folder in production on http://localhost:4000
 
 ```bash
 yarn build

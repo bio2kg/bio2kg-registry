@@ -205,14 +205,9 @@ app.use(
 openApi.save('./swagger.yml');
 app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(openApi.get()));
 
-// Serve searchkit-react at /app
+// Serve searchkit-react at /
 app.use(express.static(path.join(__dirname, ".", "public")));
-app.use(express.static("public"));
-app.get('/app', function(req: any, res: any, next: any) {
-  res.setHeader("Content-Security-Policy", "script-src 'none'");
-  // res.sendFile(path.join(__dirname, '../public', 'index.html'));
-  res.sendFile(path.join(__dirname, ".", "public", "index.html"));
-});
+
 
 app.listen({ port: 4000 }, () =>
   console.log(`🚀 GraphQL ready at http://localhost:4000${server.graphqlPath}
