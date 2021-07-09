@@ -5,7 +5,7 @@
   "license": "MIT",
   "homepage": ".",
   "scripts": {
-    "build": "tsc -p . && cd searchkit-react && yarn build && cd .. && cp -R searchkit-react/build/* public/",
+    "build": "cd searchkit-react && yarn build && cd .. && cp -R searchkit-react/build/* public/",
     "dev": "nodemon server.ts",
     "serve": "ts-node server.ts",
     "start": "concurrently \"NODE_ENV=development nodemon server.ts\" \" cd searchkit-react && GRAPHQL_URL=http://localhost:4000/graphql PORT=3000 yarn start\"",

@@ -39,3 +39,18 @@ The react website is built first, the bundle is placed in the server `public` fo
 yarn build
 yarn serve
 ```
+
+## Deploy with Docker
+
+Build:
+
+```bash
+docker build -t ghcr.io/bio2kg/registry-server .
+```
+
+Run:
+
+```bash
+docker run -it -p 4000:4000 ghcr.io/bio2kg/registry-server
+```
+
