@@ -44,7 +44,7 @@ services:
     #   - 3000:3000
 
   express-server:
-    build: ./express
+    build: ./server
     container_name: bio2kg-registry-website
     restart: unless-stopped
     environment:
