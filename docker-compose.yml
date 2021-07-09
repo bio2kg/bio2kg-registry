@@ -45,7 +45,7 @@ services:
 
   express-server:
     build: ./server
-    container_name: bio2kg-registry-website
+    container_name: bio2kg-registry-server
     restart: unless-stopped
     environment:
       - VIRTUAL_HOST=registry.bio2kg.org
