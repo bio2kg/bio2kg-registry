@@ -6,7 +6,7 @@ This ExpressJS server serves:
 * Sofa API to publish an OpenAPI based on the GraphQL endpoint
   * API on `/api`
   * Swagger UI on `/apidocs`
-* A React website to search the data on the root path (`/`) defined in the folder `searchkit-react`
+* A React website to search the data on the base URL (`/`) defined in the folder `searchkit-react`
 
 ## Development
 

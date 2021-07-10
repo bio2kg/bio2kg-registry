@@ -11,7 +11,7 @@ import { SearchkitProvider, SearchkitClient } from '@searchkit/client'
 import App from './App';
 // import './index.css';
 
-let GRAPHQL_URL = 'https://registry.bio2kg.org/api/graphql'
+let GRAPHQL_URL = 'https://registry.bio2kg.org/graphql'
 if (process.env.GRAPHQL_URL) {
   // Get URL provided via environment variable
   GRAPHQL_URL = process.env.GRAPHQL_URL

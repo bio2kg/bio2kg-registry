@@ -1,19 +1,19 @@
 # Bio2KG Registry and APIs
 
-The Bio2KG Registry is a repository of dataset descriptions, including preferred CURIE prefixes, base URIs, identifier regex patterns and HTML resolvers.
+The Bio2KG Registry is a repository of dataset descriptions, including preferred CURIE prefixes, base URIs, identifier regex patterns and HTML resolvers for biomedical datasets.
 
 The registry is constructed from a manually curated spreadsheet.
 
 1. Extract data from the [Life Science Registry spreadsheet on Google docs](https://docs.google.com/spreadsheets/d/1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg/edit#gid=0)
 2. Load to ElasticSearch (deployed with the `docker-compose.yml` file)
 
-Access the Bio2KG registry web:
+Access the Bio2KG registry web application and API endpoints:
 
 * Search website: https://registry.bio2kg.org
 
 * GraphQL API: https://registry.bio2kg.org/api/graphql
 
-* ElasticSearch API (authentication): https://elastic.registry.bio2kg.org/_search
+* ElasticSearch API: https://elastic.registry.bio2kg.org/_search
 
 Search with cURL:
 
@@ -27,7 +27,7 @@ curl -XGET --header 'Content-Type: application/json' https://elastic.registry.bi
 
 ##  Update the Life Science Registry 🐍
 
-The process to prepare the ElasticSearch index for the Life Science Registry runs as a GitHub Actions workflow, check it in the `.github/workflows` folder.
+The process to prepare the ElasticSearch index for the Life Science Registry runs in a docker container defined in the `docker-compose.yml` file as `update-pipeline`
 
 To run locally:
 
@@ -80,7 +80,7 @@ sudo chown 1000 -R /data/bio2kg/prefixes/elasticsearch
 docker-compose up
 ```
 
-5. Run the script to update ElasticSearch data:
+If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
 
 ```bash
 docker-compose run update-pipeline
@@ -88,63 +88,13 @@ docker-compose run update-pipeline
 
 It deploys:
 
-* An ElasticSearch instance
-* A NodeJS website using Searchkit and NextJS
-  * Web interface to search for prefixes
-  * GraphQL API to query the ElasticSearch with Apollo on http://localhost:3000/api/graphql
+* An ElasticSearch instance with a nginx proxy to allow anyone to access the `/_search` endpoint, but prevents editing, configuration defined in the `elasticsearch` folder
+* A NodeJS server using Searchkit and Express defined in the `server` folder
+  * SearchKit Apollo GraphQL endpoint serving data from ElasticSearch on `/graphql`
+  * Sofa API to publish an OpenAPI endpoint based on the GraphQL endpoint
+    * API on `/api`
+    * Swagger UI on `/apidocs`
+  * A React website to search the data on the base URL (`/`) defined in the folder `searchkit-react`
 
-Try the GraphQL API with this query:
-
-```gql
-{
-  results (query: "drugbank") {
-    hits {
-      items {
-        ... on ResultHit {
-          id
-          exampleUrl
-          highlight {
-            title
-            description
-          }
-          fields {
-            preferredPrefix
-            title
-            description
-            type
-            keywords
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-> Checkout the readme in the `website` folder to run the website in development.
-
-Try query options:
-
-```gql
-{
-  results ( 
-  		filters:[{identifier:"preferredPrefix",value:"3did"}, {identifier:"altPrefix",value:"3did"}]) 
-  {
-    hits {
-      items {
-        ... on ResultHit {
-          id
-          exampleUrl
-          fields {
-            preferredPrefix
-            title
-            type
-            keywords
-          }
-        }
-      }
-    }
-  }
-}
-```
+Checkout the readme in the `server` folder for more details on the website the website.
 
