@@ -14,13 +14,13 @@ paths:
             application/json:
               schema:
                 type: string
-  /api/get-pref-prefix:
+  /api/get-preferred-uri:
     get:
-      operationId: getPrefPrefixQuery
+      operationId: getPreferredUriQuery
       parameters:
         - in: query
-          name: id
-          required: true
+          name: uri
+          required: false
           schema:
             type: string
       responses:
@@ -96,7 +96,7 @@ components:
       properties:
         root:
           type: string
-        getPrefPrefix:
+        getPreferredURI:
           type: string
         results:
           $ref: '#/components/schemas/ResultSet'

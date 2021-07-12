@@ -12,10 +12,15 @@ import path from "path";
 import * as swaggerUi from 'swagger-ui-express';
 import { useSofa, OpenAPI } from 'sofa-api';
 
+import { Client } from '@elastic/elasticsearch'
+
 // Create new types in the GraphQL query: https://www.searchkit.co/docs/customisations/changing-graphql-types
+// PrefixCommons API: https://github.com/prefixcommons/prefixcommons-api/blob/master/slim-server/SwaggerServer/index.php
+
+export const ELASTIC_URL = 'https://elastic.registry.bio2kg.org'
 
 const searchkitConfig = {
-  host: 'https://elastic.registry.bio2kg.org',
+  host: ELASTIC_URL,
   index: 'prefixes',
   hits: {
     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
@@ -40,7 +45,8 @@ const searchkitConfig = {
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
   ],
   query: new MultiMatchQuery({
-    fields: ['preferredPrefix^5', 'altPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 'description','keywords']
+    fields: ['preferredPrefix^5', 'altPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 
+      'description', 'keywords', 'providerBaseUri', 'alternativeBaseURI']
   }),
   // For a CustomQuery check: https://github.com/bio2kg/bio2kg-registry/blob/265c44806ad45b0d202fdd505a7c9cba8f2a8437/website/pages/api/graphql.tsx#L30
   facets: [
@@ -67,18 +73,41 @@ const searchkitConfig = {
   ]
 }
 
-let { typeDefs, withSearchkitResolvers, context } = SearchkitSchema({
+// Multiple schemas: https://www.searchkit.co/docs/customisations/multiple-searchkit-configurations
+// const customSearchConfig = {
+//   host: ELASTIC_URL,
+//   index: 'prefixes',
+//   hits: {
+//     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
+//       "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
+//       "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , 
+//       "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , 
+//       "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , 
+//       "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "@type", "@context"],
+//   },
+//   query: new MultiMatchQuery({
+//     fields: ['alternativeBaseUri^5', 'providerBaseUri^4']
+//   }),
+// }
+
+let { typeDefs, withSearchkitResolvers, context } = SearchkitSchema([{
   config: searchkitConfig, // searchkit configuration
   typeName: 'ResultSet', // base typename
   hitTypeName: 'RegistryEntry',
   addToQueryType: true // When true, adds a field called results to Query type
-})
+},
+// { 
+//   config: customSearchConfig,
+//   typeName: 'UserResultSet', 
+//   hitTypeName: "SearchResult"
+// }
+])
 
 typeDefs = [
   gql`
     type Query {
       root: String
-      getPrefPrefix(id: String!): String
+      getPreferredURI(uri: String): String
     }
 
     type HitFields {
@@ -124,6 +153,17 @@ typeDefs = [
   ...typeDefs
 ]
 
+
+// ElasticSearch client for custom functions
+const client = new Client({
+  node: ELASTIC_URL
+})
+interface Source {
+  providerBaseUri: string,
+  alternativeBaseURI: string
+}
+
+// GraphQL resolvers
 const resolvers = withSearchkitResolvers({
   RegistryEntry: {
     highlight: (hit: any) => {
@@ -148,17 +188,68 @@ const resolvers = withSearchkitResolvers({
     }
   },
   Query: {
-    getPrefPrefix(uri: string) {
-      return 'pref prefix for ' + uri;
+    getPreferredURI: async (_: any, args: any) =>  {
+      // Resolve pref URI by querying directly the ElasticSearch endpoint
+      // Replace for elastic query_string query
+      const uri = args.uri.replace(/(\+|\-|\=|&&|\|\||\>|\<|\!|\(|\)|\{|\}|\[|\]|\^|"|~|\*|\?|\:|\\|\/)/g, '\\\\$&');
+      console.log(uri)
+      const response: any = await client.search<Source>({
+        index: 'prefixes',
+        body: {
+          _source: ["providerBaseUri", "alternativeBaseURI"],
+          // Trying with uri: http://identifiers.org/obo.aero/
+          query: {
+            multi_match: {
+              query: args.uri,
+              fields: [ "providerBaseUri", "alternativeBaseURI^5" ],
+              // type: "phrase"
+              // type: "best_fields",
+              // tie_breaker: 0.7
+            }
+          }
+          // query: {
+          //   bool: {
+          //     must: [{
+          //       query_string: {
+          //           // query: '*' + uri + '*',
+          //           query: uri,
+          //           fields: ["providerBaseUri", "alternativeBaseURI"],
+          //           // analyzer: "keyword",
+          //           // escape: true
+          //       }
+          //     }]
+          //   }
+          // }
+          // "query": {
+          //   "bool": {
+          //     "must": [
+          //       {
+          //         "term": {
+          //           "alternativeBaseURI": args.uri
+          //         }
+          //       }
+          //     ]
+          //   }
+          // }
+        }
+      });
+      console.log(response)
+      console.log(response.body.hits.hits)
+      if (response.body.hits.hits.length > 0) {
+        // Take the first hit in the list (highest score)
+        return response.body.hits.hits[0]._source.providerBaseUri
+      } else {
+        return null
+      }
     }
   }
 })
 
+// Define GraphQL schema and Apollo server
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 });
-
 const server = new ApolloServer({
   schema,
   context: {
@@ -168,6 +259,7 @@ const server = new ApolloServer({
   introspection: true,
 });
 
+// Now we define the Express server:
 export const app = express();
 // For production (cf. https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
 app.use(compression());
