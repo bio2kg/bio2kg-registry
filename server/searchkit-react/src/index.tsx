@@ -35,9 +35,6 @@ ReactDOM.render(
       <SearchkitProvider client={skClient}>
         <Router>
           <Switch>
-            {/* <Route path="/custom">
-              <CustomApp />
-            </Route> */}
             <Route path="/">
               <App />
             </Route>

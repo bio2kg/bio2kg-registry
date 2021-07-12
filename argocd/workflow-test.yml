@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: workflow-test-
+spec:
+  entrypoint: workflow          # invoke the workflow template
+  templates:
+  - name: workflow
+    container:
+      image: docker/whalesay
+      command: [cowsay]
+      args: ["hello world"]
+      resources: # limit the resources
+        limits:
+          memory: 32Mi
+          cpu: 100m
