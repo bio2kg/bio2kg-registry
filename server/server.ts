@@ -11,17 +11,16 @@ import {
 import path from "path";
 import * as swaggerUi from 'swagger-ui-express';
 import { useSofa, OpenAPI } from 'sofa-api';
-
 import { Client } from '@elastic/elasticsearch'
 
 // Create new types in the GraphQL query: https://www.searchkit.co/docs/customisations/changing-graphql-types
 // PrefixCommons API: https://github.com/prefixcommons/prefixcommons-api/blob/master/slim-server/SwaggerServer/index.php
 
-export const ELASTIC_URL = 'https://elastic.registry.bio2kg.org'
+const ELASTIC_URL = 'https://elastic.registry.bio2kg.org'
 
 const searchkitConfig = {
   host: ELASTIC_URL,
-  index: 'prefixes',
+  index: 'registry',
   hits: {
     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
       "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
@@ -76,7 +75,7 @@ const searchkitConfig = {
 // Multiple schemas: https://www.searchkit.co/docs/customisations/multiple-searchkit-configurations
 // const customSearchConfig = {
 //   host: ELASTIC_URL,
-//   index: 'prefixes',
+//   index: 'registry',
 //   hits: {
 //     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
 //       "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
@@ -194,7 +193,7 @@ const resolvers = withSearchkitResolvers({
       const uri = args.uri.replace(/(\+|\-|\=|&&|\|\||\>|\<|\!|\(|\)|\{|\}|\[|\]|\^|"|~|\*|\?|\:|\\|\/)/g, '\\\\$&');
       console.log(uri)
       const response: any = await client.search<Source>({
-        index: 'prefixes',
+        index: 'registry',
         body: {
           _source: ["providerBaseUri", "alternativeBaseURI"],
           // Trying with uri: http://identifiers.org/obo.aero/

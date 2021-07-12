@@ -208,7 +208,7 @@ for key, entry in lsr_dict.items():
     entry['@context'] = context
 
     elastic_json.append({
-        "_index": "prefixes",
+        "_index": "registry",
         "_type": "item",
         "_id": entry['preferredPrefix'],
         "_source": entry
@@ -216,7 +216,7 @@ for key, entry in lsr_dict.items():
 
 # print(elastic_json)
 
-print('Loading ' + str(len(elastic_json)) + ' prefixes in ElasticSearch')
+print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch')
 
 load_results = helpers.bulk(es, elastic_json)
 print(load_results)
