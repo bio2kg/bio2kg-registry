@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
 import { useState } from 'react'
-import { HitsList, HitsGrid } from './searchkit/Hits'
+import { HitsList, HitsGrid } from './components/Hits'
 import { useSearchkitVariables, useSearchkit, useSearchkitQueryValue } from '@searchkit/client'
 import {
   FacetsList,
@@ -70,7 +70,7 @@ const graphqlQuery = gql`
         }
         sortedBy
         items {
-          ... on ResultHit {
+          ... on RegistryEntry {
             id
             exampleUrl
             highlight {
@@ -247,7 +247,7 @@ const Page = () => {
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
                   {/* https://elastic.github.io/eui/#/display/icons */}
-                  <EuiButton href="/graphql?query=query%20%7B%0A%20%20results%20%7B%0A%20%20%20%20hits%20%7B%0A%20%20%20%20%20%20items%20%7B%0A%20%20%20%20%20%20%20%20...%20on%20ResultHit%20%7B%0A%20%20%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20%20%20exampleUrl%0A%20%20%20%20%20%20%20%20%20%20fields%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20preferredPrefix%0A%20%20%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%20%20%20%20keywords%0A%20%20%20%20%20%20%20%20%20%20%20%20exampleId%0A%20%20%20%20%20%20%20%20%20%20%20%20homepage%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"
+                  <EuiButton href="/graphql?query=query%20%7B%0A%20%20results%20%7B%0A%20%20%20%20hits%20%7B%0A%20%20%20%20%20%20items%20%7B%0A%20%20%20%20%20%20%20%20...%20on%20RegistryEntry%20%7B%0A%20%20%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20%20%20exampleUrl%0A%20%20%20%20%20%20%20%20%20%20fields%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20preferredPrefix%0A%20%20%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%20%20%20%20keywords%0A%20%20%20%20%20%20%20%20%20%20%20%20exampleId%0A%20%20%20%20%20%20%20%20%20%20%20%20homepage%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"
                       size="s" iconType="graphApp" target="_blank">
                     GraphQL API
                   </EuiButton>

@@ -12,6 +12,8 @@ import path from "path";
 import * as swaggerUi from 'swagger-ui-express';
 import { useSofa, OpenAPI } from 'sofa-api';
 
+// Create new types in the GraphQL query: https://www.searchkit.co/docs/customisations/changing-graphql-types
+
 const searchkitConfig = {
   host: 'https://elastic.registry.bio2kg.org',
   index: 'prefixes',
@@ -65,10 +67,10 @@ const searchkitConfig = {
   ]
 }
 
-var { typeDefs, withSearchkitResolvers, context } = SearchkitSchema({
+let { typeDefs, withSearchkitResolvers, context } = SearchkitSchema({
   config: searchkitConfig, // searchkit configuration
   typeName: 'ResultSet', // base typename
-  hitTypeName: 'ResultHit',
+  hitTypeName: 'RegistryEntry',
   addToQueryType: true // When true, adds a field called results to Query type
 })
 
@@ -95,7 +97,7 @@ typeDefs = [
       regex: String
     }
 
-    type ResultHit implements SKHit {
+    type RegistryEntry implements SKHit {
       id: ID!
       fields: HitFields
       exampleUrl: String
@@ -123,7 +125,7 @@ typeDefs = [
 ]
 
 const resolvers = withSearchkitResolvers({
-  ResultHit: {
+  RegistryEntry: {
     highlight: (hit: any) => {
       //var t = hit.highlight.description.join('')
       return hit.highlight
@@ -174,9 +176,6 @@ app.use(cors());
 app.use(helmet({
   contentSecurityPolicy: false,
 }));
-
-// if (process.env.NODE_ENV === 'development') {
-//  }
 
 // Add Apollo GraphQL endpoint at /graphql
 server.applyMiddleware({ app, path: '/graphql' });

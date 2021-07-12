@@ -135,7 +135,7 @@ components:
             type: string
         regex:
           type: string
-    ResultHit:
+    RegistryEntry:
       type: object
       required:
         - id

@@ -11,9 +11,11 @@ import { SearchkitProvider, SearchkitClient } from '@searchkit/client'
 import App from './App';
 // import './index.css';
 
-let GRAPHQL_URL = 'https://registry.bio2kg.org/graphql'
+// let GRAPHQL_URL = 'https://registry.bio2kg.org/graphql'
+let GRAPHQL_URL = 'http://localhost:4000/graphql'
 if (process.env.GRAPHQL_URL) {
   // Get URL provided via environment variable
+  // Not working
   GRAPHQL_URL = process.env.GRAPHQL_URL
   console.log("Using GraphQL endpoint: " + GRAPHQL_URL)
 }
@@ -22,6 +24,8 @@ const client = new ApolloClient({
   uri: GRAPHQL_URL,
   cache: new InMemoryCache()
 });
+
+console.log(GRAPHQL_URL);
 
 const skClient = new SearchkitClient()
 
