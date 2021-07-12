@@ -68,16 +68,16 @@ htpasswd -Bbn elastic yourpassword > elasticsearch/.htpasswd
 3. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
 
 ```bash
-mkdir -p /data/bio2kg/prefixes/elasticsearch
-sudo chmod g+rwx -R /data/bio2kg/prefixes/elasticsearch
-sudo chgrp 1000 -R /data/bio2kg/prefixes/elasticsearch
-sudo chown 1000 -R /data/bio2kg/prefixes/elasticsearch
+sudo mkdir -p /data/bio2kg/registry/elasticsearch
+sudo chmod g+rwx -R /data/bio2kg/registry/elasticsearch
+sudo chgrp 1000 -R /data/bio2kg/registry/elasticsearch
+sudo chown 1000 -R /data/bio2kg/registry/elasticsearch
 ```
 
 4. Start the docker-compose:
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 
 If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
