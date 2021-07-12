@@ -19,6 +19,7 @@ es = Elasticsearch(
     # port=9200,
     timeout=30, max_retries=100, retry_on_timeout=True
 )
+es_index = 'registry'
 
 # TODO: add check for ElasticSearch up?
 # for i in range(100):
@@ -208,7 +209,7 @@ for key, entry in lsr_dict.items():
     entry['@context'] = context
 
     elastic_json.append({
-        "_index": "registry",
+        "_index": es_index,
         "_type": "item",
         "_id": entry['preferredPrefix'],
         "_source": entry
@@ -216,7 +217,7 @@ for key, entry in lsr_dict.items():
 
 # print(elastic_json)
 
-print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch')
+print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch index ' + es_index)
 
 load_results = helpers.bulk(es, elastic_json)
 print(load_results)
