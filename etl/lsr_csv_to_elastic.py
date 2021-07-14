@@ -5,6 +5,7 @@ import json
 import time
 from rdflib import Graph, Namespace, URIRef, Literal, RDF, RDFS, XSD
 from rdflib.namespace import FOAF, DC
+import requests
 
 # PHP script: https://github.com/prefixcommons/data-ingest/blob/master/code/LSR2json.php
 
@@ -12,39 +13,28 @@ from rdflib.namespace import FOAF, DC
 googledocs_id = '1c4DmQqTGS4ZvJU_Oq2MFnLk-3UUND6pWhuMoP8jgZhg'
 sheet = 'resource'
 
-es = Elasticsearch(
-    ['elasticsearch:9200'],
-    # ['https://elastic.registry.bio2kg.org'],
-    # ['https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'],
-    # ['https://elastic.prefixcommons.org'],
-    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')), 
-    # port=9200,
-    timeout=30, max_retries=100, retry_on_timeout=True
-)
-es_index = 'registry'
-
-# TODO: add check for ElasticSearch up?
-# for i in range(100):
-#     try:
-#         es.cluster.health(wait_for_status='yellow')
-#         print('Connected to ElasticSearch ⚡️')
-#         break
-#     # except ConnectionError:
-#     except:
-#         print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
-#         time.sleep(5)
-# else:
-#     raise("Elasticsearch failed to start.")
-
-
 # Build URL to download CSV from google docs
 googledocs_url = 'https://docs.google.com/spreadsheets/d/' + googledocs_id + '/gviz/tq?tqx=out:csv&sheet=' + sheet
 print('Downloading ' + googledocs_url)
 
+virtuoso_url = 'http://data.registry.bio2kg.org/DAV/home/dav'
+
+es_index = 'registry'
+es_url = 'elasticsearch:9200'
+# es_url = 'https://elastic.registry.bio2kg.org'
+# es_url = 'https://elastic:' + os.getenv('ELASTIC_PASSWORD') + '@elastic.registry.bio2kg.org'
+
+es = Elasticsearch(
+    [es_url],
+    timeout=30, max_retries=100, retry_on_timeout=True
+    # http_auth=('elastic', os.getenv('ELASTIC_PASSWORD')), port=9200,
+)
+
 ## Load csv to a pandas dataframe from the URL
-df = pd.read_csv(googledocs_url)
+# df = pd.read_csv(googledocs_url)
 ## Read from local to dev faster:
-# df = pd.read_csv('data/data.csv')
+df = pd.read_csv('data/data.csv')
+print('Data loaded')
 
 ## Optional: check for duplicate values in 1st col, use .any() for boolean
 # print(df['Preferred Prefix'].duplicated().sort_values())
@@ -183,17 +173,11 @@ for key, value in col_mapping.items():
 ## Check the list of columns:
 # print('" , "'.join(list(col_mapping.values())))
 
-# Convert to JSON and drop null values
+print('Drop null values and convert to JSON')
 lsr_json = df.apply(lambda x: [x.dropna()], axis=1).to_json()
 lsr_dict = json.loads(lsr_json)
 
-def add_to_graph(g, entry):
-    subject_uri = URIRef('https://w3id.org/bio2kg/registry/' + entry['preferredPrefix'])
-    g.add((subject_uri, RDF.type, URIRef(entry['@type'])))
-    g.add((subject_uri, DC.title, Literal(entry['title'])))
-    return g
-
-# Prepare JSON for ElasticSearch ingestion
+# Prepare JSON for ElasticSearch ingestion and build RDF graph
 elastic_json = []
 g = Graph()
 for key, entry in lsr_dict.items():
@@ -226,25 +210,51 @@ for key, entry in lsr_dict.items():
         "_source": entry
     })
 
-    g = add_to_graph(g, entry)
+    # Add ElasticSearch entry in a rdflib graph
+    subject_uri = URIRef('https://w3id.org/bio2kg/registry/' + entry['preferredPrefix'])
+    g.add((subject_uri, RDF.type, URIRef(entry['@type'])))
+    for key, mapping in col_mapping.items():
+        # Get predicate URIs from col_mapping JSON above
+        if mapping['label'] in entry and mapping['uri']:
+            if mapping['label'] == 'type':
+                g.add((subject_uri, URIRef(mapping['uri']), URIRef('http://semanticscience.org/resource/' + entry[mapping['label']])))
+            else:
+                g.add((subject_uri, URIRef(mapping['uri']), Literal(entry[mapping['label']])))
 
-# load_to_ldp(g)
-# curl -u ldp:$ELASTIC_PASSWORD --data-binary @shapes-rdf.ttl -H "Accept: text/turtle" -H "Content-type: text/turtle" -H "Slug: test-shapes-rdf" https://data.index.semanticscience.org/DAV/home/ldp/github
+registry_rdf = g.serialize(format='turtle')
 
+print('Upload RDF to Virtuoso LDP')
+res = requests.post(
+    url=virtuoso_url,
+    # url='http://localhost:8890/DAV/home/dav',
+    data=registry_rdf,
+    auth = requests.auth.HTTPBasicAuth('dav', os.getenv('ELASTIC_PASSWORD')),
+    headers={
+        'Content-Type': 'text/turtle',
+        'Accept': 'text/turtle',
+        'Slug': 'bio2kg-registry'
+})
+print(res.text)
 
 # print(elastic_json)
 
 print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch index ' + es_index)
 
-load_results = helpers.bulk(es, elastic_json)
-print(load_results)
 
+# TODO: add check for ElasticSearch up?
+# for i in range(100):
+#     try:
+#         es.cluster.health(wait_for_status='yellow')
+#         print('Connected to ElasticSearch ⚡️')
+#         break
+#     # except ConnectionError:
+#     except:
+#         print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
+#         time.sleep(5)
+# else:
+#     raise("Elasticsearch failed to start.")
 
-# g = Graph()
+# load_results = helpers.bulk(es, elastic_json)
+# print(load_results)
 
-# for key, entry in lsr_dict.items():
-#     g.add()
-
-
-# app = SparqlEndpoint(g)
 

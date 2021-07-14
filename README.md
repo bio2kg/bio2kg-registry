@@ -80,6 +80,12 @@ sudo chown 1000 -R /data/bio2kg/registry/elasticsearch
 docker-compose up -d
 ```
 
+5. Install the Linked Data Platform in the Virtuoso triplestore (running via `docker-compose`)
+
+```bash
+./prepare_virtuoso_ldp.sh
+```
+
 If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
 
 ```bash
