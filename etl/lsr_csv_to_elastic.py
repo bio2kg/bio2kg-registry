@@ -17,8 +17,8 @@ sheet = 'resource'
 googledocs_url = 'https://docs.google.com/spreadsheets/d/' + googledocs_id + '/gviz/tq?tqx=out:csv&sheet=' + sheet
 print('Downloading ' + googledocs_url)
 
-virtuoso_url = 'http://virtuoso:8890/DAV/home/dav'
-# virtuoso_url = 'http://data.registry.bio2kg.org/DAV/home/dav'
+virtuoso_url = 'http://virtuoso:8890/DAV/ldp'
+# virtuoso_url = 'http://data.registry.bio2kg.org/DAV/ldp'
 
 es_index = 'registry'
 es_url = 'elasticsearch:9200'
@@ -222,13 +222,11 @@ for key, entry in lsr_dict.items():
             else:
                 g.add((subject_uri, URIRef(mapping['uri']), Literal(entry[mapping['label']])))
 
-registry_rdf = g.serialize(format='turtle')
-
 print('Upload RDF to Virtuoso LDP')
 res = requests.post(
     url=virtuoso_url,
-    # url='http://localhost:8890/DAV/home/dav',
-    data=registry_rdf,
+    # url='http://localhost:8890/DAV/ldp',
+    data=g.serialize(format='turtle'),
     auth = requests.auth.HTTPBasicAuth('dav', os.getenv('ELASTIC_PASSWORD')),
     headers={
         'Content-Type': 'text/turtle',

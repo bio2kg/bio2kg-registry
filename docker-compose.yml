@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
 
@@ -55,6 +55,7 @@ services:
   update-pipeline:
     image: python:3.8
     container_name: bio2kg-registry-update-pipeline
+    profiles: ["runner"]
     depends_on: 
       - elasticsearch
     environment: 
