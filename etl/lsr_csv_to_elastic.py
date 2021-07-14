@@ -3,6 +3,7 @@ import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 import json
 import time
+from rdflib import Graph, Namespace, URIRef, Literal, RDF, FOAF, RDFS, XSD, DC
 
 # PHP script: https://github.com/prefixcommons/data-ingest/blob/master/code/LSR2json.php
 
@@ -183,8 +184,15 @@ for key, value in col_mapping.items():
 lsr_json = df.apply(lambda x: [x.dropna()], axis=1).to_json()
 lsr_dict = json.loads(lsr_json)
 
+def add_to_graph(g, entry):
+    subject_uri = URIRef('https://w3id.org/bio2kg/registry/' + entry['preferredPrefix'])
+    g.add((subject_uri, RDF.type, URIRef(entry['@type'])))
+    g.add((subject_uri, DC.title, Literal(entry['title'])))
+    return g
+
 # Prepare JSON for ElasticSearch ingestion
 elastic_json = []
+g = Graph()
 for key, entry in lsr_dict.items():
     entry = entry[0]
     if 'altPrefix' in entry.keys(): 
@@ -215,7 +223,7 @@ for key, entry in lsr_dict.items():
         "_source": entry
     })
 
-#     g = add_entry_to_graph(g, entry)
+    g = add_to_graph(g, entry)
 
 # load_to_ldp(g)
 
