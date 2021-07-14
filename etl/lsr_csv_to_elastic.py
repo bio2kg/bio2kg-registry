@@ -3,7 +3,8 @@ import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 import json
 import time
-from rdflib import Graph, Namespace, URIRef, Literal, RDF, FOAF, RDFS, XSD, DC
+from rdflib import Graph, Namespace, URIRef, Literal, RDF, RDFS, XSD
+from rdflib.namespace import FOAF, DC
 
 # PHP script: https://github.com/prefixcommons/data-ingest/blob/master/code/LSR2json.php
 
@@ -51,35 +52,36 @@ df = pd.read_csv(googledocs_url)
 col_mapping = {
     'Preferred Prefix': { 
         'label': 'preferredPrefix',
-        'uri': 'http://purl.org/vocab/vann/preferredNamespacePrefix'
+        'uri': 'http://identifiers.org/idot/preferredPrefix'
     },
     'Alt-prefix': { 
         'label': 'altPrefix',
-        'uri': ''
+        'uri': 'http://identifiers.org/idot/alternatePrefix'
     },
     'Provider Base URI': { 
         'label': 'providerBaseUri',
-        'uri': ''
+        'uri': 'http://rdfs.org/ns/void#uriRegexPattern'
     },
     'Alternative Base URI': { 
         'label': 'alternativeBaseUri',
-        'uri': ''
+        'uri': 'http://w3id.org/bio2kg/vocabulary#alternativeBaseUri'
     },
     'MIRIAM': { 
         'label': 'miriam',
-        'uri': ''
+        'uri': 'https://www.ebi.ac.uk/miriam/main/resources/'
     },
-    'BiodbcoreID': { 
+    'BiodbcoreID': { ## obsolete
         'label': 'biodbCoreId',
         'uri': ''
     },
     'BioPortal Ontology ID': { 
         'label': 'bioportalOntologyId',
-        'uri': ''
+        'uri': 'http://w3id.org/bio2kg/vocabulary#bioportalOntologyId'
+        ## value iri https://identifiers.org/bioportal:
     },
-    'thedatahub': { 
+    'thedatahub': {  ## obsolete
         'label': 'thedatahub',
-        'uri': ''
+        'uri': 'http://w3id.org/bio2kg/vocabulary#theDataHubId'
     },
     'Abbreviation': { 
         'label': 'abbreviation',
@@ -87,7 +89,7 @@ col_mapping = {
     },
     'Title': { 
         'label': 'title',
-        'uri': 'http://purl.org/dc/elements/1.1/title'
+        'uri': 'http://purl.org/dc/terms/title'
     },
     'Description': { 
         'label': 'description',
@@ -95,7 +97,8 @@ col_mapping = {
     },
     'PubMed ID': { 
         'label': 'pubmedId',
-        'uri': ''
+        'uri': 'http://w3id.org/bio2kg/vocabulary#pubmedId'
+        ## value iri 'http://www.ncbi.nlm.nih.gov/pubmed/'
     },
     'Organization': { 
         'label': 'organization',
@@ -103,27 +106,27 @@ col_mapping = {
     },
     'Type (warehouse, dataset or terminology)': { 
         'label': 'type',
-        'uri': ''
+        'uri': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
     },
     'Keywords': { 
         'label': 'keywords',
-        'uri': ''
+        'uri': 'http://www.w3.org/ns/dcat#keyword'
     },
     'Homepage': { 
         'label': 'homepage',
         'uri': 'http://xmlns.com/foaf/0.1/homepage'
     },
-    'homepage still available?': { 
+    'homepage still available?': { ## @todo use possible values: 'up', 'down', 'probably up', 'obsolete resource', 'restricted access' and 'unknown'.
         'label': 'homepageStillAvailable',
-        'uri': ''
+        'uri': 'http://identifiers.org/idot/state'
     },
     'sub-namespace in dataset': { 
         'label': 'subNamespaceInDataset',
-        'uri': ''
+        'uri': 'http://purl.org/dc/terms/isPartOf'
     },
     'part of collection': { 
         'label': 'partOfCollection',
-        'uri': ''
+        'uri': 'http://purl.org/dc/terms/isPartOf'
     },
     'License URL': { 
         'label': 'licenseUrl',
@@ -131,37 +134,37 @@ col_mapping = {
     },
     'License Text': { 
         'label': 'licenseText',
-        'uri': ''
+        'uri': 'http://purl.org/dc/terms/license'
     },
     'Rights': { 
         'label': 'rights',
-        'uri': ''
+        'uri': 'http://purl.org/dc/terms/rights'
     },
     'ID regex': { 
         'label': 'regex',
-        'uri': ''
+        'uri': 'http://identifiers.org/idot/identifierPattern'
     },
     'ExampleID': { 
         'label': 'exampleId',
-        'uri': ''
+        'uri': 'http://identifiers.org/idot/exampleIdentifier'
     },
     'Provider HTML URL': { 
         'label': 'providerHtmlUrl',
-        'uri': ''
+        'uri': 'http://identifiers.org/idot/accessPattern'
     },
-    'MIRIAM checked': { 
+    'MIRIAM checked': { ## ignore
         'label': 'miriamChecked',
         'uri': ''
     },
-    'MIRIAM curator notes': { 
+    'MIRIAM curator notes': {   ## ignore
         'label': 'miriamCuratorNotes',
         'uri': ''
     },
-    'MIRIAM coverage': { 
+    'MIRIAM coverage': {   ## ignore
         'label': 'miriamCoverage',
         'uri': ''
     },
-    'updates': { 
+    'updates': {   ## ignore
         'label': 'updates',
         'uri': ''
     },
