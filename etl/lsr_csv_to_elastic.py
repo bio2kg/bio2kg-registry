@@ -215,6 +215,10 @@ for key, entry in lsr_dict.items():
         "_source": entry
     })
 
+#     g = add_entry_to_graph(g, entry)
+
+# load_to_ldp(g)
+
 # print(elastic_json)
 
 print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch index ' + es_index)

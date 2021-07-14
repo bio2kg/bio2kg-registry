@@ -14,3 +14,4 @@ spec:
         limits:
           memory: 32Mi
           cpu: 100m
+# Error: level=warning msg="finished unary call with code PermissionDenied" error="rpc error: code = PermissionDenied desc = permission denied: applications, create, bio2kg/Bio2KG Registry, sub: CiQ0MzZiZDZjMS0xN2ViLTQyMDMtODNhMy1mMjUzZGZkMzVmZDQSCW9wZW5zaGlmdA, iat: 2021-07-12T22:38:08Z" grpc.code=PermissionDenied grpc.method=Create grpc.service=application.ApplicationService grpc.start_time="2021-07-12T23:09:45Z" grpc.time_ms=1.685 span.kind=server system=grpc

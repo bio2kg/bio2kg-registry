@@ -105,8 +105,9 @@ let { typeDefs, withSearchkitResolvers, context } = SearchkitSchema([{
 typeDefs = [
   gql`
     type Query {
-      root: String
+      Entry(query: String): Entry
       getPreferredURI(uri: String): String
+      root: String
     }
 
     type HitFields {
@@ -148,6 +149,22 @@ typeDefs = [
       licenseUrl: String
       abbreviation: String
     }
+    type Entry {
+      preferredPrefix: String
+      altPrefix: [String]
+      providerBaseUri: String
+      alternativeBaseUri: [String]
+      title: String
+      description: String
+      type: String
+      organization: String
+      homepage: String
+      providerHtmlUrl: String
+      exampleId: String
+      keywords: [String]
+      regex: String
+      # type: String
+    }
   `,
   ...typeDefs
 ]
@@ -187,6 +204,12 @@ const resolvers = withSearchkitResolvers({
     }
   },
   Query: {
+    Entry: async (_: any, args: any) => {
+      return {
+        preferredPrefix: 'pref ' + args.query,
+        providerBaseUri: 'baseuri'
+      }
+    },
     getPreferredURI: async (_: any, args: any) =>  {
       // Resolve pref URI by querying directly the ElasticSearch endpoint
       // Replace for elastic query_string query

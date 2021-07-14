@@ -3,17 +3,22 @@ info:
   title: Bio2KG Registry API
   version: 3.0.0
 paths:
-  /api/root:
+  /api/entry:
     get:
-      operationId: rootQuery
-      parameters: []
+      operationId: entryQuery
+      parameters:
+        - in: query
+          name: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/Entry'
   /api/get-preferred-uri:
     get:
       operationId: getPreferredUriQuery
@@ -23,6 +28,17 @@ paths:
           required: false
           schema:
             type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/root:
+    get:
+      operationId: rootQuery
+      parameters: []
       responses:
         '200':
           description: ''
@@ -94,9 +110,11 @@ components:
     Query:
       type: object
       properties:
-        root:
-          type: string
+        Entry:
+          $ref: '#/components/schemas/Entry'
         getPreferredURI:
+          type: string
+        root:
           type: string
         results:
           $ref: '#/components/schemas/ResultSet'
@@ -179,6 +197,41 @@ components:
         licenseUrl:
           type: string
         abbreviation:
+          type: string
+    Entry:
+      type: object
+      properties:
+        preferredPrefix:
+          type: string
+        altPrefix:
+          type: array
+          items:
+            type: string
+        providerBaseUri:
+          type: string
+        alternativeBaseUri:
+          type: array
+          items:
+            type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        organization:
+          type: string
+        homepage:
+          type: string
+        providerHtmlUrl:
+          type: string
+        exampleId:
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+        regex:
           type: string
     SKSortOption:
       type: object

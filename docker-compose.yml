@@ -60,3 +60,51 @@ services:
     entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
     volumes:
       - ./etl:/etl
+
+
+  # To enable Virtuoso LDP, see https://github.com/vemonet/shapes-of-you#enable-virtuoso-linked-data-platform
+  virtuoso:
+    container_name: bio2kg-registry-virtuoso
+    image: openlink/virtuoso-opensource-7:latest
+    # See also: https://hub.docker.com/r/markw/ldp_server
+    # https://community.openlinksw.com/t/permissions-on-ldp-containers-and-resources/290/14
+    # Download VAD packages: ODS Framework and Briefcase
+    # http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/7.2/
+    restart: unless-stopped
+    volumes:
+      - /data/bio2kg/registry/virtuoso:/database
+    environment:
+      # Deployed using https://github.com/nginx-proxy
+      - VIRTUAL_PORT=8890
+      - VIRTUAL_HOST=data.registry.bio2kg.org
+      - LETSENCRYPT_HOST=data.registry.bio2kg.org
+      - VIRT_URIQA_DefaultHost=data.bio2kg.org
+      - DBA_PASSWORD=${ELASTIC_PASSWORD:-dba}
+      - DAV_PASSWORD=${ELASTIC_PASSWORD:-dba}
+      - SPARQL_UPDATE=true
+      - DEFAULT_GRAPH=https://w3id.org/bio2kg
+      # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
+      # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
+      # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
+      - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs
+      - VIRT_HTTPServer_HTTPThreadSize=280000
+      # - VIRT_URIQA_DynamicLocal=1
+      # - VIRT_Parameters_DirsAllowed=., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db
+      # Large dataset config
+      - VIRT_SPARQL_ResultSetMaxRows=1048576
+      - VIRT_SPARQL_MaxQueryCostEstimationTime=200000
+      - VIRT_SPARQL_MaxQueryExecutionTime=1000000
+      - VIRT_Database_MaxCheckpointRemap=125000
+      - VIRT_TempDatabase_MaxCheckpointRemap=125000
+      - VIRT_Parameters_TempDBSize=100000000
+      - VIRT_Parameters_NumberOfBuffers=5450000 # For 64G systems
+      - VIRT_Parameters_MaxDirtyBuffers=4000000
+      # - VIRT_Parameters_NumberOfBuffers=10880000 # For 128G systems
+      # - VIRT_Parameters_MaxDirtyBuffers=8000000
+      - VIRT_SPARQL_ShortenLongURIs=1
+      - VIRT_SPARQL_MaxCacheExpiration=1
+      - VIRT_SPARQL_ExternalQuerySource=1
+      - VIRT_SPARQL_ExternalXsltSource=1
+    # ports:
+    #   - 8890:8890
+    #   - 1111:1111
