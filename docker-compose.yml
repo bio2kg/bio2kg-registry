@@ -78,7 +78,7 @@ services:
       - VIRTUAL_PORT=8890
       - VIRTUAL_HOST=data.registry.bio2kg.org
       - LETSENCRYPT_HOST=data.registry.bio2kg.org
-      - VIRT_URIQA_DefaultHost=data.bio2kg.org
+      - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
       - DBA_PASSWORD=${ELASTIC_PASSWORD:-dba}
       - DAV_PASSWORD=${ELASTIC_PASSWORD:-dba}
       - SPARQL_UPDATE=true
