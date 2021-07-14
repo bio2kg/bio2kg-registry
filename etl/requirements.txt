@@ -1,3 +1,4 @@
 pandas
 elasticsearch
 rdflib
+requests

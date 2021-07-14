@@ -16,7 +16,7 @@ docker-compose exec virtuoso isql -U dba -P $DBA_PASSWORD exec="vad_install ('od
 
 # Make DAV publicly readable: http://docs.openlinksw.com/virtuoso/fn_dav_api_change/
 # https://github.com/openlink/virtuoso-opensource/issues/490
-docker-compose exec virtuoso isql -U dba -P $DBA_PASSWORD exec="DB.DBA.DAV_PROP_SET('/DAV/home/dav/', ':virtpermissions', '110110100R','dav','$DBA_PASSWORD');"
+docker-compose exec virtuoso isql -U dba -P $DBA_PASSWORD exec="DB.DBA.DAV_PROP_SET('/DAV/home/dav/', ':virtpermissions', '110100100R','dav','$DBA_PASSWORD');"
 
 # Create ldp user via dav not working
 # http://docs.openlinksw.com/virtuoso/fn_dav_api_user/
