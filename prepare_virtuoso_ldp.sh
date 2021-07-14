@@ -2,7 +2,8 @@
 export DBA_PASSWORD=$(cat .env | sed 's/ELASTIC_PASSWORD=//g')
 
 # wget not installed in virtuoso container
-docker-compose exec virtuoso apt-get update && apt-get install wget
+docker-compose exec virtuoso apt-get update
+docker-compose exec virtuoso apt-get install -y wget
 docker-compose exec virtuoso wget -N http://download3.openlinksw.com/uda/vad-vos-packages/7.2/ods_framework_dav.vad
 docker-compose exec virtuoso wget -N http://download3.openlinksw.com/uda/vad-vos-packages/7.2/ods_briefcase_dav.vad
 
