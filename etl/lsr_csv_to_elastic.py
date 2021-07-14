@@ -31,9 +31,9 @@ es = Elasticsearch(
 )
 
 ## Load csv to a pandas dataframe from the URL
-# df = pd.read_csv(googledocs_url)
+df = pd.read_csv(googledocs_url)
 ## Read from local to dev faster:
-df = pd.read_csv('data/data.csv')
+# df = pd.read_csv('data/data.csv')
 print('Data loaded')
 
 ## Optional: check for duplicate values in 1st col, use .any() for boolean
