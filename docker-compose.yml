@@ -57,6 +57,8 @@ services:
     container_name: bio2kg-registry-update-pipeline
     depends_on: 
       - elasticsearch
+    environment: 
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-dba}
     entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
     volumes:
       - ./etl:/etl

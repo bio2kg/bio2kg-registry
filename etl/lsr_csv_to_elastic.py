@@ -226,6 +226,8 @@ for key, entry in lsr_dict.items():
     g = add_to_graph(g, entry)
 
 # load_to_ldp(g)
+# curl -u ldp:$ELASTIC_PASSWORD --data-binary @shapes-rdf.ttl -H "Accept: text/turtle" -H "Content-type: text/turtle" -H "Slug: test-shapes-rdf" https://data.index.semanticscience.org/DAV/home/ldp/github
+
 
 # print(elastic_json)
 
