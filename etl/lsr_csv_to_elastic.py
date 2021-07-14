@@ -17,7 +17,8 @@ sheet = 'resource'
 googledocs_url = 'https://docs.google.com/spreadsheets/d/' + googledocs_id + '/gviz/tq?tqx=out:csv&sheet=' + sheet
 print('Downloading ' + googledocs_url)
 
-virtuoso_url = 'http://data.registry.bio2kg.org/DAV/home/dav'
+virtuoso_url = 'http://virtuoso:8890/DAV/home/dav'
+# virtuoso_url = 'http://data.registry.bio2kg.org/DAV/home/dav'
 
 es_index = 'registry'
 es_url = 'elasticsearch:9200'
