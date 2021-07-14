@@ -3,6 +3,8 @@
 
 # docker exec -it bio2rdf5-virtuoso isql-v -U dba -P dba exec="ld_dir('/data/dumps', '*.nq', 'http://bio2rdf.org'); rdf_loader_run();"
 
+export DBA_PASSWORD=$(cat .env | sed 's/ELASTIC_PASSWORD=//g')
+
 wget http://download3.openlinksw.com/uda/vad-vos-packages/7.2/ods_framework_dav.vad
 wget http://download3.openlinksw.com/uda/vad-vos-packages/7.2/ods_briefcase_dav.vad
 
