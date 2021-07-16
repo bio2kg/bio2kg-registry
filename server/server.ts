@@ -16,7 +16,7 @@ import { Client } from '@elastic/elasticsearch'
 // Create new types in the GraphQL query: https://www.searchkit.co/docs/customisations/changing-graphql-types
 // PrefixCommons API: https://github.com/prefixcommons/prefixcommons-api/blob/master/slim-server/SwaggerServer/index.php
 
-const ELASTIC_URL = 'https://elastic.registry.bio2kg.org'
+const ELASTIC_URL = process.env.ELASTIC_URL || 'https://elastic.registry.bio2kg.org'
 
 const searchkitConfig = {
   host: ELASTIC_URL,
