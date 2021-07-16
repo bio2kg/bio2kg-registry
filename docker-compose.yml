@@ -55,16 +55,17 @@ services:
       - VIRTUAL_PORT=4000
 
   update-pipeline:
-    image: python:3.8
+    build: ./etl
+    # image: python:3.8
     container_name: bio2kg-registry-update-pipeline
     # profiles: ["runner"]
     depends_on: 
       - elasticsearch
     environment: 
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-dba}
-    entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
+    # entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
     volumes:
-      - ./etl:/etl
+      - ./etl:/root
 
 
   virtuoso:
