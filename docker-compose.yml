@@ -6,6 +6,7 @@ services:
   nginx-elastic-auth:
     image: nginx
     container_name: bio2kg-registry-elastic-nginx
+    restart: unless-stopped
     volumes: 
       - ./elasticsearch/nginx.conf:/etc/nginx/nginx.conf
       - ./elasticsearch/.htpasswd:/etc/nginx/.htpasswd
