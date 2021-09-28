@@ -248,7 +248,7 @@ for i in range(100):
         break
     # except ConnectionError:
     except:
-        print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
+        print('Could not connect to ElasticSearch. Attempt ' + str(i) + ' on 100 (every 5s)')
         time.sleep(5)
 else:
     raise("Elasticsearch failed to start.")
@@ -256,4 +256,8 @@ else:
 load_results = helpers.bulk(es, elastic_json)
 print(load_results)
 
+# We might need to do a chown so the data is readable by ES?
+# User: elasticsearch 1000
+# Group: root 0
 
+# sudo chown -R 1000:0 /data/bio2kg/registry/elasticsearch
