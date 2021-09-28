@@ -222,38 +222,38 @@ for key, entry in lsr_dict.items():
             else:
                 g.add((subject_uri, URIRef(mapping['uri']), Literal(entry[mapping['label']])))
 
-print('Upload RDF to Virtuoso LDP')
-res = requests.post(
-    url=virtuoso_url,
-    # url='http://localhost:8890/DAV/ldp',
-    data=g.serialize(format='turtle'),
-    auth = requests.auth.HTTPBasicAuth('dav', os.getenv('ELASTIC_PASSWORD')),
-    headers={
-        'Content-Type': 'text/turtle',
-        'Accept': 'text/turtle',
-        'Slug': 'bio2kg-registry'
-})
-print(res.text)
+# print('Upload RDF to Virtuoso LDP')
+# res = requests.post(
+#     url=virtuoso_url,
+#     # url='http://localhost:8890/DAV/ldp',
+#     data=g.serialize(format='turtle'),
+#     auth = requests.auth.HTTPBasicAuth('dav', os.getenv('ELASTIC_PASSWORD')),
+#     headers={
+#         'Content-Type': 'text/turtle',
+#         'Accept': 'text/turtle',
+#         'Slug': 'bio2kg-registry'
+# })
+# print(res.text)
 
 # print(elastic_json)
 
 print('Loading ' + str(len(elastic_json)) + ' entries in ElasticSearch index ' + es_index)
 
 
-# TODO: add check for ElasticSearch up?
-# for i in range(100):
-#     try:
-#         es.cluster.health(wait_for_status='yellow')
-#         print('Connected to ElasticSearch ⚡️')
-#         break
-#     # except ConnectionError:
-#     except:
-#         print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
-#         time.sleep(5)
-# else:
-#     raise("Elasticsearch failed to start.")
+# Check for ElasticSearch up
+for i in range(100):
+    try:
+        es.cluster.health(wait_for_status='yellow')
+        print('Connected to ElasticSearch ⚡️')
+        break
+    # except ConnectionError:
+    except:
+        print('Could not connect to ElasticSearch. Attempt ' + i + ' on 100 (every 5s)')
+        time.sleep(5)
+else:
+    raise("Elasticsearch failed to start.")
 
-# load_results = helpers.bulk(es, elastic_json)
-# print(load_results)
+load_results = helpers.bulk(es, elastic_json)
+print(load_results)
 
 
