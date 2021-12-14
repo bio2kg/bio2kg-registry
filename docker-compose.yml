@@ -19,10 +19,15 @@ services:
       # - LETSENCRYPT_HOST=elastic.registry.bio2kg.137.120.31.148.nip.io
       - VIRTUAL_PORT=8080
       # elastic.registry.bio2kg.137.120.31.102.nip.io
+    ## To automatically generate the user and password in .htpasswd:
+    #   - AUTH_USER=${AUTH_USER:-elastic}
+    #   - AUTH_PASSWORD=${AUTH_PASSWORD:-elastic}
+    # entrypoint: "bash -c 'echo -n $AUTH_USER: >> /etc/nginx/.htpasswd && echo $AUTH_PASSWORD | openssl passwd -stdin -apr1 >> /etc/nginx/.htpasswd && /docker-entrypoint.sh nginx'"
+
 
   elasticsearch:
     container_name: bio2kg-registry-elasticsearch
-    image: elasticsearch:7.13.2
+    image: elasticsearch:7.16.1
     restart: unless-stopped
     environment:   
       - discovery.type=single-node
