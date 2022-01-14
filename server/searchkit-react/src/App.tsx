@@ -297,7 +297,7 @@ const Page = () => {
           </EuiPageContentHeader>
           <EuiPageContentBody>
             {viewType === 'grid' ? <HitsGrid data={data} /> : <HitsList data={data} />}
-            <EuiFlexGroup justifyContent="spaceAround">
+            <EuiFlexGroup justifyContent="spaceAround" style={{marginTop: '25px'}}>
               <Pagination data={data?.results} />
             </EuiFlexGroup>
           </EuiPageContentBody>

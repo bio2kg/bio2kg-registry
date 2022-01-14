@@ -11,8 +11,9 @@ import { SearchkitProvider, SearchkitClient } from '@searchkit/client'
 import App from './App';
 // import './index.css';
 
-// const GRAPHQL_URL = process.env.GRAPHQL_URL || 'https://registry.bio2kg.org/graphql'
 const GRAPHQL_URL = process.env.GRAPHQL_URL || '/graphql'
+// const GRAPHQL_URL = process.env.GRAPHQL_URL || 'https://registry.bio2kg.org/graphql'
+// const GRAPHQL_URL = 'https://registry.bio2kg.org/graphql'
 // Env not working, use this to switch in full dev:
 // const GRAPHQL_URL = process.env.GRAPHQL_URL || 'http://localhost:4000/graphql'
 
