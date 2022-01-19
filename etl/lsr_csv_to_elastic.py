@@ -61,8 +61,8 @@ col_mapping = {
         'label': 'miriam',
         'uri': 'https://www.ebi.ac.uk/miriam/main/resources/'
     },
-    'BiodbcoreID': { ## obsolete
-        'label': 'biodbCoreId',
+    'identifiers.org': {
+        'label': 'identifiersPrefix',
         'uri': ''
     },
     'BioPortal Ontology ID': { 
@@ -157,6 +157,14 @@ col_mapping = {
     },
     'updates': {   ## ignore
         'label': 'updates',
+        'uri': ''
+    },
+    'year last accessible': {
+        'label': 'yearLastAccessible',
+        'uri': ''
+    },
+    'wayback url': {
+        'label': 'waybackUrl',
         'uri': ''
     },
 }

@@ -11,7 +11,7 @@ Access the Bio2KG registry web application and API endpoints:
 
 * Search website: https://registry.bio2kg.org
 
-* GraphQL API: https://registry.bio2kg.org/api/graphql
+* GraphQL API: https://registry.bio2kg.org/graphql
 
 * ElasticSearch API: https://elastic.registry.bio2kg.org/_search
 
