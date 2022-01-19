@@ -80,6 +80,7 @@ const graphqlQuery = gql`
             fields {
               preferredPrefix
               altPrefix
+              identifiersPrefix
               providerBaseUri
               alternativeBaseUri
               title
@@ -91,6 +92,8 @@ const graphqlQuery = gql`
               exampleId
               providerHtmlUrl
               regex
+              yearLastAccessible
+              waybackUrl
             }
           }
         }

@@ -23,11 +23,11 @@ const searchkitConfig = {
   index: 'registry',
   hits: {
     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
-      "miriam" , "biodbCoreId" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
+      "miriam" , "identifiersPrefix" , "bioportalOntologyId" , "thedatahub" , "abbreviation" , 
       "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , 
       "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , 
       "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , 
-      "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "@type", "@context"],
+      "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "yearLastAccessible", "waybackUrl", "@type", "@context"],
     highlightedFields: [
       'title',
       {
@@ -113,6 +113,7 @@ typeDefs = [
     type HitFields {
       preferredPrefix: String
       altPrefix: [String]
+      identifiersPrefix: String
       providerBaseUri: String
       alternativeBaseUri: [String]
       title: String
@@ -124,6 +125,8 @@ typeDefs = [
       exampleId: String
       keywords: [String]
       regex: String
+      yearLastAccessible: String
+      waybackUrl: String
     }
 
     type RegistryEntry implements SKHit {
@@ -152,6 +155,7 @@ typeDefs = [
     type Entry {
       preferredPrefix: String
       altPrefix: [String]
+      identifiersPrefix: String
       providerBaseUri: String
       alternativeBaseUri: [String]
       title: String
@@ -163,6 +167,8 @@ typeDefs = [
       exampleId: String
       keywords: [String]
       regex: String
+      yearLastAccessible: String
+      waybackUrl: String      
       # type: String
     }
   `,

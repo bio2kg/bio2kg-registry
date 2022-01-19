@@ -84,6 +84,9 @@ export const HitsGrid = ({ data }: any) => {
                 {hit.fields.altPrefix &&
                   <div className="eui-displayInline"><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}<br/></div>
                 }
+                {hit.fields.identifiersPrefix &&
+                  <div className="eui-displayInline"><i>Identifiers.org prefix:</i> {hit.fields.identifiersPrefix}<br/></div>
+                }                
                 {hit.fields.providerBaseUri && 
                   <div className="eui-displayInline"><i>Provider Base URI:</i> {hit.fields.providerBaseUri}<br/></div>
                 }
@@ -99,7 +102,12 @@ export const HitsGrid = ({ data }: any) => {
                 {hit.fields.providerHtmlUrl && 
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
                 }
-
+                {hit.fields.yearLastAccessible
+                  <div className="eui-displayInline"><i>Last accessible:</i> {hit.fields.yearLastAccessible}<br/></div>
+                }
+                {hit.fields.waybackUrl && 
+                  <div className="eui-displayInline"><i>Archived website:</i> <a target="_blank" rel="noopener noreferrer" href={hit.fields.waybackUrl}>{hit.fields.yearLastAccessible} archived website on archive.org</a><br/></div>
+                }      
             </EuiText>
           }
         </EuiCard>
