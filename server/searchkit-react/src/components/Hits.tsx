@@ -102,7 +102,7 @@ export const HitsGrid = ({ data }: any) => {
                 {hit.fields.providerHtmlUrl && 
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
                 }
-                {hit.fields.yearLastAccessible
+                {hit.fields.yearLastAccessible &&
                   <div className="eui-displayInline"><i>Last accessible:</i> {hit.fields.yearLastAccessible}<br/></div>
                 }
                 {hit.fields.waybackUrl && 
