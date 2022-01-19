@@ -133,6 +133,7 @@ typeDefs = [
       id: ID!
       fields: HitFields
       exampleUrl: String
+      identifiersUrl: String
       rdfType: String
       context: Context
       highlight: Highlight
@@ -195,6 +196,11 @@ const resolvers = withSearchkitResolvers({
     exampleUrl: (parent: any) => {
       if (parent.fields.providerHtmlUrl && parent.fields.exampleId) {
         return parent.fields.providerHtmlUrl.replace('$id', parent.fields.exampleId)
+      }
+    },
+    identifiersUrl: (parent: any) => {
+      if(parent.fields.identifiersPrefix) {
+        return "https://identifiers.org/" + parent.fields.identifiersPrefix
       }
     },
     rdfType: (parent: any) => {

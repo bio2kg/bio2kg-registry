@@ -73,6 +73,7 @@ const graphqlQuery = gql`
           ... on RegistryEntry {
             id
             exampleUrl
+            identifiersUrl
             highlight {
               title 
               description
