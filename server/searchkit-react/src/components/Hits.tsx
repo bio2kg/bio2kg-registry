@@ -85,7 +85,7 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}<br/></div>
                 }
                 {hit.fields.identifiersPrefix && hit.identifiersUrl &&
-                  <div className="eui-displayInline"><i>Identifiers.org prefix:</i> <a target="_blank" rel="noopener noreferrer" href={hit.fields.identifiersUrl}>{hit.fields.identifiersPrefix}</a><br/></div>
+                  <div className="eui-displayInline"><i>Identifiers.org prefix:</i> <a target="_blank" rel="noopener noreferrer" href={hit.identifiersUrl}>{hit.fields.identifiersPrefix}</a><br/></div>
                 }                
                 {hit.fields.providerBaseUri && 
                   <div className="eui-displayInline"><i>Provider Base URI:</i> {hit.fields.providerBaseUri}<br/></div>
