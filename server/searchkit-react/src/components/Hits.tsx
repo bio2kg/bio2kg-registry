@@ -108,10 +108,9 @@ export const HitsGrid = ({ data }: any) => {
                   } <br/></div>
                 }
                 {hit.fields.lastUpdated && 
-                  <div className="eui-displayInline"><i>Updated On:</i> {hit.fields.lastUpdated} {hit.fields.lastUpdatedBy && hit.orcidUrl
-                    <div className="eui-displayInline">by <a target="_blank" rel="noopener noreferrer" href={hit.orcidUrl}>{hit.fields.lastupdatedBy}</a> <br/></div>
-                  }
-                  <br/></div>
+                  <div className="eui-displayInline"><i>Last updated On:</i> {hit.fields.lastUpdated} {hit.fields.lastUpdatedBy && hit.orcidUrl && 
+                    <div className="eui-displayInline">by <a target="_blank" rel="noopener noreferrer" href={hit.orcidUrl}>{hit.fields.lastupdatedBy}</a><br/></div>
+                  } <br/></div>
                 }
             </EuiText>
           }
