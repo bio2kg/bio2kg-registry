@@ -211,8 +211,8 @@ const resolvers = withSearchkitResolvers({
       }
     },
     orcidUrl: (parent: any) => {
-      if(parent.fields.lastupdatedByOrcid) {
-        return "https://orcid.org/" + parent.fields.lastupdatedByOrcid
+      if(parent.fields.lastUpdatedByOrcid) {
+        return "https://orcid.org/" + parent.fields.lastUpdatedByOrcid
       }
     },
     rdfType: (parent: any) => {
