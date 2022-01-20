@@ -103,11 +103,16 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
                 }
                 {hit.fields.yearLastAccessible &&
-                  <div className="eui-displayInline"><i>Last accessible:</i> {hit.fields.yearLastAccessible}<br/></div>
+                  <div className="eui-displayInline"><i>Last accessible:</i> {hit.fields.yearLastAccessible} {hit.fields.waybackUrl && 
+                    <div className="eui-displayInline">[<a target="_blank" rel="noopener noreferrer" href={hit.fields.waybackUrl}>archived website</a>]<br/></div>
+                  } <br/></div>
                 }
-                {hit.fields.waybackUrl && 
-                  <div className="eui-displayInline"><i>Archived website:</i> <a target="_blank" rel="noopener noreferrer" href={hit.fields.waybackUrl}>{hit.fields.yearLastAccessible} archived website on archive.org</a><br/></div>
-                }      
+                {hit.fields.lastUpdated && 
+                  <div className="eui-displayInline"><i>Updated On:</i> {hit.fields.lastUpdated} {hit.fields.lastUpdatedBy && hit.orcidUrl
+                    <div className="eui-displayInline">by <a target="_blank" rel="noopener noreferrer" href={hit.orcidUrl}>{hit.fields.lastupdatedBy}</a> <br/></div>
+                  }
+                  <br/></div>
+                }
             </EuiText>
           }
         </EuiCard>

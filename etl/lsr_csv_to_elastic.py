@@ -167,6 +167,19 @@ col_mapping = {
         'label': 'waybackUrl',
         'uri': ''
     },
+    'last updated': {
+        'label': 'lastUpdated',
+        'uri': ''
+    },
+    'last updated by': {
+        'label': 'lastUpdatedBy',
+        'uri': ''
+    },    
+        'last updated by (orcid)': {
+        'label': 'lastUpdatedByOrcid',
+        'uri': ''
+    },
+
 }
 # Preferred Prefix
 # Alt-prefix	Provider Base URI	Alternative Base URI	MIRIAM	BiodbcoreID	BioPortal Ontology ID	thedatahub	Abbreviation	Title	Description	PubMed ID	Organization	Type (warehouse, dataset or terminology)	Keywords	Homepage	homepage still available?	sub-namespace in dataset	part of collection	License URL	License Text	Rights	ID regex	ExampleID	Provider HTML URL		MIRIAM checked	MIRIAM curator notes	MIRIAM coverage	updates

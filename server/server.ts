@@ -127,6 +127,9 @@ typeDefs = [
       regex: String
       yearLastAccessible: String
       waybackUrl: String
+      lastUpdated: String
+      lastUpdatedBy: String
+      lastUpdatedByOrcid: String
     }
 
     type RegistryEntry implements SKHit {
@@ -134,6 +137,7 @@ typeDefs = [
       fields: HitFields
       exampleUrl: String
       identifiersUrl: String
+      orcidUrl: String
       rdfType: String
       context: Context
       highlight: Highlight
@@ -169,7 +173,10 @@ typeDefs = [
       keywords: [String]
       regex: String
       yearLastAccessible: String
-      waybackUrl: String      
+      waybackUrl: String
+      lastUpdated: String
+      lastUpdatedBy: String
+      lastUpdatedByOrcid: String
       # type: String
     }
   `,
@@ -201,6 +208,11 @@ const resolvers = withSearchkitResolvers({
     identifiersUrl: (parent: any) => {
       if(parent.fields.identifiersPrefix) {
         return "https://identifiers.org/" + parent.fields.identifiersPrefix
+      }
+    },
+    orcidUrl: (parent: any) => {
+      if(parent.fields.lastupdatedByOrcid) {
+        return "https://orcid.org/" + parent.fields.lastupdatedByOrcid
       }
     },
     rdfType: (parent: any) => {

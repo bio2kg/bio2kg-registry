@@ -74,6 +74,7 @@ const graphqlQuery = gql`
             id
             exampleUrl
             identifiersUrl
+            orcidUrl
             highlight {
               title 
               description
@@ -95,6 +96,9 @@ const graphqlQuery = gql`
               regex
               yearLastAccessible
               waybackUrl
+              lastUpdated
+              lastUpdatedby
+              lastUpdatedByOrcid
             }
           }
         }
