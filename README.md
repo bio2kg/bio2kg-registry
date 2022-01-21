@@ -27,29 +27,19 @@ curl -XGET --header 'Content-Type: application/json' https://elastic.registry.bi
 
 ##  Update the Life Science Registry 🐍
 
-The process to prepare the ElasticSearch index for the Life Science Registry runs in a docker container defined in the `docker-compose.yml` file as `update-pipeline`
+The process to prepare the ElasticSearch index for the Life Science Registry runs in a docker container defined in the `etl` folder.
 
-To run locally:
-
-1. Install dependencies:
+To update a running `docker-compose` stack:
 
 ```bash
-pip install -r etl/requirements.txt
-```
-
-2. Define the ElasticSearch password as environment variable, for example with Bash:
-
-```bash
-export ELASTIC_PASSWORD=yourpassword
-```
-
-3. Run the python script:
-
-```bash
-python3 etl/lsr_csv_to_elastic.py
+docker-compose run update-pipeline
 ```
 
 ## Deploy with docker 🐳
+
+### Locally for development
+
+<!-- Password currently not used for ElasticSearch
 
 Make sure you use the same password in the GitHub Actions secrets and for the docker compose deployment.
 
@@ -65,7 +55,9 @@ echo "ELASTIC_PASSWORD=yourpassword" > .env
 htpasswd -Bbn elastic yourpassword > elasticsearch/.htpasswd
 ```
 
-3. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
+-->
+
+1. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
 
 ```bash
 sudo mkdir -p /data/bio2kg/registry/elasticsearch
@@ -74,13 +66,13 @@ sudo chgrp 1000 -R /data/bio2kg/registry/elasticsearch
 sudo chown 1000 -R /data/bio2kg/registry/elasticsearch
 ```
 
-4. Start the docker-compose:
+2. Start the docker-compose:
 
 ```bash
 docker-compose up -d
 ```
 
-5. Install the Linked Data Platform in the Virtuoso triplestore (running via `docker-compose`)
+3. Install the Linked Data Platform in the Virtuoso triplestore (running via `docker-compose`)
 
 ```bash
 ./prepare_virtuoso_ldp.sh
@@ -104,10 +96,32 @@ It deploys:
 
 Checkout the readme in the `server` folder for more details on the website the website.
 
-## Add a field
+### Deploy in production
 
-To add a new field to the Bio2KG registry:
+Start the stack with production config, using nginx-proxy to route the services:
 
-1. In the python script in the `etl` folder: to process and add the field value to ElasticSearch
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+
+Install the Linked Data Platform in the Virtuoso triplestore (running via `docker-compose`)
+
+```bash
+./prepare_virtuoso_ldp.sh
+```
+
+If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
+
+```bash
+docker-compose run update-pipeline
+```
+
+## Add a field the the registry
+
+To add a new field to the Bio2KG registry, check the following files:
+
+1. In the `etl` folder python script: process and add the field value to ElasticSearch
 2. In `server/server.ts`: add the field in the entry fields to add this field to the GraphQL query
-3. In `server/searchkit-react`: add the field to the GraphQL query used by the UI to retrieve data
+3. In `server/searchkit-react`: add the field to the GraphQL query used by the UI to retrieve data. 
+
+⚠️ Make sure the id you are using for the field is the same everywhere! (it is case sensitive)
