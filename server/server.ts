@@ -27,7 +27,8 @@ const searchkitConfig = {
       "title" , "description" , "pubmedId" , "organization" , "type" , "keywords" , 
       "homepage" , "homepageStillAvailable" , "subNamespaceInDataset" , "partOfCollection" , 
       "licenseUrl" , "licenseText" , "rights" , "regex" , "exampleId" , "providerHtmlUrl" , 
-      "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "yearLastAccessible", "waybackUrl","lastUpdated","lastUpdatedBy","lastUpdatedByOrcid", "@type", "@context"],
+      "miriamChecked" , "miriamCuratorNotes" , "miriamCoverage" , "updates", "yearLastAccessible", 
+      "waybackUrl","lastUpdated","lastUpdatedBy","lastUpdatedByOrcid", "@type", "@context"],
     highlightedFields: [
       'title',
       {
