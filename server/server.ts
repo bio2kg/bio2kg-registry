@@ -178,7 +178,6 @@ typeDefs = [
       lastUpdated: String
       lastUpdatedBy: String
       lastUpdatedByOrcid: String
-      # type: String
     }
   `,
   ...typeDefs
@@ -229,6 +228,7 @@ const resolvers = withSearchkitResolvers({
     }
   },
   Query: {
+    // Define functions to call directly from the base of the query
     Entry: async (_: any, args: any) => {
       return {
         preferredPrefix: 'pref ' + args.query,
