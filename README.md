@@ -104,3 +104,10 @@ It deploys:
 
 Checkout the readme in the `server` folder for more details on the website the website.
 
+## Add a field
+
+To add a new field to the Bio2KG registry:
+
+1. In the python script in the `etl` folder: to process and add the field value to ElasticSearch
+2. In `server/server.ts`: add the field in the entry fields to add this field to the GraphQL query
+3. In `server/searchkit-react`: add the field to the GraphQL query used by the UI to retrieve data

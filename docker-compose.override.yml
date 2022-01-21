@@ -1,0 +1,34 @@
+version: "3"
+# version: "3.9"
+
+services:
+
+  nginx-elastic-auth:
+    ports:
+      - 8080:8080
+
+
+  elasticsearch:
+    ports: 
+      - 9200:9200
+    environment:
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    # volumes:
+    #   - /data/bio2kg/registry/elasticsearch:/usr/share/elasticsearch/data
+
+
+  # update-pipeline:
+  #   entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
+  #   volumes:
+  #     - ./etl:/root
+
+
+  virtuoso:
+    ports:
+      - 8890:8890
+      - 1111:1111
+    # volumes:
+    #   - /data/bio2kg/registry/virtuoso:/database
+    # environment:
+    #   - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
+    #   - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs

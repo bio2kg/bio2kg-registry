@@ -97,7 +97,7 @@ const graphqlQuery = gql`
               yearLastAccessible
               waybackUrl
               lastUpdated
-              lastUpdatedby
+              lastUpdatedBy
               lastUpdatedByOrcid
             }
           }
