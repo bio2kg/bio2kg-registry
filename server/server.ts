@@ -247,7 +247,7 @@ const resolvers = withSearchkitResolvers({
           query: {
             multi_match: {
               query: prefix,
-              fields: [ "preferredPrefix", "altPrefix^5", "identifiersPrefix^3" ]
+              fields: [ "preferredPrefix", "altPrefix^3", "identifiersPrefix^3" ]
             }
           }
         }
@@ -255,7 +255,7 @@ const resolvers = withSearchkitResolvers({
       console.log(response)
       console.log(response.body.hits.hits)
       if (response.body.hits.hits.length > 0) {
-        return response.body.hits.hits[0]._source.preferredPrefix
+        return response.body.hits.hits[0]
       } else {
         return null
       }
