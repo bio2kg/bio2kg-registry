@@ -247,7 +247,7 @@ const resolvers = withSearchkitResolvers({
           query: {
             multi_match: {
               query: prefix,
-              fields: [ "preferredPrefix", "altPrefix^3", "identifiersPrefix^3" ]
+              fields: [ "preferredPrefix^5", "altPrefix^3", "identifiersPrefix^3" ]
             }
           }
         }
