@@ -45,7 +45,7 @@ const searchkitConfig = {
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
   ],
   query: new MultiMatchQuery({
-    fields: ['preferredPrefix^5', 'altPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 
+    fields: ['preferredPrefix^5', 'altPrefix^4', 'identifiersPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 
       'description', 'keywords', 'providerBaseUri', 'alternativeBaseURI']
   }),
   // For a CustomQuery check: https://github.com/bio2kg/bio2kg-registry/blob/265c44806ad45b0d202fdd505a7c9cba8f2a8437/website/pages/api/graphql.tsx#L30
