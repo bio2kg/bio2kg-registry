@@ -107,7 +107,7 @@ typeDefs = [
   gql`
     type Query {
       Entry(query: String): Entry
-      getPreferredPrefix(prefix: String): String
+      getPreferredPrefix(prefix: String): Entry
       getPreferredURI(uri: String): String
       root: String
     }
@@ -255,7 +255,7 @@ const resolvers = withSearchkitResolvers({
       console.log(response)
       console.log(response.body.hits.hits)
       if (response.body.hits.hits.length > 0) {
-        return response.body.hits.hits[0]
+        return response.body.hits.hits[0]._source
       } else {
         return null
       }
