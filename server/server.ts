@@ -107,6 +107,7 @@ typeDefs = [
   gql`
     type Query {
       Entry(query: String): Entry
+      getPreferredPrefix(prefix: String): String
       getPreferredURI(uri: String): String
       root: String
     }
@@ -233,6 +234,30 @@ const resolvers = withSearchkitResolvers({
       return {
         preferredPrefix: 'pref ' + args.query,
         providerBaseUri: 'baseuri'
+      }
+    },
+
+    getPreferredPrefix: async (_: any, args: any) =>  {
+      const prefix = args.prefix
+      console.log (prefix)
+      const response: any = await client.search<Source>({
+        index: 'registry',
+        body: {
+          _source: ["preferredPrefix", "altPrefix","identifiersPrefix"],
+          query: {
+            multi_match: {
+              query: prefix,
+              fields: [ "preferredPrefix", "altPrefix^5", "identifiersPrefix^3" ]
+            }
+          }
+        }
+      });
+      console.log(response)
+      console.log(response.body.hits.hits)
+      if (response.body.hits.hits.length > 0) {
+        return response.body.hits.hits[0]._source.preferredPrefix
+      } else {
+        return null
       }
     },
     getPreferredURI: async (_: any, args: any) =>  {
