@@ -66,27 +66,23 @@ sudo chgrp 1000 -R /data/bio2kg/registry/elasticsearch
 sudo chown 1000 -R /data/bio2kg/registry/elasticsearch
 ```
 
-2. Start the docker-compose with the GraphQL server on http://localhost:4000/graphql and ElasticSearch on http://localhost:9200
+2. Start the stack with docker-compose:
 
 ```bash
 docker-compose up -d
 ```
 
-3. Start the search UI frontend on http://localhost:3000
+* Search UI frontend on http://localhost:3000
+* GraphQL server on http://localhost:4000/graphql
+* ElasticSearch on http://localhost:9200
 
-```bash
-cd server/searchkit-react
-yarn
-yarn dev
-```
-
-If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
+3. If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
 
 ```bash
 docker-compose run update-pipeline
 ```
 
-It deploys:
+The stack deploys:
 
 * An ElasticSearch instance with a nginx proxy to allow anyone to access the `/_search` endpoint, but prevents editing, configuration defined in the `elasticsearch` folder on http://localhost:9200
 * A NodeJS server using Searchkit and Express defined in the `server` folder on http://localhost:4000
@@ -96,7 +92,13 @@ It deploys:
     * Swagger UI on `/apidocs`
   * A React website to search the data on the base URL (`/`) defined in the folder `searchkit-react`
 
-Checkout the readme in the `server` folder for more details on the website the website.
+Checkout the readme in the `server` folder for more details on the website the website. You can also start it with `yarn` outside of docker:
+
+```bash
+cd server/searchkit-react
+yarn
+yarn dev
+```
 
 ### Deploy in production
 

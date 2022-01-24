@@ -26,6 +26,23 @@ services:
       - NODE_ENV=development
     command: yarn dev
 
+
+  frontend-dev:
+    image: node:16
+    ports: 
+      - 3000:3000
+    volumes:
+      - ./server/searchkit-react:/app
+    environment:
+      - NODE_ENV=development
+      - CI=true
+      # For some reason react-scripts require to add CI=true to run it in docker... https://stackoverflow.com/questions/60790696/react-scripts-start-exiting-in-docker-foreground-cmd
+    command: /app/docker-entrypoint.sh
+    # stdin_open: true
+    # tty: true 
+
+
+
   # update-pipeline:
   #   entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
   #   volumes:
