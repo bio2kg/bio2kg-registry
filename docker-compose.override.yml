@@ -17,18 +17,22 @@ services:
     #   - /data/bio2kg/registry/elasticsearch:/usr/share/elasticsearch/data
 
 
+  express-server:
+    ports: 
+      - 4000:4000
+
   # update-pipeline:
   #   entrypoint: "bash -c 'pip install -r /etl/requirements.txt && python3 /etl/lsr_csv_to_elastic.py'"
   #   volumes:
   #     - ./etl:/root
 
 
-  virtuoso:
-    ports:
-      - 8890:8890
-      - 1111:1111
-    # volumes:
-    #   - /data/bio2kg/registry/virtuoso:/database
-    # environment:
-    #   - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
-    #   - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs
+  # virtuoso:
+  #   ports:
+  #     - 8890:8890
+  #     - 1111:1111
+  #   # volumes:
+  #   #   - /data/bio2kg/registry/virtuoso:/database
+  #   # environment:
+  #   #   - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
+  #   #   - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs

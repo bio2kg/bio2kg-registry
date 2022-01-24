@@ -66,16 +66,18 @@ sudo chgrp 1000 -R /data/bio2kg/registry/elasticsearch
 sudo chown 1000 -R /data/bio2kg/registry/elasticsearch
 ```
 
-2. Start the docker-compose:
+2. Start the docker-compose with the GraphQL server on http://localhost:4000/graphql and ElasticSearch on http://localhost:9200
 
 ```bash
 docker-compose up -d
 ```
 
-3. Install the Linked Data Platform in the Virtuoso triplestore (running via `docker-compose`)
+3. Start the search UI frontend on http://localhost:3000
 
 ```bash
-./prepare_virtuoso_ldp.sh
+cd server/searchkit-react
+yarn
+yarn dev
 ```
 
 If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
@@ -86,8 +88,8 @@ docker-compose run update-pipeline
 
 It deploys:
 
-* An ElasticSearch instance with a nginx proxy to allow anyone to access the `/_search` endpoint, but prevents editing, configuration defined in the `elasticsearch` folder
-* A NodeJS server using Searchkit and Express defined in the `server` folder
+* An ElasticSearch instance with a nginx proxy to allow anyone to access the `/_search` endpoint, but prevents editing, configuration defined in the `elasticsearch` folder on http://localhost:9200
+* A NodeJS server using Searchkit and Express defined in the `server` folder on http://localhost:4000
   * SearchKit Apollo GraphQL endpoint serving data from ElasticSearch on `/graphql`
   * Sofa API to publish an OpenAPI endpoint based on the GraphQL endpoint
     * API on `/api`

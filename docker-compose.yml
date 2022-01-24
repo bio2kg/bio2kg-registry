@@ -49,35 +49,35 @@ services:
       - ./etl:/root
 
 
-  virtuoso:
-    container_name: bio2kg-registry-virtuoso
-    image: openlink/virtuoso-opensource-7:latest
-    # See also: https://hub.docker.com/r/markw/ldp_server
-    # https://community.openlinksw.com/t/permissions-on-ldp-containers-and-resources/290/14
-    # Download VAD packages: ODS Framework and Briefcase
-    # http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/7.2/
-    restart: unless-stopped
-    environment:
-      # - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
-      - DBA_PASSWORD=${ELASTIC_PASSWORD:-dba}
-      - DAV_PASSWORD=${ELASTIC_PASSWORD:-dba}
-      - SPARQL_UPDATE=true
-      - DEFAULT_GRAPH=https://w3id.org/bio2kg
-      # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
-      # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
-      # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
-      - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs
-      - VIRT_HTTPServer_HTTPThreadSize=280000
-      # - VIRT_URIQA_DynamicLocal=1
-      # - VIRT_Parameters_DirsAllowed=., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db
-      # Large dataset config
-      - VIRT_SPARQL_ResultSetMaxRows=1048576
-      - VIRT_SPARQL_MaxQueryCostEstimationTime=200000
-      - VIRT_SPARQL_MaxQueryExecutionTime=1000000
-      - VIRT_Database_MaxCheckpointRemap=125000
-      - VIRT_TempDatabase_MaxCheckpointRemap=125000
-      - VIRT_Parameters_TempDBSize=100000000
-      - VIRT_SPARQL_ShortenLongURIs=1
-      - VIRT_SPARQL_MaxCacheExpiration=1
-      - VIRT_SPARQL_ExternalQuerySource=1
-      - VIRT_SPARQL_ExternalXsltSource=1
+  # virtuoso:
+  #   container_name: bio2kg-registry-virtuoso
+  #   image: openlink/virtuoso-opensource-7:latest
+  #   # See also: https://hub.docker.com/r/markw/ldp_server
+  #   # https://community.openlinksw.com/t/permissions-on-ldp-containers-and-resources/290/14
+  #   # Download VAD packages: ODS Framework and Briefcase
+  #   # http://download3.openlinksw.com/index.html?prefix=uda/vad-vos-packages/7.2/
+  #   restart: unless-stopped
+  #   environment:
+  #     # - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
+  #     - DBA_PASSWORD=${ELASTIC_PASSWORD:-dba}
+  #     - DAV_PASSWORD=${ELASTIC_PASSWORD:-dba}
+  #     - SPARQL_UPDATE=true
+  #     - DEFAULT_GRAPH=https://w3id.org/bio2kg
+  #     # http://vos.openlinksw.com/owiki/wiki/VOS/VirtRDFPerformanceTuning
+  #     # http://docs.openlinksw.com/virtuoso/rdfperfgeneral/
+  #     # https://github.com/tenforce/docker-virtuoso/blob/master/virtuoso.ini
+  #     - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs
+  #     # - VIRT_HTTPServer_HTTPThreadSize=280000
+  #     # - VIRT_URIQA_DynamicLocal=1
+  #     # - VIRT_Parameters_DirsAllowed=., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db
+  #     # Large dataset config
+  #     # - VIRT_SPARQL_ResultSetMaxRows=1048576
+  #     # - VIRT_SPARQL_MaxQueryCostEstimationTime=200000
+  #     # - VIRT_SPARQL_MaxQueryExecutionTime=1000000
+  #     # - VIRT_Database_MaxCheckpointRemap=125000
+  #     # - VIRT_TempDatabase_MaxCheckpointRemap=125000
+  #     # - VIRT_Parameters_TempDBSize=100000000
+  #     # - VIRT_SPARQL_ShortenLongURIs=1
+  #     # - VIRT_SPARQL_MaxCacheExpiration=1
+  #     # - VIRT_SPARQL_ExternalQuerySource=1
+  #     # - VIRT_SPARQL_ExternalXsltSource=1
