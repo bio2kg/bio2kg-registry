@@ -232,8 +232,8 @@ const resolvers = withSearchkitResolvers({
     // Define functions to call directly from the base of the query
     Entry: async (_: any, args: any) => {
       return {
-        preferredPrefix: 'pref ' + args.query,
-        providerBaseUri: 'baseuri'
+        preferredPrefix: 'prefsss ' + args.query,
+        providerBaseUri: 'baseuriaaaooo'
       }
     },
 
