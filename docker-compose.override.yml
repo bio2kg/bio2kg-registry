@@ -22,6 +22,8 @@ services:
       - 4000:4000
     volumes:
       - ./server/server.ts:/app/server.ts
+    environment:
+      - NODE_ENV=development
     command: yarn dev
 
   # update-pipeline:
