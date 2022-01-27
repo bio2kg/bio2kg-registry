@@ -7,7 +7,7 @@ import {
   FacetsList,
   Pagination,
   ResetSearchButton,
-  SelectedFilters,
+  SelectedFilters
 } from '@searchkit/elastic-ui'
 import {
   EuiPage,
@@ -130,8 +130,7 @@ const Page = () => {
   const Facets = FacetsList([])
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const onButtonClick = () =>
-    setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
+  const onButtonClick = () => setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
   const getIconType = (size: number) => {
@@ -143,6 +142,16 @@ const Page = () => {
     api.search()
   };
 
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const onSortClick = () => setIsSortOpen((isSortOpen) => !isSortOpen);
+  const closeSort = () => setIsSortOpen(false);
+  const getSortOptionStatus = (sortOption: string) => {return sortOption === api.searchState.sortBy ? 'check':'empty'}
+  const changeSortOption = (sortOption: string) => {
+   closeSort();
+   api.setSortBy(sortOption)
+   api.search()   
+  }
+
   const button = (
     <EuiButtonEmpty
       size="s"
@@ -153,6 +162,38 @@ const Page = () => {
       Rows per page: {api.searchState.page.size}
     </EuiButtonEmpty>
   );
+
+  const sortButton = (
+    <EuiButtonEmpty
+      size="s"
+      color="text"
+      iconType="arrowDown"
+      iconSide="right"
+      onClick={onSortClick}>
+      Sort: {api.searchState.sortBy}
+    </EuiButtonEmpty>
+  );
+
+  const sortOptions = [
+    <EuiContextMenuItem
+      key="relevance"
+      icon={getSortOptionStatus("relevance")}
+      onClick={() => {changeSortOption("relevance")}}>
+      Relevance
+    </EuiContextMenuItem>,
+    <EuiContextMenuItem
+      key="ascending"
+      icon={getSortOptionStatus("ascending")}
+      onClick={() => {changeSortOption("ascending")}}>
+      Ascending Pref. Prefix
+  </EuiContextMenuItem>,
+      <EuiContextMenuItem
+      key="descending"
+      icon={getSortOptionStatus("descending")}
+      onClick={() => {changeSortOption("descending")}}>
+      Descending Pref. Prefix
+    </EuiContextMenuItem>,
+  ];
 
   const items = [
     <EuiContextMenuItem
@@ -244,6 +285,19 @@ const Page = () => {
             </EuiPageContentHeaderSection>
             <EuiPageContentHeaderSection>
               <EuiFlexGroup>
+               <EuiFlexItem grow={1}>
+              
+                 </EuiFlexItem>
+                {/* Sort Option */}
+                <EuiFlexItem grow={1}>
+                  <EuiPopover
+                    button={sortButton}
+                    isOpen={isSortOpen}
+                    closePopover={closeSort}>
+                    <EuiContextMenuPanel items={sortOptions} />
+                  </EuiPopover>
+                </EuiFlexItem>
+
                 {/* Page size */}
                 <EuiFlexItem grow={1}>
                   <EuiPopover

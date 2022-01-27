@@ -43,6 +43,8 @@ const searchkitConfig = {
   },
   sortOptions: [
     { id: 'relevance', label: "Relevance", field: [{"_score": "desc"}], defaultOption: true},
+    { id: 'descending', label:"Descending Preferred Prefix", field: [{"_id": "desc"}]},
+    { id: 'ascending', label:"Ascending Preferred Prefix", field: [{"_id": "asc"}]}
   ],
   query: new MultiMatchQuery({
     fields: ['preferredPrefix^5', 'altPrefix^4', 'identifiersPrefix^4', 'abbreviation^4', 'title^3', 'organization^2', 
@@ -232,8 +234,7 @@ const resolvers = withSearchkitResolvers({
     // Define functions to call directly from the base of the query
     Entry: async (_: any, args: any) => {
       return {
-        preferredPrefix: 'prefsss ' + args.query,
-        providerBaseUri: 'baseuriaaaooo'
+        preferredPrefix: args.query
       }
     },
 
