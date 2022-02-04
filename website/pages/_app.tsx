@@ -1,8 +1,10 @@
 import '@elastic/eui/dist/eui_theme_light.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
+import './app.css';
 
-export default ({ Component, pageProps }) => {
+const app = ({ Component, pageProps }) => {
 
   const router = useRouter()
   useEffect(() => {
@@ -15,5 +17,12 @@ export default ({ Component, pageProps }) => {
     }
   }, [router.events])
 
-  return <Component {...pageProps} />
+  return (<>
+    <Head>
+      <title>Bio2KG Registry</title>
+    </Head>
+    <Component {...pageProps} />
+  </>)
 }
+
+export default app

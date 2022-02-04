@@ -30,7 +30,7 @@ export default withApollo(
     if (typeof window !== 'undefined') window.cache = cache
 
     return new ApolloClient({
-      ssrMode: false,
+      ssrMode: true,
       link: createHttpLink({
         uri: '/api/graphql',
         // uri: 'http://localhost:3000/api/graphql',

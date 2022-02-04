@@ -5,13 +5,13 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <title>Bio2KG Registry</title>
+          {/* <title>Bio2KG Registry</title> */}
           {/* <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=G-Y1LWVCFZQK`}
           /> */}
           {/* <script src={"https://maps.googleapis.com/maps/api/js?key=AIzaSyCnxbEhpVqsd7m-dDGb3mJrFEnZFSKdKOU&libraries=places"} defer></script> */}
-          <script
+          {/* <script
             dangerouslySetInnerHTML={{
               __html: `
             window.dataLayer = window.dataLayer || [];
@@ -22,7 +22,7 @@ export default class MyDocument extends Document {
             });
           `,
             }}
-          />
+          /> */}
         </Head>
         <body>
           <Main />

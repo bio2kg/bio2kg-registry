@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import Link from 'next/link';
 import { 
   EuiFlexGrid, 
   EuiFlexItem, 
@@ -32,7 +33,11 @@ export const HitsGrid = ({ data }: any) => {
           title={<EuiFlexGroup>
             <EuiFlexItem grow={false} >
               <EuiTitle size="xs">
-                <h2>{hit.fields.title}</h2>
+                <h2>
+                  <a href={"/dataset/" + hit.fields.preferredPrefix}>
+                    {hit.fields.title}
+                  </a>
+                </h2>
               </EuiTitle>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
