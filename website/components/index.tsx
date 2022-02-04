@@ -1,12 +1,14 @@
+import React from 'react';
 import { gql, useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { HitsList, HitsGrid } from './searchkit/Hits'
+// import { HitsList, HitsGrid } from './components/Hits'
 import { useSearchkitVariables, useSearchkit, useSearchkitQueryValue } from '@searchkit/client'
 import {
   FacetsList,
   Pagination,
   ResetSearchButton,
-  SelectedFilters,
+  SelectedFilters
 } from '@searchkit/elastic-ui'
 import {
   EuiPage,
@@ -45,12 +47,10 @@ const graphqlQuery = gql`
             dateMin
             dateMax
           }
-
           ... on NumericRangeSelectedFilter {
             min
             max
           }
-
           ... on ValueSelectedFilter {
             value
           }
@@ -71,9 +71,11 @@ const graphqlQuery = gql`
         }
         sortedBy
         items {
-          ... on ResultHit {
+          ... on RegistryEntry {
             id
             exampleUrl
+            identifiersUrl
+            orcidUrl
             highlight {
               title 
               description
@@ -81,6 +83,7 @@ const graphqlQuery = gql`
             fields {
               preferredPrefix
               altPrefix
+              identifiersPrefix
               providerBaseUri
               alternativeBaseUri
               title
@@ -92,6 +95,11 @@ const graphqlQuery = gql`
               exampleId
               providerHtmlUrl
               regex
+              yearLastAccessible
+              waybackUrl
+              lastUpdated
+              lastUpdatedBy
+              lastUpdatedByOrcid
             }
           }
         }
@@ -118,13 +126,12 @@ const Page = () => {
   const { previousData, data = previousData, loading } = useQuery(graphqlQuery, {
     variables: variables
   })
-  
-  const [viewType, setViewType] = useState('grid')
+
+  const [ viewType ] = useState('grid')
   const Facets = FacetsList([])
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const onButtonClick = () =>
-    setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
+  const onButtonClick = () => setIsPopoverOpen((isPopoverOpen) => !isPopoverOpen);
   const closePopover = () => setIsPopoverOpen(false);
 
   const getIconType = (size: number) => {
@@ -136,6 +143,16 @@ const Page = () => {
     api.search()
   };
 
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const onSortClick = () => setIsSortOpen((isSortOpen) => !isSortOpen);
+  const closeSort = () => setIsSortOpen(false);
+  const getSortOptionStatus = (sortOption: string) => {return sortOption === api.searchState.sortBy ? 'check':'empty'}
+  const changeSortOption = (sortOption: string) => {
+    closeSort();
+    api.setSortBy(sortOption)
+    api.search()   
+  }
+
   const button = (
     <EuiButtonEmpty
       size="s"
@@ -146,6 +163,38 @@ const Page = () => {
       Rows per page: {api.searchState.page.size}
     </EuiButtonEmpty>
   );
+
+  const sortButton = (
+    <EuiButtonEmpty
+      size="s"
+      color="text"
+      iconType="arrowDown"
+      iconSide="right"
+      onClick={onSortClick}>
+      Sort: {api.searchState.sortBy}
+    </EuiButtonEmpty>
+  );
+
+  const sortOptions = [
+    <EuiContextMenuItem
+      key="relevance"
+      icon={getSortOptionStatus("relevance")}
+      onClick={() => {changeSortOption("relevance")}}>
+      Relevance
+    </EuiContextMenuItem>,
+    <EuiContextMenuItem
+      key="ascending"
+      icon={getSortOptionStatus("ascending")}
+      onClick={() => {changeSortOption("ascending")}}>
+      Ascending Pref. Prefix
+  </EuiContextMenuItem>,
+      <EuiContextMenuItem
+      key="descending"
+      icon={getSortOptionStatus("descending")}
+      onClick={() => {changeSortOption("descending")}}>
+      Descending Pref. Prefix
+    </EuiContextMenuItem>,
+  ];
 
   const items = [
     <EuiContextMenuItem
@@ -185,9 +234,7 @@ const Page = () => {
   return (
     <EuiPage>
       <EuiPageSideBar>
-        {/* Reload search bar onChange 
-        https://github.com/searchkit/searchkit/blob/next/packages/searchkit-elastic-ui/src/SearchBar/index.tsx */}
-        {/* <SearchBar loading={loading} /> */}
+        {/* Reload search bar onChange */}
         <EuiFieldSearch
           placeholder="Search"
           value={query}
@@ -239,6 +286,19 @@ const Page = () => {
             </EuiPageContentHeaderSection>
             <EuiPageContentHeaderSection>
               <EuiFlexGroup>
+                <EuiFlexItem grow={1}>
+              
+                </EuiFlexItem>
+                {/* Sort Option */}
+                <EuiFlexItem grow={1}>
+                  <EuiPopover
+                    button={sortButton}
+                    isOpen={isSortOpen}
+                    closePopover={closeSort}>
+                    <EuiContextMenuPanel items={sortOptions} />
+                  </EuiPopover>
+                </EuiFlexItem>
+
                 {/* Page size */}
                 <EuiFlexItem grow={1}>
                   <EuiPopover
@@ -250,14 +310,22 @@ const Page = () => {
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
                   {/* https://elastic.github.io/eui/#/display/icons */}
-                  <EuiButton href="/api/graphql" size="s" iconType="graphApp" target="_blank">
+                    <EuiButton href="/api/graphql?query=query%20%7B%0A%20%20results%20%28%0A%20%20%20%20query%3A%22go%22%0A%20%20%20%20filters%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%7Bidentifier%3A%20%22type%22%2C%20value%3A%20%22dataset%22%7D%0A%20%20%20%20%5D%0A%20%20%20%20%29%7B%0A%20%20%20%20summary%20%7B%0A%20%20%20%20%20%20query%0A%20%20%20%20%20%20total%0A%20%20%20%20%20%20appliedFilters%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20identifier%0A%20%20%20%20%20%20%20%20display%0A%20%20%20%20%20%20%20%20label%0A%20%20%20%20%20%20%20%20...%20on%20DateRangeSelectedFilter%20%7B%0A%20%20%20%20%20%20%20%20%20%20dateMin%0A%20%20%20%20%20%20%20%20%20%20dateMax%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20...%20on%20NumericRangeSelectedFilter%7B%0A%20%20%20%20%20%20%20%20%20%20min%0A%20%20%20%20%20%20%20%20%20%20max%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20...%20on%20ValueSelectedFilter%20%7B%0A%20%20%20%20%20%20%20%20%20%20value%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20sortOptions%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20label%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20hits%20%28%0A%20%20%20%20%20%20page%3A%7Bfrom%3A%200%2C%20size%3A5%7D%0A%20%20%20%20%20%20sortBy%3A%20%22relevance%22%0A%20%20%20%20%29%7B%0A%20%20%20%20%20%20page%20%7B%0A%20%20%20%20%20%20%20%20total%0A%20%20%20%20%20%20%20%20totalPages%0A%20%20%20%20%20%20%20%20pageNumber%0A%20%20%20%20%20%20%20%20from%0A%20%20%20%20%20%20%20%20size%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20sortedBy%0A%20%20%20%20%20%20items%20%7B%0A%20%20%20%20%20%20%20%20...%20on%20RegistryEntry%20%7B%0A%20%20%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20%20%20fields%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20%20%20%20%20description%0A%20%20%20%20%20%20%20%20%20%20%20%20organization%0A%20%20%20%20%20%20%20%20%20%20%20%20type%0A%20%20%20%20%20%20%20%20%20%20%20%20keywords%0A%20%20%20%20%20%20%20%20%20%20%20%20homepage%0A%20%20%20%20%20%20%20%20%20%20%20%20yearLastAccessible%0A%20%20%20%20%20%20%20%20%20%20%20%20waybackUrl%0A%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20preferredPrefix%0A%20%20%20%20%20%20%20%20%20%20%20%20identifiersPrefix%0A%20%20%20%20%20%20%20%20%20%20%20%20altPrefix%0A%20%20%20%20%20%20%20%20%20%20%20%20providerBaseUri%0A%20%20%20%20%20%20%20%20%20%20%20%20alternativeBaseUri%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20exampleId%0A%20%20%20%20%20%20%20%20%20%20%20%20regex%0A%20%20%20%20%20%20%20%20%20%20%20%20providerHtmlUrl%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20lastUpdated%0A%20%20%20%20%20%20%20%20%20%20%20%20lastUpdatedBy%0A%20%20%20%20%20%20%20%20%20%20%20%20lastUpdatedByOrcid%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20exampleUrl%0A%20%20%20%20%20%20%20%20%20%20orcidUrl%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7Dfacets%20%7B%0A%20%20%20%20%20%20identifier%0A%20%20%20%20%20%20type%0A%20%20%20%20%20%20label%0A%20%20%20%20%20%20display%0A%20%20%20%20%20%20entries%20%7B%0A%20%20%20%20%20%20%20%20label%0A%20%20%20%20%20%20%20%20count%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D"
+                      size="s" iconType="graphApp" target="_blank">
                     GraphQL API
                   </EuiButton>
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
                   {/* https://elastic.github.io/eui/#/display/icons */}
-                  <EuiButton href="https://elastic.registry.bio2kg.org/_search"
+                  <EuiButton href="/apidocs"
                       size="s" iconType="searchProfilerApp" target="_blank">
+                    OpenAPI
+                  </EuiButton>
+                </EuiFlexItem>
+                <EuiFlexItem grow={1}>
+                  {/* https://elastic.github.io/eui/#/display/icons */}
+                  <EuiButton href="https://elastic.registry.bio2kg.org/_search"
+                      size="s" iconType="logoElastic" target="_blank">
                     ElasticSearch API
                   </EuiButton>
                 </EuiFlexItem>
@@ -292,7 +360,7 @@ const Page = () => {
           </EuiPageContentHeader>
           <EuiPageContentBody>
             {viewType === 'grid' ? <HitsGrid data={data} /> : <HitsList data={data} />}
-            <EuiFlexGroup justifyContent="spaceAround">
+            <EuiFlexGroup justifyContent="spaceAround" style={{marginTop: '25px'}}>
               <Pagination data={data?.results} />
             </EuiFlexGroup>
           </EuiPageContentBody>

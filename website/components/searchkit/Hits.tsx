@@ -7,17 +7,15 @@ import {
   EuiFlexGroup, 
   EuiTitle, 
   EuiText,
-  EuiButtonIcon,
-  EuiButton,
   EuiButtonEmpty,
   EuiBadge
 } from '@elastic/eui'
-import { EuiHighlightProps } from '@elastic/eui/src/components/highlight/highlight'
+// import { EuiHighlightProps } from '@elastic/eui/src/components/highlight/highlight'
 
 export const HitsGrid = ({ data }: any) => {
-  const [showDetails, setShowDetails] = useState({})
+  const [showDetails, setShowDetails]: any = useState({})
 
-  const clickDetails = (hit_id: any) => {
+  const clickDetails = (hit_id: string) => {
     if (showDetails[hit_id]) {
       setShowDetails({...showDetails, [hit_id] : false})
     } else {
@@ -75,7 +73,7 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Organization:</i> {hit.fields.organization}<br/></div>
                 }
                 {hit.fields.homepage && 
-                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
+                  <div className="eui-displayInline"><i>Website:</i> <a target="_blank" rel="noopener noreferrer" href={hit.fields.homepage}>{hit.fields.homepage}</a><br/></div>
                 }
                 {hit.fields.keywords && 
                   <div className="eui-displayInline"><i>Keywords:</i> {hit.fields.keywords.join(', ')}<br/></div>
@@ -86,6 +84,9 @@ export const HitsGrid = ({ data }: any) => {
                 {hit.fields.altPrefix &&
                   <div className="eui-displayInline"><i>Alternative prefixes:</i> {hit.fields.altPrefix.join(', ')}<br/></div>
                 }
+                {hit.fields.identifiersPrefix && hit.identifiersUrl &&
+                  <div className="eui-displayInline"><i>Identifiers.org prefix:</i> <a target="_blank" rel="noopener noreferrer" href={hit.identifiersUrl}>{hit.fields.identifiersPrefix}</a><br/></div>
+                }                
                 {hit.fields.providerBaseUri && 
                   <div className="eui-displayInline"><i>Provider Base URI:</i> {hit.fields.providerBaseUri}<br/></div>
                 }
@@ -96,12 +97,23 @@ export const HitsGrid = ({ data }: any) => {
                   <div className="eui-displayInline"><i>Identifier Regex:</i> {hit.fields.regex}<br/></div>
                 }
                 {hit.fields.exampleId && hit.exampleUrl &&
-                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
+                  <div className="eui-displayInline"><i>Example Identifier:</i> <a target="_blank" rel="noopener noreferrer" href={hit.exampleUrl}>{hit.fields.exampleId}</a><br/></div>
                 }
                 {hit.fields.providerHtmlUrl && 
                   <div className="eui-displayInline"><i>Template Url:</i> {hit.fields.providerHtmlUrl}<br/></div>
                 }
-
+                
+                {hit.fields.yearLastAccessible &&
+                  <div className="eui-displayInline"><i>Last accessible:</i> {hit.fields.yearLastAccessible} {hit.fields.waybackUrl && 
+                    <div className="eui-displayInline">[<a target="_blank" rel="noopener noreferrer" href={hit.fields.waybackUrl}>archived website</a>]<br/></div>
+                  } <br/></div>
+                }
+                {hit.fields.lastUpdated && 
+                  <div className="eui-displayInline"><i>Last updated On:</i> {hit.fields.lastUpdated} {hit.fields.lastUpdatedBy && hit.orcidUrl && 
+                    <div className="eui-displayInline">by <a target="_blank" rel="noopener noreferrer" href={hit.orcidUrl}>{hit.fields.lastUpdatedBy}</a><br/></div>
+                  } <br/></div>
+                }
+                
             </EuiText>
           }
         </EuiCard>
@@ -130,21 +142,6 @@ export const HitsList = ({ data }: any) => (
                 <p>{hit.fields.description}</p>
               </EuiText>
             </EuiFlexItem>
-            {/* <EuiFlexItem grow={2}>
-              <EuiText grow={false}>
-                <ul>
-                  <li>
-                    <b>ACTORS: </b>
-                    {hit.fields.actors.join(', ')}
-                  </li>
-
-                  <li>
-                    <b>WRITERS: </b>
-                    {hit.fields.writers.join(', ')}
-                  </li>
-                </ul>
-              </EuiText>
-            </EuiFlexItem> */}
           </EuiFlexGroup>
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -4,7 +4,8 @@ import withApollo from '../hocs/withApollo'
 
 const Search = dynamic(() => import('../components/index'), { ssr: false })
 
-export default withApollo(withSearchkit(withSearchkitRouting(Search, {
+export default withApollo(withSearchkit(withSearchkitRouting(Search
+  , {
   createURL: ({ qsModule, location, routeState }) => {
     let filters: any
     let typeCategoryURL = "all"
@@ -51,4 +52,5 @@ export default withApollo(withSearchkit(withSearchkitRouting(Search, {
     return routeState
 
   }
-})))
+}
+)))

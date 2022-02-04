@@ -3,7 +3,7 @@ import getStream from 'get-stream';
 import { useSofa, createSofaRouter, OpenAPI } from 'sofa-api';
 // import { gql, useQuery } from '@apollo/client'
 // import { makeExecutableSchema } from '@graphql-tools/schema';
-import { schema } from './api/graphql'
+// import { schema } from './api/graphql'
 
 // TODO: use SOFA for OpenAPI https://github.com/Urigo/SOFA/blob/master/example/index.ts
 // Add CORS support: https://github.com/Urigo/SOFA/issues/141
@@ -17,26 +17,27 @@ import { schema } from './api/graphql'
 // Example to serve React with Express: https://github.com/myogeshchavan97/express-static-serve/
 // Article to serve React with Express: https://medium.com/@lowewenzel/serving-express-with-a-react-single-page-app-within-the-same-application-c168f1c44201
 
-const invokeSofa = createSofaRouter({
-  basePath: '/rest',
-  schema,
-  // onRoute(info) {
-  //   openApi.addRoute(info, {
-  //     basePath: '/api',
-  //   });
-  // },
-});
+// const invokeSofa = createSofaRouter({
+//   basePath: '/rest',
+//   schema,
+//   // onRoute(info) {
+//   //   openApi.addRoute(info, {
+//   //     basePath: '/api',
+//   //   });
+//   // },
+// });
 
 const handleSofa = async (req: any, res: any) => {
   try {
-    const response = await invokeSofa({
-      method: req.method,
-      url: req.url,
-      body: JSON.parse(await getStream(req)),
-      contextValue: {
-        req
-      },
-    });
+    // const response = await invokeSofa({
+    //   method: req.method,
+    //   url: req.url,
+    //   body: JSON.parse(await getStream(req)),
+    //   contextValue: {
+    //     req
+    //   },
+    // });
+    console.log('SOFA disabled');
     // if (response) {
     //   const headers = {
     //     'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const handleSofa = async (req: any, res: any) => {
     //   res.writeHead(404);
     //   res.end();
     // }
-    return response
+    // return response
   } catch (error) {
     console.log("Error with SOFA")
     // res.writeHead(500);
