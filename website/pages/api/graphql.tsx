@@ -1,31 +1,28 @@
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
 import cors from 'micro-cors'
 // import { makeExecutableSchema } from '@graphql-tools/schema';
-
-// // import express from 'express';
-// import cors from 'cors';
-// // import compression from 'compression';
-// // import helmet from 'helmet';
-// import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-express';
-
 import {
   MultiMatchQuery,
   SearchkitSchema,
   RefinementSelectFacet
 } from '@searchkit/schema';
+import { Client } from '@elastic/elasticsearch'
+import { ELASTIC_URL } from '../../components/Config'
 // import path from "path";
 // import * as swaggerUi from 'swagger-ui-express';
 // import { useSofa, OpenAPI } from 'sofa-api';
-import { Client } from '@elastic/elasticsearch'
+// import express from 'express';
+// import cors from 'cors';
+// import compression from 'compression';
+// import helmet from 'helmet';
+// import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-express';
+
 
 // Create new types in the GraphQL query: https://www.searchkit.co/docs/customisations/changing-graphql-types
 // PrefixCommons API: https://github.com/prefixcommons/prefixcommons-api/blob/master/slim-server/SwaggerServer/index.php
 
-// const ELASTIC_URL = process.env.ELASTIC_URL || 'https://elastic.registry.bio2kg.org'
-
 const searchkitConfig = {
-  // host: ELASTIC_URL,
-  host: 'https://elastic.registry.bio2kg.org',
+  host: ELASTIC_URL,
   index: 'registry',
   hits: {
     fields: ["preferredPrefix" , "altPrefix" , "providerBaseUri" , "alternativeBaseUri" , 
@@ -195,8 +192,7 @@ typeDefs = [
 
 // ElasticSearch client for custom functions
 const client = new Client({
-  // node: ELASTIC_URL
-  node: 'https://elastic.registry.bio2kg.org'
+  node: ELASTIC_URL
 })
 interface Source {
   providerBaseUri: string,
@@ -341,71 +337,18 @@ const server = new ApolloServer({
   introspection: true,
 });
 
-// // Now we define the Express server:
-// export const app = express();
-// // For production (cf. https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/deployment)
-// app.use(compression());
-// app.use(cors());
-// // Security: https://github.com/helmetjs/helmet
-// app.use(helmet({
-//   contentSecurityPolicy: false,
-// }));
-
-// // Add Apollo GraphQL endpoint at /graphql
-// server.applyMiddleware({ app, path: '/graphql' });
-
-// // Add RESTful API endpoint with Sofa at /api
-// const openApi = OpenAPI({
-//   schema,
-//   info: {
-//     title: 'Bio2KG Registry API',
-//     version: '3.0.0',
-//   },
-// });
-// app.use(
-//   useSofa({
-//       basePath: '/api',
-//       schema,
-//       onRoute(info) {
-//           openApi.addRoute(info, {
-//             basePath: '/api',
-//           });
-//         },
-//   })
-// );
-// // Add OpenAPI docs at /apidocs
-// openApi.save('./swagger.yml');
-// app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(openApi.get()));
-
-// // Serve searchkit-react at /
-// app.use(express.static(path.join(__dirname, ".", "public")));
-
-
-// app.listen({ port: 4000 }, () =>
-//   console.log(`🚀 GraphQL ready at http://localhost:4000${server.graphqlPath}
-// 📖 OpenAPI docs ready at http://localhost:4000/apidocs`)
-// );
-
-
+// Required for the GraphQL endpoint to work
 export const config = {
   api: {
     bodyParser: false
   }
 };
 
+// export default server.createHandler({ path: '/api/graphql' })
 
-export default server.createHandler({ path: '/api/graphql' })
+// TODO: add CORS enabled
+const handler = server.createHandler({ path: '/api/graphql' })
+export default cors()((req: any, res: any) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
 
 // TODO: use SOFA for OpenAPI https://github.com/Urigo/SOFA/blob/master/example/index.ts
-
-// const handler = server.createHandler({ path: '/api/graphql' })
-// export default cors()((req, res) => req.method === 'OPTIONS' ? res.end() : handler(req, res))
-
-
-
-
-
-
-
-
 

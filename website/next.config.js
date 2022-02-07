@@ -1,138 +1,31 @@
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
+    /** Disable the `X-Powered-By: Next.js` response header. */
+    poweredByHeader: false,
 
+    /**
+     * Set custom `process.env.SOMETHING` values to use in the application.
+     * @see https://nextjs.org/docs/api-reference/next.config.js/environment-variables
+     */
+    // env: {
+    //     ELASTIC_URL: elasticUrl,
+    //     GRAPHQL_URL: graphqlUrl,
+    // },
+
+}
+
+module.exports = nextConfig
+
+
+/**
+ * Enhances the Next config with the ability to:
+ * - Analyze the webpack bundle
+ * - Load images from JavaScript.
+ * - Load SCSS files from JavaScript.
+ */
 // const withBundleAnalyzer = require('@next/bundle-analyzer');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const { IgnorePlugin } = require('webpack');
-
-// /**
-//  * If you are deploying your site under a directory other than `/` e.g.
-//  * GitHub pages, then you have to tell Next where the files will be served.
-//  * We don't need this during local development, because everything is
-//  * available under `/`.
-//  */
-// const usePathPrefix = process.env.PATH_PREFIX === 'true';
-
-// const pathPrefix = usePathPrefix ? derivePathPrefix() : '';
-
-// const nextConfig = {
-//   /** Disable the `X-Powered-By: Next.js` response header. */
-//   poweredByHeader: false,
-
-//   /**
-//    * When set to something other than '', this field instructs Next to
-//    * expect all paths to have a specific directory prefix. This fact is
-//    * transparent to (almost all of) the rest of the application.
-//    */
-//   basePath: pathPrefix,
-
-//   /**
-//    * Set custom `process.env.SOMETHING` values to use in the application.
-//    * You can do this with Webpack's `DefinePlugin`, but this is more concise.
-//    * It's also possible to provide values via `publicRuntimeConfig`, but
-//    * this method is preferred as it can be done statically at build time.
-//    *
-//    * @see https://nextjs.org/docs/api-reference/next.config.js/environment-variables
-//    */
-//   env: {
-//     PATH_PREFIX: pathPrefix,
-//     // THEME_CONFIG: JSON.stringify(themeConfig),
-//   },
-
-//   /**
-//    * Next.js reports TypeScript errors by default. If you don't want to
-//    * leverage this behavior and prefer something else instead, like your
-//    * editor's integration, you may want to disable it.
-//    */
-//   // typescript: {
-//   //   ignoreDevErrors: true,
-//   // },
-
-//   /** Customises the build */
-//   webpack(config, { isServer }) {
-//     // EUI uses some libraries and features that don't work outside of a
-//     // browser by default. We need to configure the build so that these
-//     // features are either ignored or replaced with stub implementations.
-//     if (isServer) {
-//       config.externals = config.externals.map(eachExternal => {
-//         if (typeof eachExternal !== 'function') {
-//           return eachExternal;
-//         }
-
-//         return (context, callback) => {
-//         //   if (context.request.indexOf('@elastic/eui') > -1) {
-//         //     return callback();
-//         //   }
-
-//           return eachExternal(context, callback);
-//         };
-//       });
-
-//       // Mock HTMLElement on the server-side
-//       const definePluginId = config.plugins.findIndex(
-//         p => p.constructor.name === 'DefinePlugin'
-//       );
-
-//       config.plugins[definePluginId].definitions = {
-//         ...config.plugins[definePluginId].definitions,
-//         HTMLElement: function () {},
-//       };
-//     }
-
-//     // Copy theme CSS files into `public`
-//     config.plugins.push(
-//     //   new CopyWebpackPlugin({ patterns: themeConfig.copyConfig }),
-
-//       // Moment ships with a large number of locales. Exclude them, leaving
-//       // just the default English locale. If you need other locales, see:
-//       // https://create-react-app.dev/docs/troubleshooting/#momentjs-locales-are-missing
-//       new IgnorePlugin({
-//         resourceRegExp: /^\.\/locale$/,
-//         contextRegExp: /moment$/,
-//       })
-//     );
-
-//     config.resolve.mainFields = ['module', 'main'];
-
-//     return config;
-//   },
-
-//   /**
-//    * If you want to use dynamic routes with Static HTML Export, then you
-//    * have to manually define (or in this case, extend) the path map.
-//    * Otherwise, Next can't generate static pages for each path - everything
-//    * would work on the client so long as an explicit path was loaded first,
-//    * but a direct fetch on a dynamic route wouldn't work. If you don't use
-//    * dynamic routes, then you don't need this function at all.
-//    *
-//    * If you can't generate all the possible paths at build time, for
-//    * example by hard-coding or querying an API, you'll need some kind of
-//    * server-side redirect, which is outside the scope of this project.
-//    *
-//    * @see https://nextjs.org/docs/routing/introduction
-//    * @see https://nextjs.org/docs/advanced-features/static-html-export
-//    */
-//   exportPathMap: async function (defaultPathMap) {
-//     const dynamicPaths = [
-//       '/dataset',
-//     ];
-
-//     const pathMap = {
-//       ...defaultPathMap,
-//     };
-
-//     for (const path of dynamicPaths) {
-//       pathMap[`/dataset${path}`] = { page: '/dataset/[id]' };
-//     }
-
-//     return pathMap;
-//   },
-// };
-
-// /**
-//  * Enhances the Next config with the ability to:
-//  * - Analyze the webpack bundle
-//  * - Load images from JavaScript.
-//  * - Load SCSS files from JavaScript.
-//  */
 // module.exports = withBundleAnalyzer({
-//   enabled: process.env.ANALYZE === 'true',
+//     enabled: process.env.ANALYZE === 'true',
 // })(nextConfig);

@@ -2,29 +2,10 @@ import React from 'react'
 import withApollo from 'next-with-apollo'
 import { InMemoryCache, ApolloProvider, ApolloClient, createHttpLink, gql } from '@apollo/client'
 
+
 export default withApollo(
   ({ initialState, headers }) => {
     const cache = new InMemoryCache({}).restore(initialState || {})
-
-    // const defaultQuery = gql`
-    // {
-    //   results {
-    //     hits {
-    //       items {
-    //         ... on RegistryEntry {
-    //           id
-    //           fields {
-    //             preferredPrefix
-    //             title
-    //             type
-    //             keywords
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    // `
 
     // @ts-ignore
     if (typeof window !== 'undefined') window.cache = cache
@@ -51,3 +32,28 @@ export default withApollo(
     )
   }
 )
+
+
+
+// import { createWithApollo } from "./createWithApollo";
+// import { ApolloClient, InMemoryCache } from "@apollo/client";
+// import { NextPageContext } from "next";
+// import { createUploadLink } from "apollo-upload-client";
+
+// const createClient = (ctx: NextPageContext) =>
+//     new ApolloClient({
+
+//         cache: new InMemoryCache(),
+//         link: createUploadLink({
+//             uri: process.env.NEXT_PUBLIC_SERVER_URL as string,
+//             credentials: "include",
+//             headers: {
+//                 cookie:
+//                     (typeof window === "undefined"
+//                         ? ctx?.req?.headers.cookie
+//                         : undefined) || "",
+//             },
+//         })
+//     });
+
+// export const withApollo = createWithApollo(createClient);

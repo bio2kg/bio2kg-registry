@@ -39,24 +39,6 @@ docker-compose run update-pipeline
 
 ### Locally for development
 
-<!-- Password currently not used for ElasticSearch
-
-Make sure you use the same password in the GitHub Actions secrets and for the docker compose deployment.
-
-1. Add the ElasticSearch password to a `.env` file alongside the `docker-compose.yml`, for example with Bash:
-
-```bash
-echo "ELASTIC_PASSWORD=yourpassword" > .env
-```
-
-2. Generate the `.htpasswd` file with user/password for the nginx authentication over ElasticSearch defined in `elasticsearch/nginx.conf`:
-
-```bash
-htpasswd -Bbn elastic yourpassword > elasticsearch/.htpasswd
-```
-
--->
-
 1. Prepare the permission for the shared volume to keep ElasticSearch data persistent:
 
 ```bash
@@ -76,7 +58,7 @@ docker-compose up -d
 * GraphQL server on http://localhost:4000/graphql
 * ElasticSearch on http://localhost:9200
 
-3. If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
+🔁 If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
 
 ```bash
 docker-compose run update-pipeline
@@ -85,17 +67,17 @@ docker-compose run update-pipeline
 The stack deploys:
 
 * An ElasticSearch instance with a nginx proxy to allow anyone to access the `/_search` endpoint, but prevents editing, configuration defined in the `elasticsearch` folder on http://localhost:9200
-* A NodeJS server using Searchkit and Express defined in the `server` folder on http://localhost:4000
-  * SearchKit Apollo GraphQL endpoint serving data from ElasticSearch on `/graphql`
-  * Sofa API to publish an OpenAPI endpoint based on the GraphQL endpoint
+* A NodeJS server using Searchkit and NextJS defined in the `website` folder on http://localhost:3000
+  * Apollo GraphQL endpoint serving data from ElasticSearch on `/graphql`
+  * A React website using SearchKit to search the data on the base URL (`/`)
+  * 🚧 In development: a Sofa API to publish an OpenAPI endpoint based on the GraphQL endpoint
     * API on `/api`
     * Swagger UI on `/apidocs`
-  * A React website to search the data on the base URL (`/`) defined in the folder `searchkit-react`
 
-Checkout the readme in the `server` folder for more details on the website the website. You can also start it with `yarn` outside of docker:
+You can also start just the website using `yarn` without of docker, it will get the data from the ElasticSearch in production:
 
 ```bash
-cd server/searchkit-react
+cd website
 yarn
 yarn dev
 ```
@@ -114,18 +96,19 @@ Install the Linked Data Platform in the Virtuoso triplestore (running via `docke
 ./prepare_virtuoso_ldp.sh
 ```
 
-If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
+🔁 If you want to update the ElasticSearch endpoint data without stopping the stack, you can run this:
 
 ```bash
 docker-compose run update-pipeline
 ```
 
-## Add a field the the registry
+## Add a field in the registry
 
 To add a new field to the Bio2KG registry, check the following files:
 
-1. In the `etl` folder python script: process and add the field value to ElasticSearch
-2. In `server/server.ts`: add the field in the entry fields to add this field to the GraphQL query
-3. In `server/searchkit-react`: add the field to the GraphQL query used by the UI to retrieve data. 
+1. In the `etl` folder python script: get the field from the spreadsheet, process it, and add the field value to ElasticSearch
+2. In `website/pages/api/graphql.tsx`: add the field in the entry fields to register this field in the GraphQL server query
+3. In `website/components/index.tsx`: add the field to the GraphQL query used by the UI to retrieve data. 
+3. In `website/components/searchkit/Hits.tsx`: add the field to the UI 
 
 ⚠️ Make sure the id you are using for the field is the same everywhere! (it is case sensitive)

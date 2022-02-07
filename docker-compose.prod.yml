@@ -1,5 +1,4 @@
 version: "3"
-# version: "3.9"
 
 services:
 
@@ -15,40 +14,24 @@ services:
     environment:
       - "ES_JAVA_OPTS=-Xms16g -Xmx16g"
 
-
-  express-server:
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+      args:
+        - GRAPHQL_URL=https://registry.bio2kg.org/api/graphql
+        - ELASTIC_URL=https://elastic.registry.bio2kg.org
     environment:
       - VIRTUAL_HOST=registry.bio2kg.org
       - LETSENCRYPT_HOST=registry.bio2kg.org
-      - VIRTUAL_PORT=4000
+      - VIRTUAL_PORT=3000
+      - GRAPHQL_URL=https://registry.bio2kg.org/api/graphql
+      - ELASTIC_URL=https://elastic.registry.bio2kg.org
 
 
-  # virtuoso:
-  #   volumes:
-  #     - /data/bio2kg/registry/virtuoso:/database
+  # express-server:
   #   environment:
-  #     # Deployed using https://github.com/nginx-proxy
-  #     - VIRTUAL_PORT=8890
-  #     - VIRTUAL_HOST=data.registry.bio2kg.org
-  #     - LETSENCRYPT_HOST=data.registry.bio2kg.org
+  #     - VIRTUAL_HOST=registry.bio2kg.org
+  #     - LETSENCRYPT_HOST=registry.bio2kg.org
+  #     - VIRTUAL_PORT=4000
 
-  #     - VIRT_URIQA_DefaultHost=data.registry.bio2kg.org
-  #     - VIRT_Parameters_NumberOfBuffers=5450000 # For 64G systems
-  #     - VIRT_Parameters_MaxDirtyBuffers=4000000
-  #     # - VIRT_Parameters_NumberOfBuffers=10880000 # For 128G systems
-  #     # - VIRT_Parameters_MaxDirtyBuffers=8000000
-  #     # - VIRT_Database_ErrorLogLevel=2 # default: 7 is maximum logs
-  #     - VIRT_HTTPServer_HTTPThreadSize=280000
-  #     # - VIRT_URIQA_DynamicLocal=1
-  #     # - VIRT_Parameters_DirsAllowed=., /data, /usr/local/virtuoso-opensource/share/virtuoso/vad, /usr/local/virtuoso-opensource/var/lib/virtuoso/db
-  #     # Large dataset config
-  #     - VIRT_SPARQL_ResultSetMaxRows=1048576
-  #     - VIRT_SPARQL_MaxQueryCostEstimationTime=200000
-  #     - VIRT_SPARQL_MaxQueryExecutionTime=1000000
-  #     - VIRT_Database_MaxCheckpointRemap=125000
-  #     - VIRT_TempDatabase_MaxCheckpointRemap=125000
-  #     - VIRT_Parameters_TempDBSize=100000000
-  #     - VIRT_SPARQL_ShortenLongURIs=1
-  #     - VIRT_SPARQL_MaxCacheExpiration=1
-  #     - VIRT_SPARQL_ExternalQuerySource=1
-  #     - VIRT_SPARQL_ExternalXsltSource=1

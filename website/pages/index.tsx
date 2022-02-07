@@ -5,6 +5,7 @@ import withApollo from '../hocs/withApollo'
 const Search = dynamic(() => import('../components/index'), { ssr: false })
 
 export default withApollo(withSearchkit(withSearchkitRouting(Search
+  // TODO: is createURL and parseURL really needed?
   , {
   createURL: ({ qsModule, location, routeState }) => {
     let filters: any

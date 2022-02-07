@@ -1,4 +1,6 @@
 name: Load LSR CSV to ElasticSearch
+# NOTE: currently not used, this process is run in a docker-container
+# See the docker-compose.yml update-pipeline service
 
 on:
   workflow_dispatch:

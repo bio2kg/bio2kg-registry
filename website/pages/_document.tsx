@@ -1,32 +1,20 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Footer from '../components/Footer'
+import NavBar from '../components/NavBar'
 
 export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          {/* <title>Bio2KG Registry</title> */}
-          {/* <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=G-Y1LWVCFZQK`}
-          /> */}
-          {/* <script src={"https://maps.googleapis.com/maps/api/js?key=AIzaSyCnxbEhpVqsd7m-dDGb3mJrFEnZFSKdKOU&libraries=places"} defer></script> */}
-          {/* <script
-            dangerouslySetInnerHTML={{
-              __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-Y1LWVCFZQK', {
-              page_path: window.location.pathname,
-            });
-          `,
-            }}
-          /> */}
-        </Head>
-        <body>
+        <Head />
+        <body style={{display: "flex", flexDirection: "column", minHeight: '100vh',
+            backgroundColor: '#f5f6f7', // ligther grey
+            // backgroundColor: '#eceff1', // darker grey
+        }}>
+          <NavBar />
           <Main />
           <NextScript />
+          <Footer />
         </body>
       </Html>
     )
