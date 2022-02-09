@@ -1,6 +1,8 @@
-import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
+// import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
+import { ApolloServer, gql } from 'apollo-server-micro'
+import { makeExecutableSchema } from '@graphql-tools/schema';
+
 import cors from 'micro-cors'
-// import { makeExecutableSchema } from '@graphql-tools/schema';
 import {
   MultiMatchQuery,
   SearchkitSchema,
@@ -324,7 +326,7 @@ const resolvers = withSearchkitResolvers({
 })
 
 // Define GraphQL schema and Apollo server
-const schema = makeExecutableSchema({
+export const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
 });

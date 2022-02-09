@@ -9,9 +9,17 @@ const nextConfig = {
      * Set custom `process.env.SOMETHING` values to use in the application.
      * @see https://nextjs.org/docs/api-reference/next.config.js/environment-variables
      */
-    // env: {
-    //     ELASTIC_URL: elasticUrl,
-    //     GRAPHQL_URL: graphqlUrl,
+    env: {
+        ELASTIC_URL: null,
+        GRAPHQL_URL: null,
+    },
+
+    // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    //     config.node = {
+    //         fs: 'empty'
+    //     }
+    //     // webpack.webpack5 = true
+    //     return config
     // },
 
 }

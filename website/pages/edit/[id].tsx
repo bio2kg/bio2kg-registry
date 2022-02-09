@@ -98,9 +98,7 @@ const Resource = ({ data }) => {
               </TableRow>
             }
             { displayField('Resource type', hit.fields.type, '🗃️') }
-            { hit.fields.keywords && 
-              displayField('Keywords', hit.fields.keywords.join(', '), '🏷️')
-            }
+            { displayField('Keywords', hit.fields.keywords.join(', '), '🏷️') }
             { displayField('Organization', hit.fields.organization, '🏛️') }
             { displayField('Website', displayLink(hit.fields.homepage), '🏠️') }
           </TableBody>
