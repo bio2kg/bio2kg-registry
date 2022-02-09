@@ -1,6 +1,6 @@
-// import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
-import { ApolloServer, gql } from 'apollo-server-micro'
-import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server-micro'
+// import { ApolloServer, gql } from 'apollo-server-micro'
+// import { makeExecutableSchema } from '@graphql-tools/schema';
 
 import cors from 'micro-cors'
 import {

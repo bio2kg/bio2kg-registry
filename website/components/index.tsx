@@ -111,7 +111,7 @@ const graphqlQuery = gql`
         label
         display
         entries {
-          id
+          # id
           label
           count
         }
