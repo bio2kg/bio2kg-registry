@@ -30,6 +30,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiPopover,
+  EuiCallOut,
   EuiImage
 } from '@elastic/eui'
 // import { useEffect } from 'react'
@@ -78,7 +79,7 @@ const graphqlQuery = gql`
             identifiersUrl
             orcidUrl
             highlight {
-              title 
+              title
               description
             }
             fields {
@@ -151,7 +152,7 @@ const Page = () => {
   const changeSortOption = (sortOption: string) => {
     closeSort();
     api.setSortBy(sortOption)
-    api.search()   
+    api.search()
   }
 
   const button = (
@@ -278,6 +279,10 @@ const Page = () => {
           </EuiPageHeaderSection>
         </EuiPageHeader>
 
+        <EuiCallOut title="Deprecated" color="danger" iconType="alert">
+          <p>This registry is not maintained anymore, and contains outdated information. Please use the <a href="https://bioregistry.io">Bioregistry</a> that is maintained and up-to-date</p>
+        </EuiCallOut>
+
         <EuiPageContent>
           <EuiPageContentHeader>
             <EuiPageContentHeaderSection>
@@ -288,7 +293,7 @@ const Page = () => {
             <EuiPageContentHeaderSection>
               <EuiFlexGroup>
                 <EuiFlexItem grow={1}>
-              
+
                 </EuiFlexItem>
                 {/* Sort Option */}
                 <EuiFlexItem grow={1}>
@@ -316,13 +321,13 @@ const Page = () => {
                   </EuiButton>
                 </EuiFlexItem> */}
                 {/* <EuiFlexItem grow={1}>
-                  <EuiButton href="/apidocs" size="s" 
+                  <EuiButton href="/apidocs" size="s"
                       iconType="https://symbols.getvecta.com/stencil_90/33_openapi-initiative-icon.4d337e4f39.svg" target="_blank">
                     OpenAPI
                   </EuiButton>
                 </EuiFlexItem> */}
                 {/* <EuiFlexItem grow={1}>
-                  {/* https://elastic.github.io/eui/#/display/icons 
+                  {/* https://elastic.github.io/eui/#/display/icons
                   <EuiButton href="https://elastic.registry.bio2kg.org/_search"
                       size="s" iconType="logoElastic" target="_blank">
                     ElasticSearch API
